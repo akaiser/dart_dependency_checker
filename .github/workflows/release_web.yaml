@@ -1,0 +1,21 @@
+name: Release Web
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-flutter
+      - name: Build
+        #run: flutter build web --profile --no-web-resources-cdn --base-href /own/raumunikate.com/
+        run: flutter build web --profile --no-web-resources-cdn --base-href /raumunikate/
+      - name: Upload
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
