@@ -38,4 +38,4 @@ See the [LICENSE](LICENSE) file.
 
 ## Version history
 
-Please see our [CHANGELOG.md](CHANGELOG.md) file.
+See the [CHANGELOG.md](CHANGELOG.md) file.
