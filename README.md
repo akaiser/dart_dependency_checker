@@ -1,10 +1,8 @@
-## Checks unused dependencies within dart packages.
+## dart_dependency_checker
 
-## Limitations:
+Checks unused dependencies within Dart/Flutter packages.
 
-- Only works with package style imports (use `always_use_package_imports` in your projects).
-
-## Todos:
+## Todos
 
 - Error/file handling needs to be improved.
 - Messaging and exit handling needs to be improved.
@@ -12,7 +10,7 @@
 - Packages in `dev_dependencies` that already exist in `dependencies` checking.
 - Tests...
 
-## Usage:
+## Usage
 
 ```shell
 # Install
