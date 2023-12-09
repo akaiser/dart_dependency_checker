@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dart
+      - run: dart pub get
       - run: dart analyze
       - run: dart format -o none --set-exit-if-changed .
 
