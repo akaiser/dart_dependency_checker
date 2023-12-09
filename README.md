@@ -1,10 +1,10 @@
 ## Checks unused dependencies within dart packages.
 
-### Limitations:
+## Limitations:
 
 - Only works with package style imports (use `always_use_package_imports` in your projects).
 
-### Todos:
+## Todos:
 
 - Error/file handling needs to be improved.
 - Messaging and exit handling needs to be improved.
@@ -12,9 +12,9 @@
 - Packages in `dev_dependencies` that already exist in `dependencies` checking.
 - Tests...
 
-### Usage:
+## Usage:
 
-```
+```shell
 # Install
 dart pub global activate -sgit https://github.com/akaiser/dart_dependency_checker.git
 
@@ -31,3 +31,11 @@ melos exec -c1 -- dart_dependency_checker
 # Or
 for d in */ ; do (cd $d && dart_dependency_checker); done;
 ```
+
+## License
+
+See the [LICENSE](LICENSE) file.
+
+## Version history
+
+Please see our [CHANGELOG.md](CHANGELOG.md) file.
