@@ -26,4 +26,10 @@ dart_dependency_checker
 
 # or
 dart_dependency_checker /some/package/root
+
+# in a wild mono repo environment
+melos exec -c 1  -- dart_dependency_checker
+
+# or
+for d in */ ; do (cd $d && dart_dependency_checker); done;
 ```
