@@ -1,13 +1,12 @@
 ## dart_dependency_checker
 
-Checks unused dependencies within Dart/Flutter packages.
+Checks declared but unused dependencies within Dart/Flutter packages.
 
 ## Todos
 
-- Error/file handling needs to be improved.
 - Messaging and exit handling needs to be improved.
-- Implement `dev_dependencies` vs. `/test` checking.
-- Packages in `dev_dependencies` that already exist in `dependencies` checking.
+- Duplicates in `dev_dependencies` that already exist in `dependencies` checking.
+- Configurable to ignore dependencies that won't end up source files such as `lints` etc.
 - Tests...
 
 ## Usage

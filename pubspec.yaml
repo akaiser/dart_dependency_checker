@@ -1,5 +1,5 @@
 name: dart_dependency_checker
-description: Checks unused dependencies within Dart/Flutter packages.
+description: Checks declared but unused dependencies within Dart/Flutter packages.
 repository: https://github.com/akaiser/dart_dependency_checker
 version: 0.0.1
 
@@ -10,8 +10,8 @@ environment:
   sdk: ^3.2.0
 
 dependencies:
-  dart_console: ^1.2.0
-  pubspec_yaml: ^3.1.0
+  meta: ^1.11.0
+  yaml: ^3.1.2
 
 dev_dependencies:
   lints: ^3.0.0

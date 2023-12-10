@@ -1,3 +1,5 @@
-import 'package:dart_dependency_checker/main.dart' as m;
+import 'dart:io';
 
-Future<void> main(List<String> args) => m.main(args);
+import 'package:dart_dependency_checker/dart_dependency_checker.dart' as ddc;
+
+void main(List<String> args) => exit(ddc.run(args).code);
