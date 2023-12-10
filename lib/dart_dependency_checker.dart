@@ -19,11 +19,11 @@ ExitCode run(List<String> args, [Logger logger = const Logger()]) {
   final results = Checker(testDirectory, pubspecYaml).makeItSo();
 
   if (!results.isEmpty) {
-    logger.stderr('### Found unused packages ###');
+    logger.stderr('**************** Found unused packages ****************');
     logger.stderr('Path: $testDirectory/pubspec.yaml');
     logger.stderr('Dependencies: ${results.dependencies.withComma}');
     logger.stderr('Dev Dependencies: ${results.devDependencies.withComma}');
-    logger.stderr('#############################');
+    logger.stderr('*******************************************************');
     return const ExitCode(1);
   }
   logger.stdout('All good!');

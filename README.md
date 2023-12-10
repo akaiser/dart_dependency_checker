@@ -2,11 +2,12 @@
 
 Checks declared but unused dependencies within Dart/Flutter packages.
 
-## Todos
+## Current Todos
 
 - Messaging and exit handling needs to be improved.
+- Extend API and read checker actions and parameters from arguments.
 - Duplicates in `dev_dependencies` that already exist in `dependencies` checking.
-- Configurable to ignore dependencies that won't end up source files such as `lints` etc.
+- Configurable to ignore dependencies that won't end up source files such as `build_runner`, `lints` etc.
 - Tests...
 
 ## Usage
@@ -28,6 +29,11 @@ melos exec -c1 -- dart_dependency_checker
 # Or
 for d in */ ; do (cd $d && dart_dependency_checker); done;
 ```
+
+## Future roadmap
+
+- `transitive-use`: Direct use of undeclared/transitive dependencies.
+- `dep-origin`: Utilize `dart pub deps` to extract the origin of a direct/transitive dependency.
 
 ## License
 
