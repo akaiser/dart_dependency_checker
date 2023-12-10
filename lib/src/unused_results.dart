@@ -12,4 +12,3 @@ class UnusedResults {
 
   bool get isEmpty => dependencies.isEmpty && devDependencies.isEmpty;
 }
-
