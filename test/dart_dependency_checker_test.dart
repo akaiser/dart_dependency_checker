@@ -4,9 +4,9 @@ import 'package:dart_dependency_checker/src/logger.dart';
 import 'package:test/test.dart';
 
 void main() {
-  late _MockLogger logger;
+  late _FakeLogger logger;
 
-  setUp(() => logger = _MockLogger());
+  setUp(() => logger = _FakeLogger());
 
   test(
       'providing invalid path '
@@ -20,7 +20,7 @@ void main() {
   // TODO(albert): finish this...
 }
 
-class _MockLogger implements Logger {
+class _FakeLogger implements Logger {
   late String stderrMessage, stdoutMessage;
 
   @override
