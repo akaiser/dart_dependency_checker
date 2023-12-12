@@ -36,8 +36,8 @@ class _FakeLogger implements Logger {
   late String stderrMessage, stdoutMessage;
 
   @override
-  void stderr(String message) => stderrMessage = message;
+  void warn(String message) => stderrMessage = message;
 
   @override
-  void stdout(String message) => stdoutMessage = message;
+  void log(String message) => stdoutMessage = message;
 }

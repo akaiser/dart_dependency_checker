@@ -12,7 +12,7 @@ ExitCode run(List<String> args, [Logger logger = const Logger()]) {
   final arguments = ArgumentsParser.parse(args);
 
   if (arguments == null) {
-    logger.stderr(
+    logger.warn(
       'One of mode type is required: '
       '${CheckerMode.values.map((e) => e.name).join(', ')}',
     );
@@ -22,7 +22,7 @@ ExitCode run(List<String> args, [Logger logger = const Logger()]) {
   final path = arguments.path;
   final pubspecYaml = _pubspecYaml(path);
   if (pubspecYaml == null) {
-    logger.stderr('Invalid pubspec.yml file path: $path');
+    logger.warn('Invalid pubspec.yml file path: $path');
     return const ExitCode(2);
   }
 
@@ -32,15 +32,25 @@ ExitCode run(List<String> args, [Logger logger = const Logger()]) {
     arguments.devIgnores,
   ).makeItSo();
 
+  final pubspecYamlPath = '$path/pubspec.yaml';
   if (!results.isEmpty) {
-    logger.stderr('**************** Found unused packages ****************');
-    logger.stderr('Path: $path/pubspec.yaml');
-    logger.stderr('Dependencies: ${results.dependencies.withComma}');
-    logger.stderr('Dev Dependencies: ${results.devDependencies.withComma}');
-    logger.stderr('*******************************************************');
+    logger.warn('== Found unused packages ==');
+    logger.warn('Path: $pubspecYamlPath');
+    if (results.dependencies.isNotEmpty) {
+      logger.warn('Dependencies:');
+      for (var dependency in results.dependencies) {
+        logger.warn('  - $dependency');
+      }
+    }
+    if (results.devDependencies.isNotEmpty) {
+      logger.warn('Dev Dependencies:');
+      for (var dependency in results.devDependencies) {
+        logger.warn('  - $dependency');
+      }
+    }
     return const ExitCode(1);
   }
-  logger.stdout('All good!');
+  logger.log('All good for: $pubspecYamlPath');
 
   return ExitCode(exitCode);
 }
@@ -52,8 +62,4 @@ YamlMap? _pubspecYaml(String path) {
     return loadYaml(pubspecFile.readAsStringSync()) as YamlMap?;
   }
   return null;
-}
-
-extension on Set<String> {
-  String get withComma => join(', ');
 }

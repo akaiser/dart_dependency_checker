@@ -11,7 +11,7 @@ Checks declared but unused dependencies within Dart/Flutter packages.
 
 ```
 # Install
-dart pub global activate -sgit https://github.com/akaiser/dart_dependency_checker.git
+dart pub global activate dart_dependency_checker
 
 # Use
 dart_dependency_checker deps-unused
@@ -23,10 +23,10 @@ dart_dependency_checker deps-unused -p /some/package/root
 dart_dependency_checker deps-unused -p /some/package/root --dev-ignores lints,build_runner,json_serializable
 
 # In a wild mono repo environment
-melos exec -c1 -- dart_dependency_checker
+melos exec -c1 -- dart_dependency_checker deps-unused
 
 # Or
-for d in */ ; do (cd $d && dart_dependency_checker); done;
+for d in */ ; do (cd $d && dart_dependency_checker deps-unused); done;
 ```
 
 ## Future roadmap

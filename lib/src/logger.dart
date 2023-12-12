@@ -1,11 +1,9 @@
 import 'dart:io' as io show stdout, stderr;
 
-const logPrefix = 'DDC: ';
-
 class Logger {
   const Logger();
 
-  void stdout(String message) => io.stdout.writeln('$logPrefix$message');
+  void log(String message) => io.stdout.writeln('\x1B[32m$message\x1B[0m');
 
-  void stderr(String message) => io.stderr.writeln('$logPrefix$message');
+  void warn(String message) => io.stderr.writeln('\x1B[93m$message\x1B[0m');
 }
