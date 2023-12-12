@@ -4,24 +4,23 @@ Checks declared but unused dependencies within Dart/Flutter packages.
 
 ## Current Todos
 
-- Messaging and exit handling needs to be improved.
-- Extend API and read checker actions and parameters from arguments.
-- Duplicates in `dev_dependencies` that already exist in `dependencies` checking.
-- Configurable to ignore dependencies that won't end up source files such as `build_runner`, `lints` etc.
+- Arguments and messaging needs to be improved.
 - Tests...
 
 ## Usage
 
-```shell
+```
 # Install
 dart pub global activate -sgit https://github.com/akaiser/dart_dependency_checker.git
 
 # Use
-cd /some/package/root/
-dart_dependency_checker
+dart_dependency_checker deps-unused
 
 # Or
-dart_dependency_checker /some/package/root
+dart_dependency_checker deps-unused -p /some/package/root
+
+# Or
+dart_dependency_checker deps-unused -p /some/package/root --dev-ignores lints,build_runner,json_serializable
 
 # In a wild mono repo environment
 melos exec -c1 -- dart_dependency_checker
@@ -32,8 +31,8 @@ for d in */ ; do (cd $d && dart_dependency_checker); done;
 
 ## Future roadmap
 
-- `transitive-use`: Direct use of undeclared/transitive dependencies.
-- `dep-origin`: Utilize `dart pub deps` to extract the origin of a direct/transitive dependency.
+- Mode `dep-origin`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive dependency.
+- Mode `transitive-use`: Direct use of undeclared/transitive dependencies.
 
 ## License
 
