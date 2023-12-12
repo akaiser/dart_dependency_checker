@@ -1,8 +1,10 @@
-import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
 
-@immutable
-class ExitCode {
+class ExitCode extends Equatable {
   const ExitCode(this.code);
 
   final int code;
+
+  @override
+  List<Object> get props => [code];
 }

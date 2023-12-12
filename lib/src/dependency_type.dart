@@ -1,12 +1,12 @@
 enum DependencyType {
-  dependencies._('dependencies', 'lib'),
-  devDependencies._('dev_dependencies', 'test');
+  dependencies._('dependencies', {'lib'}),
+  devDependencies._('dev_dependencies', {'test', 'integration_test'});
 
   const DependencyType._(
     this.yamlNode,
-    this.sourceDirectory,
+    this.sourceDirectories,
   );
 
   final String yamlNode;
-  final String sourceDirectory;
+  final Set<String> sourceDirectories;
 }

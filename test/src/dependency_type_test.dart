@@ -16,13 +16,13 @@ void main() {
     );
   });
 
-  <DependencyType, String>{
-    DependencyType.dependencies: 'lib',
-    DependencyType.devDependencies: 'test',
-  }.forEach((dependencyType, sourceDirectory) {
+  <DependencyType, Set<String>>{
+    DependencyType.dependencies: {'lib'},
+    DependencyType.devDependencies: {'test', 'integration_test'},
+  }.forEach((dependencyType, sourceDirectories) {
     test(
-      '$dependencyType maps to expected "$sourceDirectory" sourceDirectory',
-      () => expect(dependencyType.sourceDirectory, sourceDirectory),
+      '$dependencyType maps to expected "$sourceDirectories" sourceDirectories',
+      () => expect(dependencyType.sourceDirectories, sourceDirectories),
     );
   });
 }
