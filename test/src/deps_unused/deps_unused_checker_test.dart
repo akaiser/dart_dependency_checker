@@ -83,7 +83,7 @@ Dependencies:
 == Found unused packages ==
 Path: test/resources/deps_unused/all_sources_dirs/pubspec.yaml
 Dependencies:
-  - args
+  - meta
 Dev Dependencies:
   - integration_test
   - lints
@@ -102,7 +102,7 @@ Dev Dependencies:
 == Found unused packages ==
 Path: test/resources/deps_unused/all_sources_dirs/pubspec.yaml
 Dependencies:
-  - args
+  - meta
 Dev Dependencies:
   - lints
 ''');
