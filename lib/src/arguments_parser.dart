@@ -28,19 +28,16 @@ abstract final class ArgumentsParser {
 
   static ArgParser get _parser => ArgParser()
     ..addCommand(
-      // deb-origin -p feature-bla
-      CheckerMode.debOrigin.name,
+      CheckerMode.depOrigin.name,
       ArgParser()..withPathOption(),
     )
     ..addCommand(
-      // deps-unused -p feature-bla --dev-ignores lints,yaml
       CheckerMode.depsUnused.name,
       ArgParser()
         ..withPathOption()
         ..addOption(_devIgnoresOption),
     )
     ..addCommand(
-      // transitive-use -p feature-bla
       CheckerMode.transitiveUse.name,
       ArgParser()..withPathOption(),
     );

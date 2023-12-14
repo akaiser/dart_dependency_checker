@@ -1,4 +1,4 @@
-## dart_dependency_checker
+# dart_dependency_checker
 
 Checks declared but unused dependencies within Dart/Flutter packages.
 

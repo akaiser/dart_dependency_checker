@@ -1,28 +1,45 @@
 import 'dart:io';
 
+import 'package:dart_dependency_checker/src/arguments_result.dart';
+import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/exit_code.dart';
 import 'package:yaml/yaml.dart';
 
 final _importPackageExp = RegExp(r':(.*?)/');
 
-class DepsUnusedChecker {
-  const DepsUnusedChecker(this.path, this.pubspecYaml, this.devIgnores);
+class DepsUnusedChecker extends Checker {
+  const DepsUnusedChecker(
+    super.logger,
+    this.arguments,
+    this.pubspecYaml,
+  );
 
-  final String path;
+  final ArgumentsResult arguments;
   final YamlMap pubspecYaml;
-  final Set<String> devIgnores;
 
-  DepsUnusedResults makeItSo() => DepsUnusedResults(
-        dependencies: _unusedPackages(
-          DependencyType.dependencies,
-          const {},
-        ),
-        devDependencies: _unusedPackages(
-          DependencyType.devDependencies,
-          devIgnores,
-        ),
-      );
+  @override
+  ExitCode makeItSo() {
+    final results = DepsUnusedResults(
+      dependencies: _unusedPackages(DependencyType.dependencies, const {}),
+      devDependencies: _unusedPackages(
+        DependencyType.devDependencies,
+        arguments.devIgnores,
+      ),
+    );
+
+    if (!results.isEmpty) {
+      logger.warn('== Found unused packages ==');
+      logger.warn('Path: ${arguments.path}/pubspec.yaml');
+      _printDependencies('Dependencies', results.dependencies);
+      _printDependencies('Dev Dependencies', results.devDependencies);
+      return const ExitCode(1);
+    }
+
+    logger.info('All clear!');
+    return ExitCode(exitCode);
+  }
 
   Set<String> _unusedPackages(
     DependencyType dependencyType,
@@ -31,27 +48,32 @@ class DepsUnusedChecker {
     final packages = _packages(dependencyType.yamlNode).difference(ignores);
     if (packages.isNotEmpty) {
       final dartFiles = dependencyType.sourceDirectories.fold(
-        <File>{},
-        (init, directory) => {...init, ..._dartFiles('$path/$directory')},
+        const <File>{},
+        (init, directory) => {
+          ...init,
+          ..._dartFiles('${arguments.path}/$directory'),
+        },
       );
 
-      if (dartFiles.isNotEmpty) {
-        final packageUsageCount = {for (final package in packages) package: 0};
-
-        for (var dartFile in dartFiles) {
-          _imports(dartFile).forEach((package) {
-            final count = packageUsageCount[package];
-            if (count != null) {
-              packageUsageCount[package] = count + 1;
-            }
-          });
-        }
-
-        return packageUsageCount.entries
-            .where((entry) => entry.value == 0)
-            .map((entry) => entry.key)
-            .toSet();
+      if (dartFiles.isEmpty) {
+        return packages;
       }
+
+      final packageUsageCount = {for (final package in packages) package: 0};
+
+      for (final dartFile in dartFiles) {
+        _imports(dartFile).forEach((package) {
+          final count = packageUsageCount[package];
+          if (count != null) {
+            packageUsageCount[package] = count + 1;
+          }
+        });
+      }
+
+      return packageUsageCount.entries
+          .where((entry) => entry.value == 0)
+          .map((entry) => entry.key)
+          .toSet();
     }
 
     return const {};
@@ -80,4 +102,13 @@ class DepsUnusedChecker {
       .map((import) => _importPackageExp.firstMatch(import)?[1])
       .nonNulls
       .toSet();
+
+  void _printDependencies(String label, Set<String> dependencies) {
+    if (dependencies.isNotEmpty) {
+      logger.warn('$label:');
+      for (final dependency in dependencies) {
+        logger.warn('  - $dependency');
+      }
+    }
+  }
 }
