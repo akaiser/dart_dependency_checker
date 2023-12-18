@@ -10,7 +10,7 @@ void main() {
 
   try {
     print('${checker.check()}');
-  } on PubspecNotFoundError catch (e) {
+  } on BaseError catch (e) {
     print(e.message);
   }
 }
