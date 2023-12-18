@@ -1,57 +1,52 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/arguments_result.dart';
 import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
+import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
-import 'package:dart_dependency_checker/src/exit_code.dart';
+import 'package:dart_dependency_checker/src/util/pubspec_yaml_parser.dart';
 import 'package:yaml/yaml.dart';
 
 final _importPackageExp = RegExp(r':(.*?)/');
 
-class DepsUnusedChecker extends Checker {
-  const DepsUnusedChecker(
-    super.logger,
-    this.arguments,
-    this.pubspecYaml,
-  );
-
-  final ArgumentsResult arguments;
-  final YamlMap pubspecYaml;
+/// Checks declared but unused dependencies.
+class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
+  const DepsUnusedChecker(super.params);
 
   @override
-  ExitCode makeItSo() {
-    final results = DepsUnusedResults(
-      dependencies: _unusedPackages(DependencyType.dependencies, const {}),
+  DepsUnusedResults check() {
+    final pubspecYaml = PubspecYamlParser.from(params.path);
+
+    return DepsUnusedResults(
+      dependencies: _unusedPackages(
+        pubspecYaml,
+        DependencyType.dependencies,
+        const {},
+      ),
       devDependencies: _unusedPackages(
+        pubspecYaml,
         DependencyType.devDependencies,
-        arguments.devIgnores,
+        params.devIgnores,
       ),
     );
-
-    if (!results.isEmpty) {
-      logger.warn('== Found unused packages ==');
-      logger.warn('Path: ${arguments.path}/pubspec.yaml');
-      _printDependencies('Dependencies', results.dependencies);
-      _printDependencies('Dev Dependencies', results.devDependencies);
-      return const ExitCode(1);
-    }
-
-    logger.info('All clear!');
-    return ExitCode(exitCode);
   }
 
   Set<String> _unusedPackages(
+    YamlMap pubspecYaml,
     DependencyType dependencyType,
     Set<String> ignores,
   ) {
-    final packages = _packages(dependencyType.yamlNode).difference(ignores);
+    final packages = _packages(
+      pubspecYaml,
+      dependencyType.yamlNode,
+    ).difference(ignores);
+
     if (packages.isNotEmpty) {
       final dartFiles = dependencyType.sourceDirectories.fold(
         const <File>{},
         (init, directory) => {
           ...init,
-          ..._dartFiles('${arguments.path}/$directory'),
+          ..._dartFiles('${params.path}/$directory'),
         },
       );
 
@@ -79,7 +74,7 @@ class DepsUnusedChecker extends Checker {
     return const {};
   }
 
-  Set<String> _packages(String yamlNode) {
+  Set<String> _packages(YamlMap pubspecYaml, String yamlNode) {
     final nodeValue = pubspecYaml.nodes[yamlNode]?.value as YamlMap?;
     return nodeValue?.keys.map((e) => e as String).toSet() ?? const {};
   }
@@ -102,13 +97,4 @@ class DepsUnusedChecker extends Checker {
       .map((import) => _importPackageExp.firstMatch(import)?[1])
       .nonNulls
       .toSet();
-
-  void _printDependencies(String label, Set<String> dependencies) {
-    if (dependencies.isNotEmpty) {
-      logger.warn('$label:');
-      for (final dependency in dependencies) {
-        logger.warn('  - $dependency');
-      }
-    }
-  }
 }

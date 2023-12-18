@@ -1,9 +1,11 @@
 import 'package:dart_dependency_checker/src/checker.dart';
-import 'package:dart_dependency_checker/src/exit_code.dart';
+import 'package:dart_dependency_checker/src/transitive_use/transitive_use_params.dart';
+import 'package:dart_dependency_checker/src/transitive_use/transitive_use_results.dart';
 
-class TransitiveUseChecker extends Checker {
-  TransitiveUseChecker(super.logger);
+class TransitiveUseChecker
+    extends Checker<TransitiveUseParams, TransitiveUseResults> {
+  const TransitiveUseChecker(super.params);
 
   @override
-  ExitCode makeItSo() => throw UnimplementedError();
+  TransitiveUseResults check() => throw UnimplementedError();
 }
