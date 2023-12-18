@@ -1,3 +1,7 @@
+## 0.1.1
+
+- Added `ddc` as exec command shorthand.
+
 ## 0.1.0
 
 - Splitting public and internal API.
