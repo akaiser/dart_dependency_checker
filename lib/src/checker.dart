@@ -1,10 +1,14 @@
-import 'package:dart_dependency_checker/src/exit_code.dart';
-import 'package:dart_dependency_checker/src/logger.dart';
+/// Base checker class.
+abstract class Checker<I, O> {
+  const Checker(this.params);
 
-abstract class Checker {
-  const Checker(this.logger);
+  final I params;
 
-  final Logger logger;
+  /// Resolves [O] after execution.
+  /// Throws a [PubspecNotFoundError] if the pubspec.yaml was not found.
+  O check();
+}
 
-  ExitCode makeItSo();
+mixin CheckWithExitMixin {
+  int checkWithExit();
 }
