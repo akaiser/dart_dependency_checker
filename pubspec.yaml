@@ -5,7 +5,6 @@ version: 0.1.0
 
 executables:
   dart_dependency_checker:
-  ddc:
 
 environment:
   sdk: ^3.2.0
