@@ -1,8 +1,9 @@
+import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/internal_deps_unused_checker.dart';
 import 'package:test/test.dart';
 
 import '../_fake_logger.dart';
-import '_test_helper.dart';
+import '../_paths.dart';
 
 void main() {
   late FakeLogger logger;
@@ -12,7 +13,7 @@ void main() {
   test('reports error on invalid pubspec.yaml path', () {
     final result = InternalDepsUnusedChecker(
       logger,
-      params('unknown'),
+      const DepsUnusedParams(path: 'unknown'),
     ).checkWithExit();
 
     expect(result, 2);
@@ -24,7 +25,7 @@ Invalid pubspec.yaml file path: unknown/pubspec.yaml
   test('reports error on invalid pubspec.yaml content', () {
     final result = InternalDepsUnusedChecker(
       logger,
-      params(emptyPubspecYamlPath),
+      const DepsUnusedParams(path: emptyPubspecYamlPath),
     ).checkWithExit();
 
     expect(result, 2);
@@ -39,7 +40,7 @@ Invalid pubspec.yaml file contents in: $emptyPubspecYamlPath/pubspec.yaml
     test('reports only unused main and dev dependencies', () {
       final result = InternalDepsUnusedChecker(
         logger,
-        params(path),
+        const DepsUnusedParams(path: path),
       ).checkWithExit();
 
       expect(result, 1);
@@ -57,7 +58,10 @@ Dev Dependencies:
     test('passed ignores will not be reported', () {
       final result = InternalDepsUnusedChecker(
         logger,
-        params(path, const {'integration_test'}),
+        const DepsUnusedParams(
+          path: path,
+          devIgnores: {'integration_test'},
+        ),
       ).checkWithExit();
 
       expect(result, 1);
@@ -76,7 +80,7 @@ Dev Dependencies:
     test('reports no unused dependencies', () {
       final result = InternalDepsUnusedChecker(
         logger,
-        params(noDependenciesPath),
+        const DepsUnusedParams(path: noDependenciesPath),
       ).checkWithExit();
 
       expect(result, 0);
@@ -92,7 +96,7 @@ All clear!
     test('reports all declared main and dev dependencies', () {
       final result = InternalDepsUnusedChecker(
         logger,
-        params(path),
+        const DepsUnusedParams(path: path),
       ).checkWithExit();
 
       expect(result, 1);
@@ -115,7 +119,10 @@ Dev Dependencies:
         'even if no sources were found', () {
       final result = InternalDepsUnusedChecker(
         logger,
-        params(path, {'lints', 'test'}),
+        const DepsUnusedParams(
+          path: path,
+          devIgnores: {'lints', 'test'},
+        ),
       ).checkWithExit();
 
       expect(result, 1);

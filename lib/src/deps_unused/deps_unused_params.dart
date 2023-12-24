@@ -5,17 +5,20 @@ import 'package:equatable/equatable.dart';
 class DepsUnusedParams extends Equatable {
   const DepsUnusedParams({
     required this.path,
-    required this.devIgnores,
+    this.devIgnores = const {},
+    this.mainIgnores = const {},
   });
 
   final String path;
   final Set<String> devIgnores;
+  final Set<String> mainIgnores;
 
   static DepsUnusedParams from(ArgumentsResult result) => DepsUnusedParams(
         path: result.path,
         devIgnores: result.devIgnores,
+        mainIgnores: result.mainIgnores,
       );
 
   @override
-  List<Object> get props => [path, devIgnores];
+  List<Object> get props => [path, devIgnores, mainIgnores];
 }

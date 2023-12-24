@@ -65,6 +65,7 @@ void main() {
 
 ## Future roadmap
 
+- Mode `deps-unused`: Supports auto cleanup.
 - Mode `dep-origin`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive dependency.
 - Mode `transitive-use`: Direct use of undeclared/transitive dependencies.
 

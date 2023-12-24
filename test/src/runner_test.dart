@@ -2,7 +2,7 @@ import 'package:dart_dependency_checker/src/runner.dart';
 import 'package:test/test.dart';
 
 import '_fake_logger.dart';
-import 'deps_unused/_test_helper.dart';
+import '_paths.dart';
 
 void main() {
   late FakeLogger logger;
