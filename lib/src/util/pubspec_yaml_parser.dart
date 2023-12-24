@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/errors.dart';
+import 'package:dart_dependency_checker/src/app_error.dart';
 import 'package:yaml/yaml.dart';
 
 /// Static utility to parse a pubspec.yaml file.

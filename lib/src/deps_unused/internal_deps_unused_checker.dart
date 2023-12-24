@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:dart_dependency_checker/src/app_error.dart';
 import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_checker.dart';
-import 'package:dart_dependency_checker/src/errors.dart';
 import 'package:dart_dependency_checker/src/logger.dart';
 
 class InternalDepsUnusedChecker extends DepsUnusedChecker
@@ -26,7 +26,7 @@ class InternalDepsUnusedChecker extends DepsUnusedChecker
         _printDependencies('Dev Dependencies', results.devDependencies);
         return 1;
       }
-    } on BaseError catch (e) {
+    } on AppError catch (e) {
       _logger.error(e.message);
       return 2;
     }

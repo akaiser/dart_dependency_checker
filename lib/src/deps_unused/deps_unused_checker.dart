@@ -21,7 +21,7 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
       dependencies: _unusedPackages(
         pubspecYaml,
         DependencyType.dependencies,
-        const {},
+        params.mainIgnores,
       ),
       devDependencies: _unusedPackages(
         pubspecYaml,

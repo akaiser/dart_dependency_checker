@@ -6,12 +6,14 @@ class ArgumentsResult extends Equatable {
     required this.mode,
     required this.path,
     required this.devIgnores,
+    required this.mainIgnores,
   });
 
   final CheckerMode mode;
   final String path;
   final Set<String> devIgnores;
+  final Set<String> mainIgnores;
 
   @override
-  List<Object> get props => [mode, path, devIgnores];
+  List<Object> get props => [mode, path, devIgnores, mainIgnores];
 }

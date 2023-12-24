@@ -1,11 +1,12 @@
 ## 0.1.1
 
-- Added `ddc` as exec command shorthand.
+- Add `ddc` as exec command shorthand.
+- Add `--main-ignores` option.
 
 ## 0.1.0
 
 - Splitting public and internal API.
-- Add more documentation and test.
+- Add more documentation and tests.
 - Add example project.
 
 ## 0.0.3
