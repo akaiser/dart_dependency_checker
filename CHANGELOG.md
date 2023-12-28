@@ -1,7 +1,7 @@
 ## 0.1.1
 
 - Add `ddc` as exec command shorthand.
-- Add `--main-ignores` option.
+- Add `ddc deps-unused --main-ignores x,y,z` option.
 
 ## 0.1.0
 
