@@ -54,8 +54,8 @@ void main() {
         const DepsUnusedChecker(
           DepsUnusedParams(
             path: path,
-            mainIgnores: {'meta'},
             devIgnores: {'integration_test'},
+            mainIgnores: {'meta'},
           ),
         ).check(),
         const DepsUnusedResults(
@@ -100,8 +100,8 @@ void main() {
         const DepsUnusedChecker(
           DepsUnusedParams(
             path: path,
-            mainIgnores: {'meta'},
             devIgnores: {'lints', 'test'},
+            mainIgnores: {'meta'},
           ),
         ).check(),
         const DepsUnusedResults(

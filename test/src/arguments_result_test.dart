@@ -6,8 +6,8 @@ void main() {
   const result = ArgumentsResult(
     mode: CheckerMode.depsUnused,
     path: 'some_path',
-    mainIgnores: {},
     devIgnores: {'lints'},
+    mainIgnores: {},
   );
 
   test('has known props count', () {
