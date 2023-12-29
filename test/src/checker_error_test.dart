@@ -1,4 +1,4 @@
-import 'package:dart_dependency_checker/src/app_error.dart';
+import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -5,12 +5,12 @@ import '../_paths.dart';
 
 void main() {
   test(
-      'throws a $AppError with proper message '
+      'throws a $CheckerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       () => const DepsUnusedChecker(DepsUnusedParams(path: 'unknown')).check(),
       throwsA(
-        isA<AppError>().having(
+        isA<CheckerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file path: unknown/pubspec.yaml',
@@ -20,14 +20,14 @@ void main() {
   });
 
   test(
-      'throws a $AppError with proper message '
+      'throws a $CheckerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyPubspecYamlPath;
 
     expect(
       () => const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
       throwsA(
-        isA<AppError>().having(
+        isA<CheckerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file contents in: $emptyPubspecYamlPath/pubspec.yaml',

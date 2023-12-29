@@ -41,7 +41,7 @@
 ///
 ///   try {
 ///     print('${checker.check()}');
-///   } on AppError catch (e) {
+///   } on CheckerError catch (e) {
 ///     print(e.message);
 ///   }
 /// }

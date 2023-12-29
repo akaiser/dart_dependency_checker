@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-sealed class AppError extends Equatable implements Exception {
-  const AppError(this.message);
+sealed class CheckerError extends Equatable implements Exception {
+  const CheckerError(this.message);
 
   final String message;
 
@@ -9,12 +9,12 @@ sealed class AppError extends Equatable implements Exception {
   List<Object> get props => [message];
 }
 
-final class PubspecNotFoundError extends AppError {
+final class PubspecNotFoundError extends CheckerError {
   const PubspecNotFoundError(String path)
       : super('Invalid pubspec.yaml file path: $path');
 }
 
-final class PubspecNotValidError extends AppError {
+final class PubspecNotValidError extends CheckerError {
   const PubspecNotValidError(String path)
       : super('Invalid pubspec.yaml file contents in: $path');
 }

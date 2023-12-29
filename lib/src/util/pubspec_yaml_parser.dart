@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/app_error.dart';
+import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:yaml/yaml.dart';
 
 /// Static utility to parse a pubspec.yaml file.
 abstract final class PubspecYamlParser {
   /// Resolves a pubspec.yaml to [YamlMap] at [path].
   ///
-  /// Throws a [PubspecNotFoundError] if the file could not be found.
-  /// Throws a [PubspecInvalidError] if the file contents were invalid.
+  /// Throws a [PubspecNotFoundError] when pubspec.yaml was not found.
+  /// Throws a [PubspecInvalidError] when pubspec.yaml contents were invalid.
   static YamlMap from(String path) {
     final pubspecFile = File('$path/pubspec.yaml');
 

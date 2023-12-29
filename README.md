@@ -61,7 +61,6 @@ void main() {
 ## Current Todos
 
 - Arguments and messaging needs to be improved.
-- Tests...
 
 ## Future roadmap
 

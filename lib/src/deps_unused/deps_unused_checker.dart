@@ -54,18 +54,8 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
         return packages;
       }
 
-      final packageUsageCount = {for (final package in packages) package: 0};
-
-      for (final dartFile in dartFiles) {
-        _imports(dartFile).forEach((package) {
-          final count = packageUsageCount[package];
-          if (count != null) {
-            packageUsageCount[package] = count + 1;
-          }
-        });
-      }
-
-      return packageUsageCount.entries
+      return _packageUsageCount(packages, dartFiles)
+          .entries
           .where((entry) => entry.value == 0)
           .map((entry) => entry.key)
           .toSet();
@@ -89,6 +79,21 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
           .toSet();
     }
     return const {};
+  }
+
+  Map<String, int> _packageUsageCount(
+    Set<String> packages,
+    Set<File> dartFiles,
+  ) {
+    final packageUsageCount = {for (final package in packages) package: 0};
+
+    for (final dartFile in dartFiles) {
+      _imports(dartFile).forEach((package) {
+        final count = packageUsageCount[package] ?? 0;
+        packageUsageCount[package] = count + 1;
+      });
+    }
+    return packageUsageCount;
   }
 
   Set<String> _imports(File file) => file
