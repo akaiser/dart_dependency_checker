@@ -52,7 +52,7 @@ void main() {
 
   try {
     print('${checker.check()}');
-  } on PubspecNotFoundError catch (e) {
+  } on CheckerError catch (e) {
     print(e.message);
   }
 }
