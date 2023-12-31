@@ -57,7 +57,7 @@ abstract final class ArgumentsParser {
         ..withPathOption()
         ..addOption(_devIgnoresOption)
         ..addOption(_mainIgnoresOption)
-        ..addFlag(_fixFlag, negatable: false),
+        ..addFlag(_fixFlag),
     )
     ..addCommand(
       CheckerMode.transitiveUse.name,
