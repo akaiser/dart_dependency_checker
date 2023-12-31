@@ -9,16 +9,20 @@ environment:
 
 dependencies:
   args: ^2.4.2
+
   meta: ^1.11.0
 
   bla_analytics:
     path: ../bla_analytics
+
+
   bla_support:
     path: ../bla_support
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   integration_test:
     sdk: any
 

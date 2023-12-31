@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Eliminate extra blank lines after `ddc deps-unused --fix` run.
+
 ## 0.1.1
 
 - Add instant cleanup `ddc deps-unused --fix` flag.

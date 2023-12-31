@@ -40,7 +40,7 @@ void main() {
 
     expect(
       sourceFile.readAsStringSync(),
-      File('$meantForFixingPath/fixed.yaml').readAsStringSync(),
+      File('$meantForFixingPath/expected.yaml').readAsStringSync(),
     );
   });
 }

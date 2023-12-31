@@ -17,6 +17,10 @@ abstract final class DepsUnusedFixer {
   static void fix(DepsUnusedResults results, String path) {
     final pubspecFile = File('$path/pubspec.yaml');
 
+    if (!pubspecFile.existsSync()) {
+      throw PubspecNotFoundError(pubspecFile.path);
+    }
+
     var contents = '';
 
     final dependenciesRegex = //
@@ -28,22 +32,19 @@ abstract final class DepsUnusedFixer {
     var devDependenciesNodeFound = false;
 
     var dependencyFound = false;
+    var blankLineWritten = false;
 
     final dependenciesNode = DependencyType.dependencies.yamlNode;
     final devDependenciesNode = DependencyType.devDependencies.yamlNode;
 
-    if (!pubspecFile.existsSync()) {
-      throw PubspecNotFoundError(pubspecFile.path);
-    }
-
     for (final line in pubspecFile.readAsLinesSync()) {
       if (line.startsWith('$dependenciesNode:')) {
         dependenciesNodeFound = true;
-        contents += line.alt;
+        contents += line.withLineTerminator;
         continue;
       } else if (line.startsWith('$devDependenciesNode:')) {
         devDependenciesNodeFound = true;
-        contents += line.alt;
+        contents += line.withLineTerminator;
         continue;
       }
 
@@ -52,10 +53,9 @@ abstract final class DepsUnusedFixer {
           dependenciesNodeFound = false;
           devDependenciesNodeFound = false;
         } else {
-          final trim = line.trim();
-          if (dependenciesNodeFound && trim.startsWith(dependenciesRegex) ||
-              devDependenciesNodeFound &&
-                  trim.startsWith(devDependenciesRegex)) {
+          final lt = line.trim();
+          if (dependenciesNodeFound && lt.startsWith(dependenciesRegex) ||
+              devDependenciesNodeFound && lt.startsWith(devDependenciesRegex)) {
             dependencyFound = true;
             continue;
           }
@@ -70,7 +70,17 @@ abstract final class DepsUnusedFixer {
         }
       }
 
-      contents += line.alt;
+      if (line.trim().isEmpty) {
+        if (blankLineWritten) {
+          continue;
+        } else {
+          blankLineWritten = true;
+        }
+      } else {
+        blankLineWritten = false;
+      }
+
+      contents += line.withLineTerminator;
     }
 
     pubspecFile.writeAsStringSync(contents);
@@ -78,6 +88,5 @@ abstract final class DepsUnusedFixer {
 }
 
 extension on String {
-  // and line terminator!
-  String get alt => '$this${Platform.lineTerminator}';
+  String get withLineTerminator => '$this${Platform.lineTerminator}';
 }
