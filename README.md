@@ -8,7 +8,7 @@ A utility package for checking dependencies within Dart/Flutter packages.
 
 ### By installing this package
 
-Example of using the [DepsUnusedChecker] class as "mode" via arguments.
+Example of using the `DepsUnusedChecker` class as "mode" via arguments.
 
 Install:
 ```bash
@@ -31,7 +31,7 @@ for d in */ ; do (cd $d && ddc deps-unused); done;
 
 ### By depending on this package
 
-Example of using the [DepsUnusedChecker] class.
+Example of using the `DepsUnusedChecker` class.
 
 Install:
 ```bash
