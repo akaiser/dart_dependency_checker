@@ -15,7 +15,7 @@
 ///
 /// Run:
 /// ```bash
-/// dart_dependency_checker deps-unused -p /some/package --dev-ignores lints,build_runner
+/// ddc deps-unused -p /some/package --dev-ignores lints,build_runner
 /// ```
 ///
 /// ### By depending on this package

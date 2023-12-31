@@ -17,16 +17,16 @@ dart pub global activate dart_dependency_checker
 
 Run:
 ```bash
-dart_dependency_checker deps-unused -p /some/package --dev-ignores lints,build_runner
+ddc deps-unused -p /some/package --dev-ignores lints,build_runner
 ```
 
 Or even:
 ```
 # In a wild mono repo environment
-melos exec -c1 -- dart_dependency_checker deps-unused
+melos exec -c1 -- ddc deps-unused
 
 # Everywhere
-for d in */ ; do (cd $d && dart_dependency_checker deps-unused); done;
+for d in */ ; do (cd $d && ddc deps-unused); done;
 ```
 
 ### By depending on this package
