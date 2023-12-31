@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:test/test.dart';
@@ -11,6 +12,23 @@ void main() {
   final sourceContent = sourceFile.readAsStringSync();
 
   tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+  test(
+      'throws a $PubspecNotFoundError with invalid path message '
+      'when path without pubspec.yaml has been provided', () {
+    const results = DepsUnusedResults(dependencies: {}, devDependencies: {});
+
+    expect(
+      () => DepsUnusedFixer.fix(results, ''),
+      throwsA(
+        isA<PubspecNotFoundError>().having(
+          (e) => e.message,
+          'message',
+          'Invalid pubspec.yaml file path: /pubspec.yaml',
+        ),
+      ),
+    );
+  });
 
   test('cleanes source file', () {
     const results = DepsUnusedResults(

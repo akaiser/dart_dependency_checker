@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
+import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_reader.dart';
@@ -17,7 +18,7 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
   DepsUnusedResults check() {
     final pubspecYaml = PubspecYamlReader.from(params.path);
 
-    return DepsUnusedResults(
+    final results = DepsUnusedResults(
       dependencies: _unusedPackages(
         pubspecYaml,
         DependencyType.dependencies,
@@ -29,6 +30,12 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
         params.devIgnores,
       ),
     );
+
+    if (!results.isEmpty && params.fix) {
+      DepsUnusedFixer.fix(results, params.path);
+    }
+
+    return results;
   }
 
   Set<String> _unusedPackages(

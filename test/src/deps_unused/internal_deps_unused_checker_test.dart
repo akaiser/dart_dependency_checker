@@ -46,7 +46,7 @@ Invalid pubspec.yaml file contents in: $emptyYamlPath/pubspec.yaml
       expect(result, 1);
       expect(logger.warnMessage, '''
 == Found unused packages ==
-Path: $allSourcesDirsPath/pubspec.yaml
+Path: $path/pubspec.yaml
 Dependencies:
   - meta
 Dev Dependencies:
@@ -67,7 +67,7 @@ Dev Dependencies:
       expect(result, 1);
       expect(logger.warnMessage, '''
 == Found unused packages ==
-Path: $allSourcesDirsPath/pubspec.yaml
+Path: $path/pubspec.yaml
 Dependencies:
   - meta
 Dev Dependencies:
@@ -104,7 +104,7 @@ All clear!
         logger.warnMessage,
         '''
 == Found unused packages ==
-Path: $noSourcesDirsPath/pubspec.yaml
+Path: $path/pubspec.yaml
 Dependencies:
   - meta
 Dev Dependencies:
@@ -130,7 +130,7 @@ Dev Dependencies:
         logger.warnMessage,
         '''
 == Found unused packages ==
-Path: $noSourcesDirsPath/pubspec.yaml
+Path: $path/pubspec.yaml
 Dependencies:
   - meta
 ''',

@@ -30,7 +30,7 @@ void main() {
         isA<CheckerError>().having(
           (e) => e.message,
           'message',
-          'Invalid pubspec.yaml file contents in: $emptyYamlPath/pubspec.yaml',
+          'Invalid pubspec.yaml file contents in: $path/pubspec.yaml',
         ),
       ),
     );

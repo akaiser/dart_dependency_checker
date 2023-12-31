@@ -22,10 +22,13 @@ ddc deps-unused -p /some/package --dev-ignores lints,build_runner
 
 Or even:
 ```
+# With instant fix
+ddc deps-unused -p /some/package --fix
+
 # In a wild mono repo environment
 melos exec -c1 -- ddc deps-unused
 
-# Everywhere
+# Run everywhere
 for d in */ ; do (cd $d && ddc deps-unused); done;
 ```
 
@@ -61,10 +64,10 @@ void main() {
 ## Current Todos
 
 - Arguments and messaging needs to be improved.
+- All features to be properly documented.
 
 ## Future roadmap
 
-- Mode `deps-unused`: Supports `--fix` option.
 - Mode `dep-origin`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive dependency.
 - Mode `transitive-use`: Direct use of undeclared/transitive dependencies.
 

@@ -20,7 +20,8 @@ class InternalDepsUnusedChecker extends DepsUnusedChecker
       final results = check();
 
       if (!results.isEmpty) {
-        _logger.warn('== Found unused packages ==');
+        final messagePrefix = params.fix ? 'Fixed' : 'Found';
+        _logger.warn('== $messagePrefix unused packages ==');
         _logger.warn('Path: ${params.path}/pubspec.yaml');
         _printDependencies('Dependencies', results.dependencies);
         _printDependencies('Dev Dependencies', results.devDependencies);
