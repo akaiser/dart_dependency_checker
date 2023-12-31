@@ -1,5 +1,6 @@
 ## 0.1.1
 
+- Add instant cleanup `ddc deps-unused --fix` flag.
 - Add `ddc` as exec command shorthand.
 - Add `ddc deps-unused --main-ignores x,y,z` option.
 
