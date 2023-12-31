@@ -5,9 +5,12 @@ import 'package:dart_dependency_checker/src/arguments_error.dart';
 import 'package:dart_dependency_checker/src/arguments_result.dart';
 import 'package:dart_dependency_checker/src/checker_mode.dart';
 
-const _pathOption = 'path';
-const _devIgnoresOption = 'dev-ignores';
-const _mainIgnoresOption = 'main-ignores';
+const // options
+    _pathOption = 'path',
+    _devIgnoresOption = 'dev-ignores',
+    _mainIgnoresOption = 'main-ignores';
+
+const _fixFlag = 'fix';
 
 abstract final class ArgumentsParser {
   static ArgumentsResult parse(List<String> args) {
@@ -16,8 +19,9 @@ abstract final class ArgumentsParser {
     return ArgumentsResult(
       mode: CheckerMode.values.firstWhere((v) => v.name == command.name),
       path: command.option(_pathOption) ?? Directory.current.path,
-      devIgnores: command.resolve(_devIgnoresOption),
-      mainIgnores: command.resolve(_mainIgnoresOption),
+      devIgnores: command.optionValues(_devIgnoresOption),
+      mainIgnores: command.optionValues(_mainIgnoresOption),
+      fix: command[_fixFlag] as bool,
     );
   }
 
@@ -52,7 +56,8 @@ abstract final class ArgumentsParser {
       ArgParser()
         ..withPathOption()
         ..addOption(_devIgnoresOption)
-        ..addOption(_mainIgnoresOption),
+        ..addOption(_mainIgnoresOption)
+        ..addFlag(_fixFlag, negatable: false),
     )
     ..addCommand(
       CheckerMode.transitiveUse.name,
@@ -67,6 +72,6 @@ extension on ArgParser {
 extension on ArgResults {
   String? option(String key) => this[key] as String?;
 
-  Set<String> resolve(String key) =>
+  Set<String> optionValues(String key) =>
       option(key)?.split(',').toSet() ?? const {};
 }

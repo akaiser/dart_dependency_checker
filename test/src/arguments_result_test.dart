@@ -8,9 +8,10 @@ void main() {
     path: 'some_path',
     devIgnores: {'lints'},
     mainIgnores: {},
+    fix: true,
   );
 
   test('has known props count', () {
-    expect(result.props, hasLength(4));
+    expect(result.props, hasLength(5));
   });
 }

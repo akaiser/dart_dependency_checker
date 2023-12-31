@@ -7,18 +7,21 @@ class DepsUnusedParams extends Equatable {
     required this.path,
     this.devIgnores = const {},
     this.mainIgnores = const {},
+    this.fix = false,
   });
 
   final String path;
   final Set<String> devIgnores;
   final Set<String> mainIgnores;
+  final bool fix;
 
   static DepsUnusedParams from(ArgumentsResult result) => DepsUnusedParams(
         path: result.path,
         devIgnores: result.devIgnores,
         mainIgnores: result.mainIgnores,
+        fix: result.fix,
       );
 
   @override
-  List<Object> get props => [path, devIgnores, mainIgnores];
+  List<Object> get props => [path, devIgnores, mainIgnores, fix];
 }

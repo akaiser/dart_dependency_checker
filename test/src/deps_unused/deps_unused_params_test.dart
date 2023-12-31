@@ -7,7 +7,7 @@ void main() {
   test('has known props count', () {
     expect(
       const DepsUnusedParams(path: 'any').props,
-      hasLength(3),
+      hasLength(4),
     );
   });
 
@@ -16,6 +16,7 @@ void main() {
 
     expect(params.devIgnores, const <String>{});
     expect(params.mainIgnores, const <String>{});
+    expect(params.fix, isFalse);
   });
 
   test('maps from $ArgumentsResult', () {
@@ -24,6 +25,7 @@ void main() {
       path: 'any',
       devIgnores: {'some_dev'},
       mainIgnores: {'some_main'},
+      fix: true,
     );
 
     final params = DepsUnusedParams.from(arguments);
@@ -31,5 +33,6 @@ void main() {
     expect(params.path, arguments.path);
     expect(params.devIgnores, arguments.devIgnores);
     expect(params.mainIgnores, arguments.mainIgnores);
+    expect(params.fix, arguments.fix);
   });
 }
