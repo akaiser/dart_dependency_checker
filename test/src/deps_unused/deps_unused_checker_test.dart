@@ -22,7 +22,7 @@ void main() {
   test(
       'throws a $CheckerError with proper message '
       'on invalid pubspec.yaml content', () {
-    const path = emptyPubspecYamlPath;
+    const path = emptyYamlPath;
 
     expect(
       () => const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
@@ -30,7 +30,7 @@ void main() {
         isA<CheckerError>().having(
           (e) => e.message,
           'message',
-          'Invalid pubspec.yaml file contents in: $emptyPubspecYamlPath/pubspec.yaml',
+          'Invalid pubspec.yaml file contents in: $emptyYamlPath/pubspec.yaml',
         ),
       ),
     );

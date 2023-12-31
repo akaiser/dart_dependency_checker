@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:yaml/yaml.dart';
 
-/// Static utility to parse a pubspec.yaml file.
-abstract final class PubspecYamlParser {
+/// Utility to read a pubspec.yaml file.
+abstract final class PubspecYamlReader {
   /// Resolves a pubspec.yaml to [YamlMap] at [path].
   ///
   /// Throws a [PubspecNotFoundError] when pubspec.yaml was not found.

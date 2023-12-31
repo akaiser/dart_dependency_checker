@@ -25,12 +25,12 @@ Invalid pubspec.yaml file path: unknown/pubspec.yaml
   test('reports error on invalid pubspec.yaml content', () {
     final result = InternalDepsUnusedChecker(
       logger,
-      const DepsUnusedParams(path: emptyPubspecYamlPath),
+      const DepsUnusedParams(path: emptyYamlPath),
     ).checkWithExit();
 
     expect(result, 2);
     expect(logger.errorMessage, '''
-Invalid pubspec.yaml file contents in: $emptyPubspecYamlPath/pubspec.yaml
+Invalid pubspec.yaml file contents in: $emptyYamlPath/pubspec.yaml
 ''');
   });
 
