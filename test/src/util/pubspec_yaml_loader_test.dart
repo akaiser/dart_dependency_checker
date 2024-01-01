@@ -1,5 +1,5 @@
 import 'package:dart_dependency_checker/dart_dependency_checker.dart';
-import 'package:dart_dependency_checker/src/util/pubspec_yaml_reader.dart';
+import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
@@ -10,7 +10,7 @@ void main() {
       'throws a $PubspecNotFoundError with invalid path message '
       'when path without pubspec.yaml has been provided', () {
     expect(
-      () => PubspecYamlReader.from(''),
+      () => PubspecYamlLoader.from(''),
       throwsA(
         isA<PubspecNotFoundError>().having(
           (e) => e.message,
@@ -25,7 +25,7 @@ void main() {
       'throws a $PubspecNotValidError with invalid contents message '
       'when pubspec.yaml with empty contents has been provided', () {
     expect(
-      () => PubspecYamlReader.from(emptyYamlPath),
+      () => PubspecYamlLoader.from(emptyYamlPath),
       throwsA(
         isA<PubspecNotValidError>().having(
           (e) => e.message,
@@ -38,7 +38,7 @@ void main() {
 
   test('maps to $YamlMap', () {
     expect(
-      PubspecYamlReader.from(noSourcesDirsPath),
+      PubspecYamlLoader.from(noSourcesDirsPath),
       {
         'name': 'testing',
         'dependencies': {'meta': '^1.11.0'},

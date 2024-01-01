@@ -5,7 +5,7 @@ import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
-import 'package:dart_dependency_checker/src/util/pubspec_yaml_reader.dart';
+import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:yaml/yaml.dart';
 
 final _importPackageExp = RegExp(r':(.*?)/');
@@ -16,7 +16,7 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
 
   @override
   DepsUnusedResults check() {
-    final pubspecYaml = PubspecYamlReader.from(params.path);
+    final pubspecYaml = PubspecYamlLoader.from(params.path);
 
     final results = DepsUnusedResults(
       dependencies: _unusedPackages(

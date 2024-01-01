@@ -1,6 +1,7 @@
 ## 0.1.2
 
 - Eliminate extra blank lines after `ddc deps-unused --fix` run.
+- Add `.yml` file extension support.
 
 ## 0.1.1
 

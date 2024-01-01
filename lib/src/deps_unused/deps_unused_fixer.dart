@@ -3,23 +3,20 @@ import 'dart:io';
 import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 
 final _rootNode = RegExp(r'^\w+:');
 final _leafNode = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
 
 /// A very dumb and dangerous utility to read and write
-/// into the same pubspec.yaml file!?
+/// into the same pubspec.yaml file!
 abstract final class DepsUnusedFixer {
   /// Reads a pubspec.yaml file, searches for dependencies passed
   /// via [DepsUnusedResults] and overrides file content without them.
   ///
-  /// Throws a [PubspecNotFoundError] when pubspec.yaml was not found.
+  /// Throws a [PubspecNotFoundError] when no pubspec yaml file was found.
   static void fix(DepsUnusedResults results, String path) {
-    final pubspecFile = File('$path/pubspec.yaml');
-
-    if (!pubspecFile.existsSync()) {
-      throw PubspecNotFoundError(pubspecFile.path);
-    }
+    final file = PubspecYamlFinder.from(path);
 
     var contents = '';
 
@@ -37,7 +34,7 @@ abstract final class DepsUnusedFixer {
     final dependenciesNode = DependencyType.dependencies.yamlNode;
     final devDependenciesNode = DependencyType.devDependencies.yamlNode;
 
-    for (final line in pubspecFile.readAsLinesSync()) {
+    for (final line in file.readAsLinesSync()) {
       if (line.startsWith('$dependenciesNode:')) {
         dependenciesNodeFound = true;
         contents += line.withLineTerminator;
@@ -83,7 +80,7 @@ abstract final class DepsUnusedFixer {
       contents += line.withLineTerminator;
     }
 
-    pubspecFile.writeAsStringSync(contents);
+    file.writeAsStringSync(contents);
   }
 }
 

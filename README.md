@@ -70,6 +70,7 @@ void main() {
 
 - Mode `dep-origin`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive dependency.
 - Mode `transitive-use`: Direct use of undeclared/transitive dependencies.
+- Possibility to have project/module/repo setup based on `ddc.yaml` config file/s.
 
 ## License
 
