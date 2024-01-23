@@ -1,47 +1,18 @@
 # dart_dependency_checker
 
-A utility package for checking dependencies within Dart/Flutter packages.
+A utility package for checking dependencies within Dart/Flutter packages. This utilities can be used directly by
+depending on this package or through a command-line [dart_dependency_checker_cli](https://pub.dev/packages/dart_dependency_checker_cli) wrapper.
 
 ## Usage
 
-<hr />
-
-### By installing this package
-
-Example of using the [DepsUnusedChecker](https://pub.dev/documentation/dart_dependency_checker/latest/dart_dependency_checker/DepsUnusedChecker-class.html) class as "mode" via arguments.
-
 Install:
-```bash
-dart pub global activate dart_dependency_checker
-```
 
-Run:
-```bash
-ddc deps-unused -p /some/package --dev-ignores lints,build_runner
-```
-
-Or even:
-```
-# With instant fix
-ddc deps-unused -p /some/package --fix
-
-# In a wild mono repo environment
-melos exec -c1 -- ddc deps-unused
-
-# Run everywhere
-for d in */ ; do (cd $d && ddc deps-unused); done;
-```
-
-### By depending on this package
-
-Example of using the [DepsUnusedChecker](https://pub.dev/documentation/dart_dependency_checker/latest/dart_dependency_checker/DepsUnusedChecker-class.html) class.
-
-Install:
 ```bash
 dart pub add dart_dependency_checker
 ```
 
 Use:
+
 ```dart
 import 'package:dart_dependency_checker/dart_dependency_checker.dart';
 
@@ -49,7 +20,8 @@ void main() {
   const checker = DepsUnusedChecker(
     DepsUnusedParams(
       path: './',
-      devIgnores: {'lints', 'build_runner'},
+      devIgnores: {'build_runner'},
+      mainIgnores: {'meta'},
     ),
   );
 
@@ -61,16 +33,11 @@ void main() {
 }
  ```
 
-## Current Todos
-
-- Arguments and messaging needs to be improved.
-- All features to be properly documented.
-
 ## Future roadmap
 
-- Mode `dep-origin`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive dependency.
-- Mode `transitive-use`: Direct use of undeclared/transitive dependencies.
-- Possibility to have project/module/repo setup based on `ddc.yaml` config file/s.
+-`DepOriginChecker`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive
+dependency.
+-`TransitiveUseChecker`: Direct use of undeclared/transitive dependencies.
 
 ## License
 

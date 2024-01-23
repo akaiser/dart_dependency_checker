@@ -1,5 +1,3 @@
-import 'package:dart_dependency_checker/src/arguments_result.dart';
-import 'package:dart_dependency_checker/src/checker_mode.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:test/test.dart';
 
@@ -17,22 +15,5 @@ void main() {
     expect(params.devIgnores, const <String>{});
     expect(params.mainIgnores, const <String>{});
     expect(params.fix, isFalse);
-  });
-
-  test('maps from $ArgumentsResult', () {
-    const arguments = ArgumentsResult(
-      mode: CheckerMode.depsUnused,
-      path: 'any',
-      devIgnores: {'some_dev'},
-      mainIgnores: {'some_main'},
-      fix: true,
-    );
-
-    final params = DepsUnusedParams.from(arguments);
-
-    expect(params.path, arguments.path);
-    expect(params.devIgnores, arguments.devIgnores);
-    expect(params.mainIgnores, arguments.mainIgnores);
-    expect(params.fix, arguments.fix);
   });
 }

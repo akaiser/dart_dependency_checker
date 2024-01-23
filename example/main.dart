@@ -4,7 +4,8 @@ void main() {
   const checker = DepsUnusedChecker(
     DepsUnusedParams(
       path: './',
-      devIgnores: {'lints', 'build_runner'},
+      devIgnores: {'build_runner'},
+      mainIgnores: {'meta'},
     ),
   );
 

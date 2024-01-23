@@ -4,6 +4,7 @@ import 'package:dart_dependency_checker/src/checker_error.dart';
 abstract class Checker<I, O> {
   const Checker(this.params);
 
+  /// Custom params required by any implementation of a [Checker].
   final I params;
 
   /// Resolves [O] after execution.
@@ -11,8 +12,4 @@ abstract class Checker<I, O> {
   /// Throws a [PubspecNotFoundError] when pubspec.yaml was not found.
   /// Throws a [PubspecNotValidError] when pubspec.yaml contents were invalid.
   O check();
-}
-
-mixin CheckWithExitMixin {
-  int checkWithExit();
 }
