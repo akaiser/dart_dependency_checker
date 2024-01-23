@@ -37,6 +37,7 @@ void main() {
 
 -`DepOriginChecker`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive
 dependency.
+
 -`TransitiveUseChecker`: Direct use of undeclared/transitive dependencies.
 
 ## License
