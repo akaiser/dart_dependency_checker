@@ -8,8 +8,8 @@ import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 final _rootNode = RegExp(r'^\w+:');
 final _leafNode = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
 
-/// A very dumb and dangerous utility to read and write
-/// into the same pubspec.yaml file!
+/// A very dumb and dangerous utility to read and write into the same
+/// pubspec.yaml file.
 abstract final class DepsUnusedFixer {
   /// Reads a pubspec.yaml file, searches for dependencies passed
   /// via [DepsUnusedResults] and overrides file content without them.

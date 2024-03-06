@@ -1,3 +1,7 @@
+## 0.1.4
+
+- Require Dart `^3.3.0`.
+
 ## 0.1.3
 
 - Split of dart_dependency_checker lib and cli.
