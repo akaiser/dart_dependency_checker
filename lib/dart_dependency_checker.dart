@@ -1,4 +1,6 @@
 /// A utility package for checking dependencies within Dart/Flutter packages.
+/// This utilities can be used directly by depending on this package or through
+/// a command-line [dart_dependency_checker_cli](https://pub.dev/packages/dart_dependency_checker_cli) wrapper.
 ///
 /// ## Usage
 ///
@@ -12,16 +14,25 @@
 /// import 'package:dart_dependency_checker/dart_dependency_checker.dart';
 ///
 /// void main() {
-///   const checker = DepsUnusedChecker(
+///   const depsUnusedChecker = DepsUnusedChecker(
 ///     DepsUnusedParams(
-///       path: './',
-///       devIgnores: {'build_runner'},
+///       path: '.',
 ///       mainIgnores: {'meta'},
+///       devIgnores: {'build_runner'},
+///     ),
+///   );
+///
+///   const transitiveUseChecker = TransitiveUseChecker(
+///     TransitiveUseParams(
+///       path: '.',
+///       mainIgnores: {},
+///       devIgnores: {'args', 'convert'},
 ///     ),
 ///   );
 ///
 ///   try {
-///     print('${checker.check()}');
+///     print(depsUnusedChecker.check());
+///     print(transitiveUseChecker.check());
 ///   } on CheckerError catch (e) {
 ///     print(e.message);
 ///   }
@@ -31,3 +42,4 @@ library dart_dependency_checker;
 
 export 'src/_exports.dart';
 export 'src/deps_unused/_exports.dart';
+export 'src/transitive_use/_exports.dart';

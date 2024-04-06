@@ -16,7 +16,10 @@ void main() {
   test(
       'throws a $PubspecNotFoundError with invalid path message '
       'when path without pubspec.yaml has been provided', () {
-    const results = DepsUnusedResults(dependencies: {}, devDependencies: {});
+    const results = DepsUnusedResults(
+      mainDependencies: {},
+      devDependencies: {},
+    );
 
     expect(
       () => DepsUnusedFixer.fix(results, ''),
@@ -32,7 +35,7 @@ void main() {
 
   test('cleanes source file', () {
     const results = DepsUnusedResults(
-      dependencies: {'meta', 'bla_analytics'},
+      mainDependencies: {'meta', 'bla_analytics'},
       devDependencies: {'integration_test', 'lints', 'bla_test_bed'},
     );
 

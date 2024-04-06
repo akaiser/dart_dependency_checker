@@ -7,7 +7,7 @@ void main() {
   });
 
   <DependencyType, String>{
-    DependencyType.dependencies: 'dependencies',
+    DependencyType.mainDependencies: 'dependencies',
     DependencyType.devDependencies: 'dev_dependencies',
   }.forEach((dependencyType, yamlNode) {
     test(
@@ -17,7 +17,7 @@ void main() {
   });
 
   <DependencyType, Set<String>>{
-    DependencyType.dependencies: {'lib'},
+    DependencyType.mainDependencies: {'lib'},
     DependencyType.devDependencies: {'test', 'integration_test'},
   }.forEach((dependencyType, sourceDirectories) {
     test(
