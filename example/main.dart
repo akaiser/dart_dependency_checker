@@ -1,16 +1,25 @@
 import 'package:dart_dependency_checker/dart_dependency_checker.dart';
 
 void main() {
-  const checker = DepsUnusedChecker(
+  const depsUnusedChecker = DepsUnusedChecker(
     DepsUnusedParams(
-      path: './',
-      devIgnores: {'build_runner'},
+      path: '.',
       mainIgnores: {'meta'},
+      devIgnores: {'build_runner'},
+    ),
+  );
+
+  const transitiveUseChecker = TransitiveUseChecker(
+    TransitiveUseParams(
+      path: '.',
+      mainIgnores: {},
+      devIgnores: {'args', 'convert'},
     ),
   );
 
   try {
-    print('${checker.check()}');
+    print(depsUnusedChecker.check());
+    print(transitiveUseChecker.check());
   } on CheckerError catch (e) {
     print(e.message);
   }

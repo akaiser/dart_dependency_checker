@@ -1,5 +1,6 @@
 ## 0.1.4
 
+- Added `TransitiveUseChecker` implementation.
 - Require Dart `^3.3.0`.
 
 ## 0.1.3

@@ -1,5 +1,5 @@
 enum DependencyType {
-  dependencies._('dependencies', {'lib'}),
+  mainDependencies._('dependencies', {'lib'}),
   devDependencies._('dev_dependencies', {'test', 'integration_test'});
 
   const DependencyType._(

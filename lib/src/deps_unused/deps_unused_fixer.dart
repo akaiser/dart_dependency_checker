@@ -21,7 +21,7 @@ abstract final class DepsUnusedFixer {
     var contents = '';
 
     final dependenciesRegex = //
-        RegExp('(${results.dependencies.join('|')}):');
+        RegExp('(${results.mainDependencies.join('|')}):');
     final devDependenciesRegex =
         RegExp('(${results.devDependencies.join('|')}):');
 
@@ -31,7 +31,7 @@ abstract final class DepsUnusedFixer {
     var dependencyFound = false;
     var blankLineWritten = false;
 
-    final dependenciesNode = DependencyType.dependencies.yamlNode;
+    final dependenciesNode = DependencyType.mainDependencies.yamlNode;
     final devDependenciesNode = DependencyType.devDependencies.yamlNode;
 
     for (final line in file.readAsLinesSync()) {

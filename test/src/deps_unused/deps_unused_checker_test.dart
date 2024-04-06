@@ -11,7 +11,7 @@ void main() {
       'throws a $CheckerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
-      () => const DepsUnusedChecker(DepsUnusedParams(path: 'unknown')).check(),
+      const DepsUnusedChecker(DepsUnusedParams(path: 'unknown')).check,
       throwsA(
         isA<CheckerError>().having(
           (e) => e.message,
@@ -28,13 +28,27 @@ void main() {
     const path = emptyYamlPath;
 
     expect(
-      () => const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
+      const DepsUnusedChecker(DepsUnusedParams(path: path)).check,
       throwsA(
         isA<CheckerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file contents in: $path/pubspec.yaml',
         ),
+      ),
+    );
+  });
+
+  test(
+      'providing no_dependencies path '
+      'returns no unused dependencies', () {
+    const path = noDependenciesPath;
+
+    expect(
+      const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
+      const DepsUnusedResults(
+        mainDependencies: {},
+        devDependencies: {},
       ),
     );
   });
@@ -46,7 +60,7 @@ void main() {
       expect(
         const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
         const DepsUnusedResults(
-          dependencies: {'meta'},
+          mainDependencies: {'meta'},
           devDependencies: {'integration_test', 'lints'},
         ),
       );
@@ -57,27 +71,13 @@ void main() {
         const DepsUnusedChecker(
           DepsUnusedParams(
             path: path,
-            devIgnores: {'integration_test'},
             mainIgnores: {'meta'},
+            devIgnores: {'integration_test'},
           ),
         ).check(),
         const DepsUnusedResults(
-          dependencies: {},
+          mainDependencies: {},
           devDependencies: {'lints'},
-        ),
-      );
-    });
-  });
-
-  group('providing no_dependencies path', () {
-    test('returns no unused dependencies', () {
-      const path = noDependenciesPath;
-
-      expect(
-        const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
-        const DepsUnusedResults(
-          dependencies: {},
-          devDependencies: {},
         ),
       );
     });
@@ -90,7 +90,7 @@ void main() {
       expect(
         const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
         const DepsUnusedResults(
-          dependencies: {'meta'},
+          mainDependencies: {'meta'},
           devDependencies: {'lints', 'test'},
         ),
       );
@@ -103,12 +103,12 @@ void main() {
         const DepsUnusedChecker(
           DepsUnusedParams(
             path: path,
-            devIgnores: {'lints', 'test'},
             mainIgnores: {'meta'},
+            devIgnores: {'lints', 'test'},
           ),
         ).check(),
         const DepsUnusedResults(
-          dependencies: {},
+          mainDependencies: {},
           devDependencies: {},
         ),
       );

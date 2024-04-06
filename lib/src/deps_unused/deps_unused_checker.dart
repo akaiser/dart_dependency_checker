@@ -5,10 +5,10 @@ import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
+import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:yaml/yaml.dart';
-
-final _importPackageExp = RegExp(r':(.*?)/');
 
 /// Checks declared but unused dependencies.
 class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
@@ -19,9 +19,9 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
     final pubspecYaml = PubspecYamlLoader.from(params.path);
 
     final results = DepsUnusedResults(
-      dependencies: _unusedPackages(
+      mainDependencies: _unusedPackages(
         pubspecYaml,
-        DependencyType.dependencies,
+        DependencyType.mainDependencies,
         params.mainIgnores,
       ),
       devDependencies: _unusedPackages(
@@ -43,70 +43,34 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
     DependencyType dependencyType,
     Set<String> ignores,
   ) {
-    final packages = _packages(
-      pubspecYaml,
-      dependencyType.yamlNode,
-    ).difference(ignores);
+    final packages = pubspecYaml.packages(dependencyType).difference(ignores);
 
-    if (packages.isNotEmpty) {
-      final dartFiles = dependencyType.sourceDirectories.fold(
-        const <File>{},
-        (init, directory) => {
-          ...init,
-          ..._dartFiles('${params.path}/$directory'),
-        },
-      );
-
-      if (dartFiles.isEmpty) {
-        return packages;
-      }
-
-      return _packageUsageCount(packages, dartFiles)
-          .entries
-          .where((entry) => entry.value == 0)
-          .map((entry) => entry.key)
-          .toSet();
+    if (packages.isEmpty) {
+      return const {};
     }
 
-    return const {};
-  }
+    final files = DartFiles.from(params.path, dependencyType);
 
-  Set<String> _packages(YamlMap pubspecYaml, String yamlNode) {
-    final nodeValue = pubspecYaml.nodes[yamlNode]?.value as YamlMap?;
-    return nodeValue?.keys.map((e) => e as String).toSet() ?? const {};
-  }
-
-  Set<File> _dartFiles(String path) {
-    final directory = Directory(path);
-    if (directory.existsSync()) {
-      return directory
-          .listSync(recursive: true, followLinks: false)
-          .where((file) => file is File && file.path.endsWith('.dart'))
-          .map((file) => file as File)
-          .toSet();
+    if (files.isEmpty) {
+      return packages;
     }
-    return const {};
+
+    return _packageUsageCount(packages, files)
+        .entries
+        .where((entry) => entry.value == 0)
+        .map((entry) => entry.key)
+        .toSet();
   }
 
-  Map<String, int> _packageUsageCount(
-    Set<String> packages,
-    Set<File> dartFiles,
-  ) {
+  Map<String, int> _packageUsageCount(Set<String> packages, Set<File> files) {
     final packageUsageCount = {for (final package in packages) package: 0};
 
-    for (final dartFile in dartFiles) {
-      _imports(dartFile).forEach((package) {
+    for (final file in files) {
+      for (final package in DartFiles.packages(file)) {
         final count = packageUsageCount[package] ?? 0;
         packageUsageCount[package] = count + 1;
-      });
+      }
     }
     return packageUsageCount;
   }
-
-  Set<String> _imports(File file) => file
-      .readAsLinesSync()
-      .where((line) => line.startsWith('import \'package:'))
-      .map((import) => _importPackageExp.firstMatch(import)?[1])
-      .nonNulls
-      .toSet();
 }
