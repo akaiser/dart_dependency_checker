@@ -5,7 +5,7 @@ void main() {
   test('has known props count', () {
     expect(
       const TransitiveUseParams(path: 'any').props,
-      hasLength(4),
+      hasLength(3),
     );
   });
 }

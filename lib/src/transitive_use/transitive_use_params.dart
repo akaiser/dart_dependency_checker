@@ -6,6 +6,5 @@ class TransitiveUseParams extends BaseParams {
     required super.path,
     super.mainIgnores,
     super.devIgnores,
-    super.fix,
   });
 }

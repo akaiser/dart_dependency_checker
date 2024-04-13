@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Removed `fix` option from `TransitiveUseChecker`.
+
 ## 0.1.4
 
 - Added `TransitiveUseChecker` implementation.

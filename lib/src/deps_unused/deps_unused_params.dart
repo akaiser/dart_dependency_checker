@@ -6,6 +6,11 @@ class DepsUnusedParams extends BaseParams {
     required super.path,
     super.mainIgnores,
     super.devIgnores,
-    super.fix,
+    this.fix = false,
   });
+
+  final bool fix;
+
+  @override
+  List<Object> get props => [...super.props, fix];
 }

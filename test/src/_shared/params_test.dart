@@ -9,15 +9,14 @@ void main() {
   test('has known props count', () {
     expect(
       const _BaseParams(path: 'any').props,
-      hasLength(4),
+      hasLength(3),
     );
   });
 
   test('sets default values', () {
     const params = _BaseParams(path: 'any');
 
-    expect(params.devIgnores, const <String>{});
     expect(params.mainIgnores, const <String>{});
-    expect(params.fix, isFalse);
+    expect(params.devIgnores, const <String>{});
   });
 }
