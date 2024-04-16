@@ -1,3 +1,8 @@
+## 0.1.6
+
+- TODO(albert): add stuff ore remove before release.
+- `BaseResults` exposes `toJson`.
+
 ## 0.1.5
 
 - Removed `fix` option from `TransitiveUseChecker`.
