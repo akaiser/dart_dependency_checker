@@ -54,5 +54,17 @@ void main() {
 
       expect(results.isEmpty, isFalse);
     });
+
+    test('toJson converts properly', () {
+      const results = _BaseResults(
+        mainDependencies: {},
+        devDependencies: {'any0', 'any1'},
+      );
+
+      expect(results.toJson(), const {
+        'mainDependencies': <dynamic>[],
+        'devDependencies': ['any0', 'any1'],
+      });
+    });
   });
 }
