@@ -1,3 +1,7 @@
+## 0.1.6
+
+- Expose `BaseResults` in the lib.
+
 ## 0.1.5
 
 - Removed `fix` option from `TransitiveUseChecker`.
