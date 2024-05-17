@@ -6,6 +6,7 @@ void main() {
       path: '.',
       mainIgnores: {'meta'},
       devIgnores: {'build_runner'},
+      fix: true, // Danger zone! Use with caution.
     ),
   );
 

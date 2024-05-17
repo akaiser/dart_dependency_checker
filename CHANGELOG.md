@@ -1,3 +1,9 @@
+## 0.1.7
+
+- Update docs.
+- Raise dev versions.
+- TODO(albert): remove before release.
+
 ## 0.1.6
 
 - Expose `BaseResults` in the lib.
