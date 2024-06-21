@@ -1,7 +1,7 @@
 ## 0.1.7
 
-- Update docs.
-- Raise dev versions.
+- Update docs and internals.
+- Raise dependency versions.
 - TODO(albert): remove before release.
 
 ## 0.1.6

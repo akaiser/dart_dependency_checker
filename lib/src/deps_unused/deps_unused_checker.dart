@@ -6,6 +6,7 @@ import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
+import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:yaml/yaml.dart';
@@ -59,7 +60,7 @@ class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
         .entries
         .where((entry) => entry.value == 0)
         .map((entry) => entry.key)
-        .toSet();
+        .unmodifiable;
   }
 
   Map<String, int> _packageUsageCount(Set<String> packages, Set<File> files) {

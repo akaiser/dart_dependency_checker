@@ -40,7 +40,7 @@ void main() {
     expect(
       PubspecYamlLoader.from(noSourcesDirsPath),
       {
-        'name': 'testing',
+        'name': 'dart_dependency_checker',
         'dependencies': {'meta': '^1.11.0'},
         'dev_dependencies': {'lints': '^3.0.0', 'test': '^1.25.0'},
       },

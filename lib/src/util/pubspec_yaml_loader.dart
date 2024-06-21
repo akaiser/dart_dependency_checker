@@ -7,7 +7,7 @@ abstract final class PubspecYamlLoader {
   /// Loads pubspec yaml file content to [YamlMap] at [path].
   ///
   /// Throws a [PubspecNotFoundError] when no pubspec yaml file was found.
-  /// Throws a [PubspecInvalidError] when pubspec yaml contents were invalid.
+  /// Throws a [PubspecNotValidError] when pubspec yaml contents were invalid.
   static YamlMap from(String path) {
     final file = PubspecYamlFinder.from(path);
     final yaml = loadYaml(file.readAsStringSync()) as YamlMap?;

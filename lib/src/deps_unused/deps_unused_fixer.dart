@@ -5,8 +5,8 @@ import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 
-final _rootNode = RegExp(r'^\w+:');
-final _leafNode = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
+final _rootNodeExp = RegExp(r'^\w+:');
+final _leafNodeExp = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
 
 /// A very dumb and dangerous utility to read and write into the same
 /// pubspec.yaml file.
@@ -46,7 +46,7 @@ abstract final class DepsUnusedFixer {
       }
 
       if (dependenciesNodeFound || devDependenciesNodeFound) {
-        if (_rootNode.hasMatch(line)) {
+        if (_rootNodeExp.hasMatch(line)) {
           dependenciesNodeFound = false;
           devDependenciesNodeFound = false;
         } else {
@@ -59,7 +59,7 @@ abstract final class DepsUnusedFixer {
         }
 
         if (dependencyFound) {
-          if (_leafNode.hasMatch(line)) {
+          if (_leafNodeExp.hasMatch(line)) {
             continue;
           } else {
             dependencyFound = false;
