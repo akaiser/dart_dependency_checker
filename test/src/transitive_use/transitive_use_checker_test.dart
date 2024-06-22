@@ -51,6 +51,36 @@ void main() {
   });
 
   test(
+      'providing own_reference path '
+      'ignores own package '
+      'and returns no undeclared dependencies', () {
+    const path = ownReferencePath;
+
+    expect(
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+      const TransitiveUseResults(
+        mainDependencies: {},
+        devDependencies: {},
+      ),
+    );
+  });
+
+  test(
+      'providing in_main_but_missing_in_dev path '
+      'ignores declared main in dev packages'
+      'and returns no undeclared dependencies', () {
+    const path = inMainButMissingInDev;
+
+    expect(
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+      const TransitiveUseResults(
+        mainDependencies: {},
+        devDependencies: {},
+      ),
+    );
+  });
+
+  test(
       'providing no_sources_dirs path '
       'returns all undeclared main and dev dependencies', () {
     const path = noSourcesDirsPath;

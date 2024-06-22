@@ -1,0 +1,7 @@
+name: dart_dependency_checker
+
+dependencies:
+  args: ^2.4.2
+
+dev_dependencies:
+  test: ^1.25.0

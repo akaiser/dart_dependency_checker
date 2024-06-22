@@ -1,7 +1,9 @@
 ## 0.1.7
 
-- Update docs and internals.
-- Raise dependency versions.
+- Update docs, dependencies and internals.
+- `TransitiveUseChecker` ignores:
+    - own referenced package.
+    - provided in main but missing in dev dependencies.
 - TODO(albert): remove before release.
 
 ## 0.1.6

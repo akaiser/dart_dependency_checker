@@ -6,6 +6,20 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
+  group('name', () {
+    test('resolves to null on missing "name" node', () {
+      final yamlMap = PubspecYamlLoader.from(missingNameNodePath);
+
+      expect(yamlMap.name, isNull);
+    });
+
+    test('resolves to some on provided "name" node', () {
+      final yamlMap = PubspecYamlLoader.from(noDependenciesPath);
+
+      expect(yamlMap.name, 'dart_dependency_checker');
+    });
+  });
+
   group('packages', () {
     group('of $noDependenciesPath', () {
       test('resolves main dependencies', () {
