@@ -16,7 +16,7 @@ void main() {
     test('resolves to some on provided "name" node', () {
       final yamlMap = PubspecYamlLoader.from(noDependenciesPath);
 
-      expect(yamlMap.name, 'dart_dependency_checker');
+      expect(yamlMap.name, 'dart_dependency_checker_samples');
     });
   });
 

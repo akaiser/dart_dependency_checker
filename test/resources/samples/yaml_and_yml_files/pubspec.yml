@@ -1,4 +1,4 @@
-name: dart_dependency_checker
+name: dart_dependency_checker_samples
 
 dependencies:
   meta: ^1.11.0
