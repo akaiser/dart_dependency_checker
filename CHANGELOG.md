@@ -4,7 +4,7 @@
     - own referenced package.
     - provided in main but missing in dev dependencies.
 - Update docs, dependencies and internals.
-- TODO(albert): remove before release.
+- Require Dart `^3.4.0`.
 
 ## 0.1.6
 
