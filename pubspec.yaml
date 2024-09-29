@@ -1,7 +1,7 @@
 name: dart_dependency_checker
 description: A utility package for checking dependencies within Dart/Flutter packages.
 repository: https://github.com/akaiser/dart_dependency_checker
-version: 0.1.7
+version: 0.2.0
 
 platforms:
   linux:
@@ -9,12 +9,12 @@ platforms:
   windows:
 
 environment:
-  sdk: ^3.4.0
+  sdk: ^3.5.0
 
 dependencies:
   equatable: ^2.0.5
   yaml: ^3.1.2
 
 dev_dependencies:
-  lints: ^4.0.0
+  lints: ^5.0.0
   test: ^1.25.8

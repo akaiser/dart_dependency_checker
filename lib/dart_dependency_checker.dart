@@ -39,7 +39,7 @@
 ///   }
 /// }
 /// ```
-library dart_dependency_checker;
+library;
 
 export 'src/_exports.dart';
 export 'src/deps_unused/_exports.dart';
