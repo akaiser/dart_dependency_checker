@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Require Dart `^3.5.0`.
+
 ## 0.1.7
 
 - `TransitiveUseChecker` ignores:
