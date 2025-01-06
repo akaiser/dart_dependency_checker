@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Require Dart `^3.6.0`.
+
 ## 0.2.0
 
 - Require Dart `^3.5.0`.

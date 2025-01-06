@@ -39,7 +39,7 @@ void main() {
   test('maps to $YamlMap', () {
     expect(
       PubspecYamlLoader.from(noSourcesDirsPath),
-      {
+      const {
         'name': 'dart_dependency_checker_samples',
         'dependencies': {'meta': '^1.11.0'},
         'dev_dependencies': {'lints': '^3.0.0', 'test': '^1.25.0'},

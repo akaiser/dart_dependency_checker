@@ -6,7 +6,7 @@ void main() {
     expect(DependencyType.values, hasLength(2));
   });
 
-  <DependencyType, String>{
+  const <DependencyType, String>{
     DependencyType.mainDependencies: 'dependencies',
     DependencyType.devDependencies: 'dev_dependencies',
   }.forEach((dependencyType, yamlNode) {
@@ -16,7 +16,7 @@ void main() {
     );
   });
 
-  <DependencyType, Set<String>>{
+  const <DependencyType, Set<String>>{
     DependencyType.mainDependencies: {'lib'},
     DependencyType.devDependencies: {'test', 'integration_test'},
   }.forEach((dependencyType, sourceDirectories) {
