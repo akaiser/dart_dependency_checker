@@ -25,4 +25,30 @@ void main() {
       expect(() => tested.remove(0), throwsUnsupportedError);
     });
   });
+
+  group('sort', () {
+    test('sorts integers', () {
+      const tested = {3, 1, 2};
+
+      expect(tested.sort(), const {1, 2, 3});
+    });
+
+    test('sorts strings', () {
+      const tested = {'banana', 'apple', 'cherry'};
+
+      expect(tested.sort(), const ['apple', 'banana', 'cherry']);
+    });
+
+    test('sorts with custom comparator', () {
+      const tested = {3, 1, 2};
+
+      expect(tested.sort((a, b) => b.compareTo(a)), const [3, 2, 1]);
+    });
+
+    test('returns empty when sorting empty', () {
+      const list = <String>{};
+
+      expect(list.sort(), const <String>{});
+    });
+  });
 }

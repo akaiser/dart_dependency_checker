@@ -1,5 +1,6 @@
 ## 0.3.0
 
+- Added `DepsUsedChecker` implementation.
 - Require Dart `^3.6.0`.
 
 ## 0.2.0

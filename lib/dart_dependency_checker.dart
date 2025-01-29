@@ -43,4 +43,5 @@ library;
 
 export 'src/_exports.dart';
 export 'src/deps_unused/_exports.dart';
+export 'src/deps_used/_exports.dart';
 export 'src/transitive_use/_exports.dart';

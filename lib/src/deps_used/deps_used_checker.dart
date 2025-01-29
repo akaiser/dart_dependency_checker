@@ -1,0 +1,30 @@
+import 'package:dart_dependency_checker/src/checker.dart';
+import 'package:dart_dependency_checker/src/dependency_type.dart';
+import 'package:dart_dependency_checker/src/deps_used/deps_used_params.dart';
+import 'package:dart_dependency_checker/src/deps_used/deps_used_results.dart';
+import 'package:dart_dependency_checker/src/util/dart_files.dart';
+import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
+
+/// Checks used dependencies via imports only.
+class DepsUsedChecker extends Checker<DepsUsedParams, DepsUsedResults> {
+  const DepsUsedChecker(super.params);
+
+  @override
+  DepsUsedResults check() => DepsUsedResults(
+        mainDependencies: _packages(
+          DependencyType.mainDependencies,
+          params.mainIgnores,
+        ),
+        devDependencies: _packages(
+          DependencyType.devDependencies,
+          params.devIgnores,
+        ),
+      );
+
+  Set<String> _packages(DependencyType dependencyType, Set<String> ignores) =>
+      DartFiles.from(params.path, dependencyType)
+          .expand((file) => DartFiles.packages(file))
+          .where((package) => !ignores.contains(package))
+          .sort()
+          .unmodifiable;
+}

@@ -1,4 +1,4 @@
-import 'package:dart_dependency_checker/dart_dependency_checker.dart';
+import 'package:dart_dependency_checker/src/transitive_use/transitive_use_params.dart';
 import 'package:test/test.dart';
 
 void main() {
