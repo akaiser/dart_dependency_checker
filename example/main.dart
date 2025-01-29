@@ -5,7 +5,7 @@ void main() {
   const depsUsedChecker = DepsUsedChecker(
     DepsUsedParams(
       path: '.',
-      mainIgnores: {'dart_dependency_checker', 'equatable'},
+      mainIgnores: {'equatable'},
       devIgnores: {'test'},
     ),
   );
@@ -16,7 +16,7 @@ void main() {
       path: '.',
       mainIgnores: {'meta'},
       devIgnores: {'build_runner'},
-      fix: true, // Danger zone! Use with caution.
+      fix: false, // Danger zone! Use with caution.
     ),
   );
 

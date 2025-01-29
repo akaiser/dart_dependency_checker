@@ -17,15 +17,16 @@ class TransitiveUseChecker
     final pubspecYaml = PubspecYamlLoader.from(params.path);
     final ownReference = pubspecYaml.name;
 
-    final declaredMainDependencies =
-        pubspecYaml.packages(DependencyType.mainDependencies);
+    final declaredMainDependencies = pubspecYaml.packages(
+      DependencyType.mainDependencies,
+    );
 
     return TransitiveUseResults(
       mainDependencies: _find(
         DependencyType.mainDependencies,
         {
           ...params.mainIgnores,
-          ownReference,
+          if (ownReference != null) ownReference,
         },
         (_) => declaredMainDependencies,
       ),
@@ -34,7 +35,7 @@ class TransitiveUseChecker
         {
           ...params.devIgnores,
           ...declaredMainDependencies,
-          ownReference,
+          if (ownReference != null) ownReference,
         },
         (dependencyType) => pubspecYaml.packages(dependencyType),
       ),
@@ -43,7 +44,7 @@ class TransitiveUseChecker
 
   Set<String> _find(
     DependencyType dependencyType,
-    Set<String?> ignores,
+    Set<String> ignores,
     Set<String> Function(DependencyType) declaredDependencies,
   ) =>
       DartFiles.from(params.path, dependencyType)
