@@ -1,3 +1,7 @@
+## 0.3.1
+
+- `DepsUsedChecker` ignores own referenced package.
+
 ## 0.3.0
 
 - Added `DepsUsedChecker` implementation.
