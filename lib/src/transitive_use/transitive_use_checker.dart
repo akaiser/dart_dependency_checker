@@ -7,7 +7,7 @@ import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 
-/// Checks direct use of undeclared/transitive dependencies.
+/// Checks direct use of pubspec.yaml undeclared aka. transitive dependencies.
 class TransitiveUseChecker
     extends Checker<TransitiveUseParams, TransitiveUseResults> {
   const TransitiveUseChecker(super.params);

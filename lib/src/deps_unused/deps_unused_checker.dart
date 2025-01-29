@@ -11,7 +11,7 @@ import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:yaml/yaml.dart';
 
-/// Checks declared but unused dependencies.
+/// Checks via pubspec.yaml declared but unused dependencies.
 class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
   const DepsUnusedChecker(super.params);
 

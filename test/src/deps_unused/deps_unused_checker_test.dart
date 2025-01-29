@@ -40,7 +40,7 @@ void main() {
   });
 
   test(
-      'providing no_dependencies path '
+      'providing $noDependenciesPath path '
       'returns no unused dependencies', () {
     const path = noDependenciesPath;
 
@@ -53,7 +53,7 @@ void main() {
     );
   });
 
-  group('providing all_sources_dirs path', () {
+  group('providing $allSourcesDirsPath path', () {
     const path = allSourcesDirsPath;
 
     test('returns only unused main and dev dependencies', () {
@@ -83,7 +83,7 @@ void main() {
     });
   });
 
-  group('providing no_sources_dirs path', () {
+  group('providing $noSourcesDirsPath path', () {
     const path = noSourcesDirsPath;
 
     test('returns all declared main and dev dependencies', () {

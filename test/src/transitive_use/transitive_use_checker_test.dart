@@ -1,4 +1,7 @@
-import 'package:dart_dependency_checker/dart_dependency_checker.dart';
+import 'package:dart_dependency_checker/src/checker_error.dart';
+import 'package:dart_dependency_checker/src/transitive_use/transitive_use_checker.dart';
+import 'package:dart_dependency_checker/src/transitive_use/transitive_use_params.dart';
+import 'package:dart_dependency_checker/src/transitive_use/transitive_use_results.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
@@ -37,7 +40,7 @@ void main() {
   });
 
   test(
-      'providing no_dependencies path '
+      'providing $noDependenciesPath path '
       'returns no undeclared dependencies', () {
     const path = noDependenciesPath;
 
@@ -51,7 +54,7 @@ void main() {
   });
 
   test(
-      'providing own_reference path '
+      'providing $ownReferencePath path '
       'ignores own package '
       'and returns no undeclared dependencies', () {
     const path = ownReferencePath;
@@ -66,7 +69,7 @@ void main() {
   });
 
   test(
-      'providing in_main_but_missing_in_dev path '
+      'providing $inMainButMissingInDev path '
       'ignores declared main in dev packages'
       'and returns no undeclared dependencies', () {
     const path = inMainButMissingInDev;
@@ -81,7 +84,7 @@ void main() {
   });
 
   test(
-      'providing no_sources_dirs path '
+      'providing $noSourcesDirsPath path '
       'returns all undeclared main and dev dependencies', () {
     const path = noSourcesDirsPath;
 
@@ -94,7 +97,7 @@ void main() {
     );
   });
 
-  group('providing all_sources_dirs_multi path', () {
+  group('providing $allSourcesDirsMultiPath path', () {
     const path = allSourcesDirsMultiPath;
 
     test('returns only undeclared main and dev dependencies', () {
