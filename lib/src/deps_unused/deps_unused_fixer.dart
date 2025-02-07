@@ -14,13 +14,13 @@ abstract final class DepsUnusedFixer {
   /// Reads a pubspec.yaml file, searches for dependencies passed
   /// via [DepsUnusedResults] and overrides file content without them.
   ///
-  /// Throws a [PubspecNotFoundError] when no pubspec yaml file was found.
+  /// Throws a [PubspecNotFoundError] when no pubspec.yaml file was found.
   static void fix(DepsUnusedResults results, String path) {
     final file = PubspecYamlFinder.from(path);
 
     var contents = '';
 
-    final dependenciesRegex = //
+    final dependenciesRegex =
         RegExp('(${results.mainDependencies.join('|')}):');
     final devDependenciesRegex =
         RegExp('(${results.devDependencies.join('|')}):');
@@ -37,10 +37,12 @@ abstract final class DepsUnusedFixer {
     for (final line in file.readAsLinesSync()) {
       if (line.startsWith('$dependenciesNode:')) {
         dependenciesNodeFound = true;
+        blankLineWritten = false;
         contents += line.withLineTerminator;
         continue;
       } else if (line.startsWith('$devDependenciesNode:')) {
         devDependenciesNodeFound = true;
+        blankLineWritten = false;
         contents += line.withLineTerminator;
         continue;
       }
