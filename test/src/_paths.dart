@@ -4,6 +4,7 @@ const //
     emptyYamlPath = 'test/resources/samples/empty_yaml',
     inMainButMissingInDev = 'test/resources/samples/in_main_but_missing_in_dev',
     meantForFixingPath = 'test/resources/samples/meant_for_fixing',
+    meantForFixingEmptyPath = 'test/resources/samples/meant_for_fixing_empty',
     missingNameNodePath = 'test/resources/samples/missing_name_node',
     noDependenciesPath = 'test/resources/samples/no_dependencies',
     noSourcesDirsPath = 'test/resources/samples/no_sources_dirs',

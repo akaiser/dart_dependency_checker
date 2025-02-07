@@ -1,3 +1,7 @@
+## 0.3.2
+
+- `DepsUnusedChecker` guarantees valid yaml output after `fix` run.
+
 ## 0.3.1
 
 - `DepsUsedChecker` ignores own referenced package.
@@ -25,7 +29,7 @@
 
 ## 0.1.5
 
-- Removed `fix` option from `TransitiveUseChecker`.
+- Removed `fix` property from `TransitiveUseChecker`.
 
 ## 0.1.4
 
@@ -38,14 +42,13 @@
 
 ## 0.1.2
 
-- Eliminate extra blank lines after `ddc deps-unused --fix` run.
+- Eliminate extra blank lines after `fix` run.
 - Add `.yml` file extension support.
 
 ## 0.1.1
 
-- Add instant cleanup `ddc deps-unused --fix` flag.
-- Add `ddc` as exec command shorthand.
-- Add `ddc deps-unused --main-ignores x,y,z` option.
+- Add instant `fix` property for the `DepsUnusedChecker`.
+- Add `mainIgnores` property for the `DepsUnusedChecker`.
 
 ## 0.1.0
 
