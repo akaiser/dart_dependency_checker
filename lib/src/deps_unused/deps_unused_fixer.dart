@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
@@ -18,7 +16,7 @@ abstract final class DepsUnusedFixer {
   static void fix(DepsUnusedResults results, String path) {
     final file = PubspecYamlFinder.from(path);
 
-    var contents = '';
+    final contents = StringBuffer();
 
     final dependenciesRegex =
         RegExp('(${results.mainDependencies.join('|')}):');
@@ -38,12 +36,12 @@ abstract final class DepsUnusedFixer {
       if (line.startsWith('$dependenciesNode:')) {
         dependenciesNodeFound = true;
         blankLineWritten = false;
-        contents += line.withLineTerminator;
+        contents.writeln(line);
         continue;
       } else if (line.startsWith('$devDependenciesNode:')) {
         devDependenciesNodeFound = true;
         blankLineWritten = false;
-        contents += line.withLineTerminator;
+        contents.writeln(line);
         continue;
       }
 
@@ -79,13 +77,9 @@ abstract final class DepsUnusedFixer {
         blankLineWritten = false;
       }
 
-      contents += line.withLineTerminator;
+      contents.writeln(line);
     }
 
-    file.writeAsStringSync(contents);
+    file.writeAsStringSync(contents.toString());
   }
-}
-
-extension on String {
-  String get withLineTerminator => '$this${Platform.lineTerminator}';
 }

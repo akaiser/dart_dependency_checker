@@ -11,7 +11,7 @@ void main() {
   group('providing $meantForFixingPath path', () {
     const sourcePath = meantForFixingPath;
     final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.readAsStringSync();
+    final sourceContent = sourceFile.read;
 
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
@@ -44,7 +44,7 @@ void main() {
       DepsUnusedFixer.fix(results, sourcePath);
 
       expect(
-        sourceFile.readAsStringSync(),
+        sourceFile.read,
         '$sourcePath/expected.yaml'.read,
       );
     });
@@ -71,7 +71,7 @@ void main() {
       DepsUnusedFixer.fix(results, sourcePath);
 
       expect(
-        sourceFile.readAsStringSync(),
+        sourceFile.read,
         '$sourcePath/expected_empty_dependencies.yaml'.read,
       );
     });
@@ -80,7 +80,7 @@ void main() {
   group('providing $meantForFixingEmptyPath path', () {
     const sourcePath = meantForFixingEmptyPath;
     final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.readAsStringSync();
+    final sourceContent = sourceFile.read;
 
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
@@ -93,13 +93,17 @@ void main() {
       DepsUnusedFixer.fix(results, sourcePath);
 
       expect(
-        sourceFile.readAsStringSync(),
+        sourceFile.read,
         '$sourcePath/expected.yaml'.read,
       );
     });
   });
 }
 
+extension on File {
+  String get read => readAsStringSync();
+}
+
 extension on String {
-  String get read => File(this).readAsStringSync();
+  String get read => File(this).read;
 }
