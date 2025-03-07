@@ -30,10 +30,10 @@ void main() {
   );
 
   try {
-    print(depsUsedChecker.check());
-    print(depsUnusedChecker.check());
-    print(transitiveUseChecker.check());
-  } on CheckerError catch (e) {
+    print(depsUsedChecker.perform());
+    print(depsUnusedChecker.perform());
+    print(transitiveUseChecker.perform());
+  } on PerformerError catch (e) {
     print(e.message);
   }
 }

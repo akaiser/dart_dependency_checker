@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
@@ -12,11 +12,11 @@ import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:yaml/yaml.dart';
 
 /// Checks via pubspec.yaml declared but unused dependencies.
-class DepsUnusedChecker extends Checker<DepsUnusedParams, DepsUnusedResults> {
+class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
   const DepsUnusedChecker(super.params);
 
   @override
-  DepsUnusedResults check() {
+  DepsUnusedResults perform() {
     final pubspecYaml = PubspecYamlLoader.from(params.path);
 
     final results = DepsUnusedResults(

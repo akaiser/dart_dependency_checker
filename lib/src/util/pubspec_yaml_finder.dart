@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/checker_error.dart';
+import 'package:dart_dependency_checker/src/performer_error.dart';
 
 /// Utility to find a pubspec yaml file.
 abstract final class PubspecYamlFinder {
