@@ -1,6 +1,6 @@
-import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 
 final _rootNodeExp = RegExp(r'^\w+:');

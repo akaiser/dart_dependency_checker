@@ -1,19 +1,19 @@
-import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:dart_dependency_checker/src/deps_used/deps_used_checker.dart';
 import 'package:dart_dependency_checker/src/deps_used/deps_used_params.dart';
 import 'package:dart_dependency_checker/src/deps_used/deps_used_results.dart';
+import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
 
 void main() {
   test(
-      'throws a $CheckerError with proper message '
+      'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
-      const DepsUsedChecker(DepsUsedParams(path: 'unknown')).check,
+      const DepsUsedChecker(DepsUsedParams(path: 'unknown')).perform,
       throwsA(
-        isA<CheckerError>().having(
+        isA<PerformerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file path: unknown/pubspec.yaml',
@@ -23,14 +23,14 @@ void main() {
   });
 
   test(
-      'throws a $CheckerError with proper message '
+      'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyYamlPath;
 
     expect(
-      const DepsUsedChecker(DepsUsedParams(path: path)).check,
+      const DepsUsedChecker(DepsUsedParams(path: path)).perform,
       throwsA(
-        isA<CheckerError>().having(
+        isA<PerformerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file contents in: $path/pubspec.yaml',
@@ -46,7 +46,7 @@ void main() {
     const path = ownReferencePath;
 
     expect(
-      const DepsUsedChecker(DepsUsedParams(path: path)).check(),
+      const DepsUsedChecker(DepsUsedParams(path: path)).perform(),
       const DepsUsedResults(
         mainDependencies: {'args'},
         devDependencies: {'test'},
@@ -59,7 +59,7 @@ void main() {
 
     test('returns all used', () {
       expect(
-        const DepsUsedChecker(DepsUsedParams(path: path)).check(),
+        const DepsUsedChecker(DepsUsedParams(path: path)).perform(),
         const DepsUsedResults(
           mainDependencies: {},
           devDependencies: {},
@@ -75,7 +75,7 @@ void main() {
             mainIgnores: {'args'},
             devIgnores: {'async'},
           ),
-        ).check(),
+        ).perform(),
         const DepsUsedResults(
           mainDependencies: {},
           devDependencies: {},
@@ -89,7 +89,7 @@ void main() {
 
     test('returns all used', () {
       expect(
-        const DepsUsedChecker(DepsUsedParams(path: path)).check(),
+        const DepsUsedChecker(DepsUsedParams(path: path)).perform(),
         const DepsUsedResults(
           mainDependencies: {'args', 'equatable'},
           devDependencies: {'async', 'convert', 'test'},
@@ -105,7 +105,7 @@ void main() {
             mainIgnores: {'args', 'equatable'},
             devIgnores: {'async', 'convert'},
           ),
-        ).check(),
+        ).perform(),
         const DepsUsedResults(
           mainDependencies: {},
           devDependencies: {'test'},

@@ -1,4 +1,4 @@
-import 'package:dart_dependency_checker/src/checker_error.dart';
+import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:dart_dependency_checker/src/transitive_use/transitive_use_checker.dart';
 import 'package:dart_dependency_checker/src/transitive_use/transitive_use_params.dart';
 import 'package:dart_dependency_checker/src/transitive_use/transitive_use_results.dart';
@@ -8,12 +8,12 @@ import '../_paths.dart';
 
 void main() {
   test(
-      'throws a $CheckerError with proper message '
+      'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
-      const TransitiveUseChecker(TransitiveUseParams(path: 'unknown')).check,
+      const TransitiveUseChecker(TransitiveUseParams(path: 'unknown')).perform,
       throwsA(
-        isA<CheckerError>().having(
+        isA<PerformerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file path: unknown/pubspec.yaml',
@@ -23,14 +23,14 @@ void main() {
   });
 
   test(
-      'throws a $CheckerError with proper message '
+      'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyYamlPath;
 
     expect(
-      const TransitiveUseChecker(TransitiveUseParams(path: path)).check,
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).perform,
       throwsA(
-        isA<CheckerError>().having(
+        isA<PerformerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file contents in: $path/pubspec.yaml',
@@ -45,7 +45,7 @@ void main() {
     const path = noDependenciesPath;
 
     expect(
-      const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
       const TransitiveUseResults(
         mainDependencies: {},
         devDependencies: {},
@@ -60,7 +60,7 @@ void main() {
     const path = ownReferencePath;
 
     expect(
-      const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
       const TransitiveUseResults(
         mainDependencies: {},
         devDependencies: {},
@@ -75,7 +75,7 @@ void main() {
     const path = inMainButMissingInDev;
 
     expect(
-      const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
       const TransitiveUseResults(
         mainDependencies: {},
         devDependencies: {},
@@ -89,7 +89,7 @@ void main() {
     const path = noSourcesDirsPath;
 
     expect(
-      const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+      const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
       const TransitiveUseResults(
         mainDependencies: {},
         devDependencies: {},
@@ -102,7 +102,7 @@ void main() {
 
     test('returns only undeclared main and dev dependencies', () {
       expect(
-        const TransitiveUseChecker(TransitiveUseParams(path: path)).check(),
+        const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
         const TransitiveUseResults(
           mainDependencies: {'equatable'},
           devDependencies: {'async', 'convert'},
@@ -118,7 +118,7 @@ void main() {
             mainIgnores: {'equatable'},
             devIgnores: {'convert'},
           ),
-        ).check(),
+        ).perform(),
         const TransitiveUseResults(
           mainDependencies: {},
           devDependencies: {'async'},

@@ -1,18 +1,18 @@
-import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_used/deps_used_params.dart';
 import 'package:dart_dependency_checker/src/deps_used/deps_used_results.dart';
+import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 
 /// Checks used dependencies via imports only.
-class DepsUsedChecker extends Checker<DepsUsedParams, DepsUsedResults> {
+class DepsUsedChecker extends Performer<DepsUsedParams, DepsUsedResults> {
   const DepsUsedChecker(super.params);
 
   @override
-  DepsUsedResults check() {
+  DepsUsedResults perform() {
     final pubspecYaml = PubspecYamlLoader.from(params.path);
     final ownReference = pubspecYaml.name;
 

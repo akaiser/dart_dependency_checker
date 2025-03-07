@@ -1,19 +1,19 @@
-import 'package:dart_dependency_checker/src/checker_error.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_checker.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
 
 void main() {
   test(
-      'throws a $CheckerError with proper message '
+      'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
-      const DepsUnusedChecker(DepsUnusedParams(path: 'unknown')).check,
+      const DepsUnusedChecker(DepsUnusedParams(path: 'unknown')).perform,
       throwsA(
-        isA<CheckerError>().having(
+        isA<PerformerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file path: unknown/pubspec.yaml',
@@ -23,14 +23,14 @@ void main() {
   });
 
   test(
-      'throws a $CheckerError with proper message '
+      'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyYamlPath;
 
     expect(
-      const DepsUnusedChecker(DepsUnusedParams(path: path)).check,
+      const DepsUnusedChecker(DepsUnusedParams(path: path)).perform,
       throwsA(
-        isA<CheckerError>().having(
+        isA<PerformerError>().having(
           (e) => e.message,
           'message',
           'Invalid pubspec.yaml file contents in: $path/pubspec.yaml',
@@ -45,7 +45,7 @@ void main() {
     const path = noDependenciesPath;
 
     expect(
-      const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
+      const DepsUnusedChecker(DepsUnusedParams(path: path)).perform(),
       const DepsUnusedResults(
         mainDependencies: {},
         devDependencies: {},
@@ -58,7 +58,7 @@ void main() {
 
     test('returns only unused main and dev dependencies', () {
       expect(
-        const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
+        const DepsUnusedChecker(DepsUnusedParams(path: path)).perform(),
         const DepsUnusedResults(
           mainDependencies: {'meta'},
           devDependencies: {'integration_test', 'lints'},
@@ -74,7 +74,7 @@ void main() {
             mainIgnores: {'meta'},
             devIgnores: {'integration_test'},
           ),
-        ).check(),
+        ).perform(),
         const DepsUnusedResults(
           mainDependencies: {},
           devDependencies: {'lints'},
@@ -88,7 +88,7 @@ void main() {
 
     test('returns all declared main and dev dependencies', () {
       expect(
-        const DepsUnusedChecker(DepsUnusedParams(path: path)).check(),
+        const DepsUnusedChecker(DepsUnusedParams(path: path)).perform(),
         const DepsUnusedResults(
           mainDependencies: {'meta'},
           devDependencies: {'lints', 'test'},
@@ -106,7 +106,7 @@ void main() {
             mainIgnores: {'meta'},
             devIgnores: {'lints', 'test'},
           ),
-        ).check(),
+        ).perform(),
         const DepsUnusedResults(
           mainDependencies: {},
           devDependencies: {},

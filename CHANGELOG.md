@@ -1,3 +1,8 @@
+## 0.4.0
+
+- TODO(Albert): Remove once version is ready for release.
+- Breaking change: Change main interface to more generic `Performer` signature.
+
 ## 0.3.2
 
 - `DepsUnusedChecker` guarantees valid yaml output after `fix` run.

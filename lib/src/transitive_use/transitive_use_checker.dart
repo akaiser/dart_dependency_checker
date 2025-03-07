@@ -1,5 +1,5 @@
-import 'package:dart_dependency_checker/src/checker.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
+import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/transitive_use/transitive_use_params.dart';
 import 'package:dart_dependency_checker/src/transitive_use/transitive_use_results.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
@@ -9,11 +9,11 @@ import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 
 /// Checks direct use of pubspec.yaml undeclared aka. transitive dependencies.
 class TransitiveUseChecker
-    extends Checker<TransitiveUseParams, TransitiveUseResults> {
+    extends Performer<TransitiveUseParams, TransitiveUseResults> {
   const TransitiveUseChecker(super.params);
 
   @override
-  TransitiveUseResults check() {
+  TransitiveUseResults perform() {
     final pubspecYaml = PubspecYamlLoader.from(params.path);
     final ownReference = pubspecYaml.name;
 
