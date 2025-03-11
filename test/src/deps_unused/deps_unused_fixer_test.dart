@@ -8,32 +8,32 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
+  test(
+      'throws a $PubspecNotFoundError with invalid path message '
+      'when path without pubspec.yaml has been provided', () {
+    const results = DepsUnusedResults(
+      mainDependencies: {},
+      devDependencies: {},
+    );
+
+    expect(
+      () => DepsUnusedFixer.fix(results, ''),
+      throwsA(
+        isA<PubspecNotFoundError>().having(
+          (e) => e.message,
+          'message',
+          'Invalid pubspec.yaml file path: /pubspec.yaml',
+        ),
+      ),
+    );
+  });
+
   group('providing $meantForFixingPath path', () {
     const sourcePath = meantForFixingPath;
     final sourceFile = File('$sourcePath/pubspec.yaml');
     final sourceContent = sourceFile.read;
 
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
-
-    test(
-        'throws a $PubspecNotFoundError with invalid path message '
-        'when path without pubspec.yaml has been provided', () {
-      const results = DepsUnusedResults(
-        mainDependencies: {},
-        devDependencies: {},
-      );
-
-      expect(
-        () => DepsUnusedFixer.fix(results, ''),
-        throwsA(
-          isA<PubspecNotFoundError>().having(
-            (e) => e.message,
-            'message',
-            'Invalid pubspec.yaml file path: /pubspec.yaml',
-          ),
-        ),
-      );
-    });
 
     test('cleanes source file', () {
       const results = DepsUnusedResults(

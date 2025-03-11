@@ -3,6 +3,7 @@ const //
     allSourcesDirsMultiPath = 'test/resources/samples/all_sources_dirs_multi',
     emptyYamlPath = 'test/resources/samples/empty_yaml',
     inMainButMissingInDev = 'test/resources/samples/in_main_but_missing_in_dev',
+    meantForAddingPath = 'test/resources/samples/meant_for_adding',
     meantForFixingPath = 'test/resources/samples/meant_for_fixing',
     meantForFixingEmptyPath = 'test/resources/samples/meant_for_fixing_empty',
     missingNameNodePath = 'test/resources/samples/missing_name_node',
