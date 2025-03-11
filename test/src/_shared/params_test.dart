@@ -26,26 +26,26 @@ void main() {
     test('has props', () {
       const tested = _PathWithIgnoresParams(
         path: 'any',
-        mainIgnores: {'a,b'},
-        devIgnores: {'c,d'},
+        mainIgnores: {'a', 'b'},
+        devIgnores: {'c', 'd'},
       );
 
       expect(tested.props, const [
         'any',
-        {'a,b'},
-        {'c,d'},
+        {'a', 'b'},
+        {'c', 'd'},
       ]);
     });
 
     test('sets values', () {
       const tested = _PathWithIgnoresParams(
         path: 'any',
-        mainIgnores: {'a,b'},
-        devIgnores: {'c,d'},
+        mainIgnores: {'a', 'b'},
+        devIgnores: {'c', 'd'},
       );
 
-      expect(tested.mainIgnores, const {'a,b'});
-      expect(tested.devIgnores, const {'c,d'});
+      expect(tested.mainIgnores, const {'a', 'b'});
+      expect(tested.devIgnores, const {'c', 'd'});
     });
 
     test('sets default values', () {
