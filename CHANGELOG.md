@@ -1,6 +1,6 @@
 ## 0.4.0
 
-- TODO(Albert): Remove once version is ready for release.
+- Added `DepsAddPerformer` implementation.
 - Breaking change: Change main interface to more generic `Performer` signature.
 
 ## 0.3.2
