@@ -9,6 +9,9 @@ final _leafNodeExp = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
 /// A very dumb and dangerous utility to read and write into the same
 /// pubspec.yaml file.
 abstract final class DepsUnusedFixer {
+  static final _dependenciesNode = DependencyType.mainDependencies.yamlNode;
+  static final _devDependenciesNode = DependencyType.devDependencies.yamlNode;
+
   /// Reads a pubspec.yaml file, searches for dependencies passed
   /// via [DepsUnusedResults] and overrides file content without them.
   ///
@@ -29,16 +32,13 @@ abstract final class DepsUnusedFixer {
     var dependencyFound = false;
     var blankLineWritten = false;
 
-    final dependenciesNode = DependencyType.mainDependencies.yamlNode;
-    final devDependenciesNode = DependencyType.devDependencies.yamlNode;
-
     for (final line in file.readAsLinesSync()) {
-      if (line.startsWith('$dependenciesNode:')) {
+      if (line.startsWith('$_dependenciesNode:')) {
         dependenciesNodeFound = true;
         blankLineWritten = false;
         contents.writeln(line);
         continue;
-      } else if (line.startsWith('$devDependenciesNode:')) {
+      } else if (line.startsWith('$_devDependenciesNode:')) {
         devDependenciesNodeFound = true;
         blankLineWritten = false;
         contents.writeln(line);
