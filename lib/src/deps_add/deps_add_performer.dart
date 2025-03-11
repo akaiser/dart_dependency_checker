@@ -5,7 +5,8 @@ import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 
 final _rootNodeExp = RegExp(r'^\w+:');
 
-/// Adds main and dev dependencies to a pubspec.yaml file.
+/// Adds main and dev dependencies to a pubspec.yaml file
+/// (without consulting dart pub add).
 ///
 /// In a perfect word, for simplicity:
 /// - Doesn't care if the dependency is already in the file.

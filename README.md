@@ -46,20 +46,35 @@ void main() {
     ),
   );
 
+  // Adds main and dev dependencies to a pubspec.yaml file (without consulting dart pub add).
+  const depsAddPerformer = DepsAddPerformer(
+    DepsAddParams(
+      path: '.',
+      // Example usage
+      main: {
+        // 'equatable: ^2.0.7',
+        // 'yaml: 3.1.3',
+        // 'some_path_source: path=../some_path_dependency',
+        // 'some_git_source: git=https://github.com/munificent/kittens.git',
+      },
+      // Example usage
+      dev: {
+        // 'test: ^1.16.0',
+        // 'build_runner: 2.4.15',
+      },
+    ),
+  );
+
   try {
     print(depsUsedChecker.check());
     print(depsUnusedChecker.check());
     print(transitiveUseChecker.check());
+    depsAddPerformer.perform();
   } on CheckerError catch (e) {
     print(e.message);
   }
 }
  ```
-
-## Future roadmap
-
--`DepOriginChecker`: Utilize `dart pub deps -s compact --no-dev` to extract the origin of a direct/transitive
-dependency.
 
 ## License
 

@@ -42,10 +42,31 @@
 ///     ),
 ///   );
 ///
+///   // Adds main and dev dependencies to a pubspec.yaml file (without consulting dart pub add).
+///   const depsAddPerformer = DepsAddPerformer(
+///     DepsAddParams(
+///       path: '.',
+///       // Example usage
+///       main: {
+///         // 'equatable: ^2.0.7',
+///         // 'yaml: 3.1.3',
+///         // 'some_path_source: path=../some_path_dependency',
+///         // 'some_git_source: git=https://github.com/munificent/kittens.git',
+///       },
+///       // Example usage
+///       dev: {
+///         // 'test: ^1.16.0',
+///         // 'build_runner: 2.4.15',
+///       },
+///     ),
+///   );
+///
 ///   try {
-///     print(depsUnusedChecker.check());
-///     print(transitiveUseChecker.check());
-///   } on CheckerError catch (e) {
+///     print(depsUsedChecker.perform());
+///     print(depsUnusedChecker.perform());
+///     print(transitiveUseChecker.perform());
+///     depsAddPerformer.perform();
+///   } on PerformerError catch (e) {
 ///     print(e.message);
 ///   }
 /// }
