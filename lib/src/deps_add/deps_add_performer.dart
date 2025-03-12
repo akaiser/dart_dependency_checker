@@ -8,7 +8,7 @@ final _rootNodeExp = RegExp(r'^\w+:');
 /// Adds main and dev dependencies to a pubspec.yaml file
 /// (without consulting dart pub add).
 ///
-/// In a perfect word, for simplicity:
+/// In a perfect world, for simplicity:
 /// - Doesn't care if the dependency is already in the file.
 /// - Won't add a dependency if the main/dev node is missing.
 /// - Supports sources with single level of nesting.
