@@ -69,7 +69,7 @@ void main() {
     print(depsUsedChecker.check());
     print(depsUnusedChecker.check());
     print(transitiveUseChecker.check());
-    depsAddPerformer.perform();
+    print(depsAddPerformer.perform());
   } on CheckerError catch (e) {
     print(e.message);
   }
