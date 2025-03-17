@@ -1,3 +1,7 @@
+## 0.4.2
+
+- `DepsAddPerformer` returns true on change.
+
 ## 0.4.1
 
 - `DepsAddPerformer` does a little new lines cleanup.

@@ -65,7 +65,7 @@
 ///     print(depsUsedChecker.perform());
 ///     print(depsUnusedChecker.perform());
 ///     print(transitiveUseChecker.perform());
-///     depsAddPerformer.perform();
+///     print(depsAddPerformer.perform());
 ///   } on PerformerError catch (e) {
 ///     print(e.message);
 ///   }

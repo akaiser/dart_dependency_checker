@@ -31,7 +31,7 @@ void main() {
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
     test('will add all dependencies', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {
@@ -47,6 +47,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isTrue);
       expect(
         sourceFile.read,
         '$sourcePath/expected.yaml'.read,
@@ -62,7 +63,7 @@ void main() {
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
     test('will add all dependencies', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {
@@ -78,6 +79,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isTrue);
       expect(
         sourceFile.read,
         '$sourcePath/expected.yaml'.read,
@@ -93,7 +95,7 @@ void main() {
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
     test('adds and cleanes too many new lines', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {'equatable:^2.0.7'},
@@ -101,6 +103,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isTrue);
       expect(
         sourceFile.read,
         '$sourcePath/expected.yaml'.read,
@@ -108,7 +111,7 @@ void main() {
     });
 
     test('no change when nothing added', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {},
@@ -116,6 +119,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isFalse);
       expect(
         sourceFile.read,
         '$sourcePath/expected_no_change.yaml'.read,
@@ -131,7 +135,7 @@ void main() {
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
     test('adds and cleanes too many eof new lines', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {'equatable:^2.0.7'},
@@ -139,6 +143,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isTrue);
       expect(
         sourceFile.read,
         '$sourcePath/expected.yaml'.read,
@@ -146,7 +151,7 @@ void main() {
     });
 
     test('no change when nothing added', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {},
@@ -154,6 +159,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isFalse);
       expect(
         sourceFile.read,
         '$sourcePath/expected_no_change.yaml'.read,
@@ -169,7 +175,7 @@ void main() {
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
     test('will not add anything', () {
-      const DepsAddPerformer(
+      final result = const DepsAddPerformer(
         DepsAddParams(
           path: sourcePath,
           main: {'equatable:^2.0.7'},
@@ -177,6 +183,7 @@ void main() {
         ),
       ).perform();
 
+      expect(result, isFalse);
       expect(
         sourceFile.read,
         '$sourcePath/expected.yaml'.read,

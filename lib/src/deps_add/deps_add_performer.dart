@@ -14,14 +14,16 @@ final _rootNodeExp = RegExp(r'^\w+:');
 /// - Doesn't care if the dependency is already in the file.
 /// - Won't add a dependency if the main/dev node is missing.
 /// - Supports sources with single level of nesting.
-class DepsAddPerformer extends Performer<DepsAddParams, void> {
+///
+/// Returns `true` if at least one dependency was added.
+class DepsAddPerformer extends Performer<DepsAddParams, bool> {
   const DepsAddPerformer(super.params);
 
   static final _dependenciesNode = DependencyType.mainDependencies.yamlNode;
   static final _devDependenciesNode = DependencyType.devDependencies.yamlNode;
 
   @override
-  void perform() {
+  bool perform() {
     final file = PubspecYamlFinder.from(params.path);
 
     final contents = StringBuffer();
@@ -29,6 +31,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
     var insideDependenciesNode = false;
     var insideDevDependenciesNode = false;
     var blankLineWritten = false;
+    var somethingAdded = false;
 
     final lines = file.readAsLinesSync();
 
@@ -37,14 +40,14 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
 
       if (line.startsWith('$_dependenciesNode:')) {
         if (insideDevDependenciesNode) {
-          _add(contents, params.dev);
+          somethingAdded = _add(contents, params.dev) || somethingAdded;
         }
 
         insideDependenciesNode = true;
         insideDevDependenciesNode = false;
       } else if (line.startsWith('$_devDependenciesNode:')) {
         if (insideDependenciesNode) {
-          _add(contents, params.main);
+          somethingAdded = _add(contents, params.main) || somethingAdded;
         }
 
         insideDependenciesNode = false;
@@ -52,10 +55,10 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
       } else if (_rootNodeExp.hasMatch(line) &&
           (insideDependenciesNode || insideDevDependenciesNode)) {
         if (insideDevDependenciesNode) {
-          _add(contents, params.dev);
+          somethingAdded = _add(contents, params.dev) || somethingAdded;
         }
         if (insideDependenciesNode) {
-          _add(contents, params.main);
+          somethingAdded = _add(contents, params.main) || somethingAdded;
         }
         insideDependenciesNode = false;
         insideDevDependenciesNode = false;
@@ -80,10 +83,10 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
 
     // no other unrelated node was found, ensure to finish dep adding
     if (insideDevDependenciesNode) {
-      _add(contents, params.dev);
+      somethingAdded = _add(contents, params.dev) || somethingAdded;
     }
     if (insideDependenciesNode) {
-      _add(contents, params.main);
+      somethingAdded = _add(contents, params.main) || somethingAdded;
     }
 
     // something was added, ensure no extra eof new lines
@@ -93,9 +96,11 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
     } else {
       file.writeAsStringSync('$contents');
     }
+
+    return somethingAdded;
   }
 
-  void _add(StringBuffer contents, Set<String> dependencies) {
+  bool _add(StringBuffer contents, Set<String> dependencies) {
     var somethingAdded = false;
 
     for (final dependency in dependencies) {
@@ -125,6 +130,8 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
     if (somethingAdded) {
       contents.writeln();
     }
+
+    return somethingAdded;
   }
 }
 
