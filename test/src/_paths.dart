@@ -4,6 +4,14 @@ const //
     emptyYamlPath = 'test/resources/samples/empty_yaml',
     inMainButMissingInDev = 'test/resources/samples/in_main_but_missing_in_dev',
     meantForAddingPath = 'test/resources/samples/meant_for_adding',
+    meantForAddingFlippedNodesPath =
+        'test/resources/samples/meant_for_adding_flipped_nodes',
+    meantForAddingNewLinesPath =
+        'test/resources/samples/meant_for_adding_new_lines',
+    meantForAddingNewLinesEofPath =
+        'test/resources/samples/meant_for_adding_new_lines_eof',
+    meantForAddingNoNodesPath =
+        'test/resources/samples/meant_for_adding_no_nodes',
     meantForFixingPath = 'test/resources/samples/meant_for_fixing',
     meantForFixingEmptyPath = 'test/resources/samples/meant_for_fixing_empty',
     missingNameNodePath = 'test/resources/samples/missing_name_node',

@@ -3,16 +3,6 @@ name: dart_dependency_checker_samples
 environment:
   sdk: ^3.6.0
 
-dev_dependencies:
-  integration_test:
-    sdk: any
-
-  lints: ^3.0.0
-  test: ^1.25.0
-
-  test: ^1.16.0
-  build_runner: 2.4.15
-
 dependencies:
   args: ^2.4.2
   meta: ^1.11.0
@@ -23,6 +13,16 @@ dependencies:
     path: ../some_path_dependency
   some_git_source:
     git: https://github.com/munificent/kittens.git
+
+dev_dependencies:
+  integration_test:
+    sdk: any
+
+  lints: ^3.0.0
+  test: ^1.25.0
+
+  test: ^1.16.0
+  build_runner: 2.4.15
 
 flutter:
   uses-material-design: true
