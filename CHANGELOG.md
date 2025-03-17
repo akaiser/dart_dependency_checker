@@ -1,3 +1,7 @@
+## 0.4.1
+
+- `DepsAddPerformer` does a little new lines cleanup.
+
 ## 0.4.0
 
 - Added `DepsAddPerformer` implementation.

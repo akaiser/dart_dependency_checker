@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
@@ -26,6 +28,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
 
     var insideDependenciesNode = false;
     var insideDevDependenciesNode = false;
+    var blankLineWritten = false;
 
     final lines = file.readAsLinesSync();
 
@@ -58,19 +61,38 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
         insideDevDependenciesNode = false;
       }
 
-      contents.writeln(line);
-
-      if (i == lines.length - 1) {
-        if (insideDevDependenciesNode) {
-          _add(contents, params.dev);
-        }
-        if (insideDependenciesNode) {
-          _add(contents, params.main);
+      // clean extra new lines in affected nodes
+      if ((insideDependenciesNode && params.main.isNotEmpty) ||
+          (insideDevDependenciesNode && params.dev.isNotEmpty)) {
+        if (line.trim().isEmpty) {
+          if (blankLineWritten) {
+            continue;
+          } else {
+            blankLineWritten = true;
+          }
+        } else {
+          blankLineWritten = false;
         }
       }
+
+      contents.writeln(line);
     }
 
-    file.writeAsStringSync(contents.toString());
+    // no other unrelated node was found, ensure to finish dep adding
+    if (insideDevDependenciesNode) {
+      _add(contents, params.dev);
+    }
+    if (insideDependenciesNode) {
+      _add(contents, params.main);
+    }
+
+    // something was added, ensure no extra eof new lines
+    if ((insideDependenciesNode && params.main.isNotEmpty) ||
+        (insideDevDependenciesNode && params.dev.isNotEmpty)) {
+      file.writeAsStringSync('$contents'.trimRight().newLine);
+    } else {
+      file.writeAsStringSync('$contents');
+    }
   }
 
   void _add(StringBuffer contents, Set<String> dependencies) {
@@ -104,4 +126,8 @@ class DepsAddPerformer extends Performer<DepsAddParams, void> {
       contents.writeln();
     }
   }
+}
+
+extension on String {
+  String get newLine => this + Platform.lineTerminator;
 }

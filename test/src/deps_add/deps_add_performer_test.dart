@@ -53,6 +53,136 @@ void main() {
       );
     });
   });
+
+  group('providing $meantForAddingFlippedNodesPath path', () {
+    const sourcePath = meantForAddingFlippedNodesPath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('will add all dependencies', () {
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {
+            'equatable:^2.0.7',
+            'yaml: 3.1.3',
+            'some_path_source :path= ../some_path_dependency',
+            'some_git_source: git=https://github.com/munificent/kittens.git',
+          },
+          dev: {
+            'test: ^1.16.0',
+            'build_runner: 2.4.15',
+          },
+        ),
+      ).perform();
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected.yaml'.read,
+      );
+    });
+  });
+
+  group('providing $meantForAddingNewLinesPath path', () {
+    const sourcePath = meantForAddingNewLinesPath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('adds and cleanes too many new lines', () {
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {'equatable:^2.0.7'},
+          dev: {'test: ^1.16.0'},
+        ),
+      ).perform();
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected.yaml'.read,
+      );
+    });
+
+    test('no change when nothing added', () {
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {},
+          dev: {},
+        ),
+      ).perform();
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected_no_change.yaml'.read,
+      );
+    });
+  });
+
+  group('providing $meantForAddingNewLinesEofPath path', () {
+    const sourcePath = meantForAddingNewLinesEofPath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('adds and cleanes too many eof new lines', () {
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {'equatable:^2.0.7'},
+          dev: {'test: ^1.16.0'},
+        ),
+      ).perform();
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected.yaml'.read,
+      );
+    });
+
+    test('no change when nothing added', () {
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {},
+          dev: {},
+        ),
+      ).perform();
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected_no_change.yaml'.read,
+      );
+    });
+  });
+
+  group('providing $meantForAddingNoNodesPath path', () {
+    const sourcePath = meantForAddingNoNodesPath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('will not add anything', () {
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {'equatable:^2.0.7'},
+          dev: {'test: ^1.16.0'},
+        ),
+      ).perform();
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected.yaml'.read,
+      );
+    });
+  });
 }
 
 extension on File {
