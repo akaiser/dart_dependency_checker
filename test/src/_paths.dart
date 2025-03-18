@@ -12,6 +12,8 @@ const //
         'test/resources/samples/meant_for_adding_new_lines_eof',
     meantForAddingNoNodesPath =
         'test/resources/samples/meant_for_adding_no_nodes',
+    meantForAddingSdkSourcePath =
+        'test/resources/samples/meant_for_adding_sdk_source',
     meantForFixingPath = 'test/resources/samples/meant_for_fixing',
     meantForFixingEmptyPath = 'test/resources/samples/meant_for_fixing_empty',
     missingNameNodePath = 'test/resources/samples/missing_name_node',

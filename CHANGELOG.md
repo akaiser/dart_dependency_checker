@@ -1,3 +1,7 @@
+## 0.4.3
+
+- `DepsAddPerformer` places SDK deps on top.
+
 ## 0.4.2
 
 - `DepsAddPerformer` returns true on change.
