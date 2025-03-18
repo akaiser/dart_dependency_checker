@@ -190,6 +190,40 @@ void main() {
       );
     });
   });
+
+  group('providing $meantForAddingSdkSourcePath path', () {
+    const sourcePath = meantForAddingSdkSourcePath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('places SDK deps on top', () {
+      final result = const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {
+            'meta: ^1.11.0',
+            'equatable: ^2.0.7',
+            'flutter: sdk=flutter',
+            'flutter_localizations: sdk=flutter',
+          },
+          dev: {
+            'test: ^1.25.0',
+            'mocktail: ^1.0.0',
+            'flutter_test: sdk=flutter',
+            'integration_test: sdk=flutter',
+          },
+        ),
+      ).perform();
+
+      expect(result, isTrue);
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected.yaml'.read,
+      );
+    });
+  });
 }
 
 extension on File {

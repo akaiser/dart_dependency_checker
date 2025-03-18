@@ -29,12 +29,13 @@ void main() {
     ),
   );
 
-  // Adds main and dev dependencies to a pubspec.yaml file (without consulting dart pub add).
+  // Blindly adds main and dev dependencies to a pubspec.yaml file (without consulting dart pub add).
   const depsAddPerformer = DepsAddPerformer(
     DepsAddParams(
       path: '.',
       // Example usage
       main: {
+        // 'flutter: sdk=flutter',
         // 'equatable: ^2.0.7',
         // 'yaml: 3.1.3',
         // 'some_path_source: path=../some_path_dependency',
@@ -42,7 +43,8 @@ void main() {
       },
       // Example usage
       dev: {
-        // 'test: ^1.16.0',
+        // 'flutter_test: sdk=flutter',
+        // 'test: ^1.25.0',
         // 'build_runner: 2.4.15',
       },
     ),
