@@ -48,7 +48,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
       if (onMainDependencyNode) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          somethingAdded = _add(contents, devDepsToAdd) || somethingAdded;
+          somethingAdded |= _add(contents, devDepsToAdd);
         }
 
         insideDependenciesNode = true;
@@ -59,7 +59,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
       else if (onDevDependencyNode) {
         // maybe we were inside main node previously
         if (insideDependenciesNode) {
-          somethingAdded = _add(contents, mainDepsToAdd) || somethingAdded;
+          somethingAdded |= _add(contents, mainDepsToAdd);
         }
 
         insideDependenciesNode = false;
@@ -70,11 +70,11 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
       else if (_rootNodeExp.hasMatch(line)) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          somethingAdded = _add(contents, devDepsToAdd) || somethingAdded;
+          somethingAdded |= _add(contents, devDepsToAdd);
         }
         // maybe we were inside main node previously
         else if (insideDependenciesNode) {
-          somethingAdded = _add(contents, mainDepsToAdd) || somethingAdded;
+          somethingAdded |= _add(contents, mainDepsToAdd);
         }
 
         insideDependenciesNode = false;
@@ -101,13 +101,13 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
       if (onMainDependencyNode) {
         final sdkDeps = mainDepsToAdd.sdkDeps;
         if (sdkDeps.isNotEmpty) {
-          somethingAdded = _add(contents, sdkDeps, false) || somethingAdded;
+          somethingAdded |= _add(contents, sdkDeps, false);
           mainDepsToAdd = mainDepsToAdd.difference(sdkDeps);
         }
       } else if (onDevDependencyNode) {
         final sdkDeps = devDepsToAdd.sdkDeps;
         if (sdkDeps.isNotEmpty) {
-          somethingAdded = _add(contents, sdkDeps, false) || somethingAdded;
+          somethingAdded |= _add(contents, sdkDeps, false);
           devDepsToAdd = devDepsToAdd.difference(sdkDeps);
         }
       }
@@ -115,9 +115,9 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
 
     // no other unrelated node was found, ensure to finish deps adding
     if (insideDevDependenciesNode) {
-      somethingAdded = _add(contents, devDepsToAdd) || somethingAdded;
+      somethingAdded |= _add(contents, devDepsToAdd);
     } else if (insideDependenciesNode) {
-      somethingAdded = _add(contents, mainDepsToAdd) || somethingAdded;
+      somethingAdded |= _add(contents, mainDepsToAdd);
     }
 
     // something was added
@@ -126,11 +126,10 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
       if (insideDependenciesNode || insideDevDependenciesNode) {
         // ensuring no extra eof new lines are left
         file.writeAsStringSync('$contents'.trimRight().newLine);
-        return somethingAdded;
+      } else {
+        file.writeAsStringSync('$contents');
       }
     }
-
-    file.writeAsStringSync('$contents');
     return somethingAdded;
   }
 
@@ -139,18 +138,16 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
     Set<Package> packages, [
     bool writeNewLine = true,
   ]) {
-    var somethingAdded = false;
-
-    for (final package in packages) {
-      contents.write(package.pubspecEntry);
-      somethingAdded = true;
+    if (packages.isNotEmpty) {
+      for (final package in packages) {
+        contents.write(package.pubspecEntry);
+      }
+      if (writeNewLine) {
+        contents.writeln();
+      }
+      return true;
     }
-
-    if (somethingAdded && writeNewLine) {
-      contents.writeln();
-    }
-
-    return somethingAdded;
+    return false;
   }
 }
 

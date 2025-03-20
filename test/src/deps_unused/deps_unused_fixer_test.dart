@@ -6,6 +6,7 @@ import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
+import '../_util.dart';
 
 void main() {
   test(
@@ -75,6 +76,34 @@ void main() {
         '$sourcePath/expected_empty_dependencies.yaml'.read,
       );
     });
+
+    test('will modify file if something was removed', () async {
+      final lastModifiedBefore = sourceFile.modified;
+
+      DepsUnusedFixer.fix(
+        const DepsUnusedResults(
+          mainDependencies: {'meta'},
+          devDependencies: {},
+        ),
+        sourcePath,
+      );
+
+      expect(lastModifiedBefore.isBefore(sourceFile.modified), isTrue);
+    });
+
+    test('will not modify file if nothing was removed', () async {
+      final lastModifiedBefore = sourceFile.modified;
+
+      DepsUnusedFixer.fix(
+        const DepsUnusedResults(
+          mainDependencies: {'equatable'},
+          devDependencies: {},
+        ),
+        sourcePath,
+      );
+
+      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+    });
   });
 
   group('providing $meantForFixingEmptyPath path', () {
@@ -98,12 +127,4 @@ void main() {
       );
     });
   });
-}
-
-extension on File {
-  String get read => readAsStringSync();
-}
-
-extension on String {
-  String get read => File(this).read;
 }

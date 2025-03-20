@@ -6,6 +6,7 @@ import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
+import '../_util.dart';
 
 void main() {
   test(
@@ -52,6 +53,42 @@ void main() {
         sourceFile.read,
         '$sourcePath/expected.yaml'.read,
       );
+    });
+
+    test('will modify file if something was removed', () async {
+      final lastModifiedBefore = sourceFile.modified;
+
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {
+            'equatable:^2.0.7',
+            'yaml: 3.1.3',
+            'some_path_source :path= ../some_path_dependency',
+            'some_git_source: git=https://github.com/munificent/kittens.git',
+          },
+          dev: {
+            'test: ^1.16.0',
+            'build_runner: 2.4.15',
+          },
+        ),
+      ).perform();
+
+      expect(lastModifiedBefore.isBefore(sourceFile.modified), isTrue);
+    });
+
+    test('will not modify file if nothing was added', () async {
+      final lastModifiedBefore = sourceFile.modified;
+
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {},
+          dev: {},
+        ),
+      ).perform();
+
+      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
     });
   });
 
@@ -189,6 +226,20 @@ void main() {
         '$sourcePath/expected.yaml'.read,
       );
     });
+
+    test('will not modify file', () async {
+      final lastModifiedBefore = sourceFile.modified;
+
+      const DepsAddPerformer(
+        DepsAddParams(
+          path: sourcePath,
+          main: {'equatable:^2.0.7'},
+          dev: {'test: ^1.16.0'},
+        ),
+      ).perform();
+
+      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+    });
   });
 
   group('providing $meantForAddingSdkSourcePath path', () {
@@ -224,12 +275,4 @@ void main() {
       );
     });
   });
-}
-
-extension on File {
-  String get read => readAsStringSync();
-}
-
-extension on String {
-  String get read => File(this).read;
 }
