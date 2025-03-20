@@ -1,3 +1,7 @@
+## 0.4.4
+
+- Performance improvements on file write Performer/Checker.
+
 ## 0.4.3
 
 - `DepsAddPerformer` places SDK deps on top.

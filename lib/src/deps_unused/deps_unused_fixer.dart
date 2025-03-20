@@ -28,9 +28,9 @@ abstract final class DepsUnusedFixer {
 
     var dependenciesNodeFound = false;
     var devDependenciesNodeFound = false;
-
     var dependencyFound = false;
     var blankLineWritten = false;
+    var somethingRemoved = false;
 
     for (final line in file.readAsLinesSync()) {
       if (line.startsWith('$_dependenciesNode:')) {
@@ -54,6 +54,7 @@ abstract final class DepsUnusedFixer {
           if (dependenciesNodeFound && lt.startsWith(dependenciesRegex) ||
               devDependenciesNodeFound && lt.startsWith(devDependenciesRegex)) {
             dependencyFound = true;
+            somethingRemoved = true;
             continue;
           }
         }
@@ -80,6 +81,8 @@ abstract final class DepsUnusedFixer {
       contents.writeln(line);
     }
 
-    file.writeAsStringSync(contents.toString());
+    if (somethingRemoved) {
+      file.writeAsStringSync(contents.toString());
+    }
   }
 }
