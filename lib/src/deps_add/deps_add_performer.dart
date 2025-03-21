@@ -3,6 +3,7 @@ import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:dart_dependency_checker/src/deps_add/model/package.dart';
 import 'package:dart_dependency_checker/src/deps_add/model/source_type.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
+import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 
 final _rootNodeExp = RegExp(r'^\w+:');
@@ -97,7 +98,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
 
       contents.writeln(line);
 
-      // Places SDK deps on top
+      // places SDK deps on top
       if (onMainDependencyNode) {
         final sdkDeps = mainDepsToAdd.sdkDeps;
         if (sdkDeps.isNotEmpty) {
@@ -152,9 +153,9 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
 }
 
 extension on Set<String> {
-  Set<Package> get toPackages => map((dep) => dep.toPackage).toSet();
+  Set<Package> get toPackages => map((dep) => dep.toPackage).unmodifiable;
 }
 
 extension on Set<Package> {
-  Set<Package> get sdkDeps => where((dep) => dep.type.isSdk).toSet();
+  Set<Package> get sdkDeps => where((dep) => dep.type.isSdk).unmodifiable;
 }
