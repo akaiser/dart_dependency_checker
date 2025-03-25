@@ -2,33 +2,12 @@ import 'dart:io';
 
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
-import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
 import '../_util.dart';
 
 void main() {
-  test(
-      'throws a $PubspecNotFoundError with invalid path message '
-      'when path without pubspec.yaml has been provided', () {
-    const results = DepsUnusedResults(
-      mainDependencies: {},
-      devDependencies: {},
-    );
-
-    expect(
-      () => DepsUnusedFixer.fix(results, ''),
-      throwsA(
-        isA<PubspecNotFoundError>().having(
-          (e) => e.message,
-          'message',
-          'Invalid pubspec.yaml file path: /pubspec.yaml',
-        ),
-      ),
-    );
-  });
-
   group('providing $meantForFixingPath path', () {
     const sourcePath = meantForFixingPath;
     final sourceFile = File('$sourcePath/pubspec.yaml');
@@ -42,7 +21,7 @@ void main() {
         devDependencies: {'integration_test', 'lints', 'bla_test_bed'},
       );
 
-      DepsUnusedFixer.fix(results, sourcePath);
+      DepsUnusedFixer.fix(results, sourceFile);
 
       expect(
         sourceFile.read,
@@ -69,7 +48,7 @@ void main() {
         },
       );
 
-      DepsUnusedFixer.fix(results, sourcePath);
+      DepsUnusedFixer.fix(results, sourceFile);
 
       expect(
         sourceFile.read,
@@ -85,7 +64,7 @@ void main() {
           mainDependencies: {'meta'},
           devDependencies: {},
         ),
-        sourcePath,
+        sourceFile,
       );
 
       expect(lastModifiedBefore.isBefore(sourceFile.modified), isTrue);
@@ -99,7 +78,7 @@ void main() {
           mainDependencies: {'equatable'},
           devDependencies: {},
         ),
-        sourcePath,
+        sourceFile,
       );
 
       expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
@@ -119,7 +98,7 @@ void main() {
         devDependencies: {},
       );
 
-      DepsUnusedFixer.fix(results, sourcePath);
+      DepsUnusedFixer.fix(results, sourceFile);
 
       expect(
         sourceFile.read,

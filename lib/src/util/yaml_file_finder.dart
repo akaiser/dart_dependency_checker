@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dart_dependency_checker/src/performer_error.dart';
 
 /// Utility to find a pubspec yaml file.
-abstract final class PubspecYamlFinder {
+abstract final class YamlFileFinder {
   /// Finds a pubspec yaml file at [path].
   ///
   /// Throws a [PubspecNotFoundError] when no pubspec yaml file was found.
