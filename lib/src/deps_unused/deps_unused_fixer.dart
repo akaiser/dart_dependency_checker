@@ -1,7 +1,7 @@
+import 'dart:io';
+
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
-import 'package:dart_dependency_checker/src/performer_error.dart';
-import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
 
 final _rootNodeExp = RegExp(r'^\w+:');
 final _leafNodeExp = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
@@ -14,11 +14,7 @@ abstract final class DepsUnusedFixer {
 
   /// Reads a pubspec.yaml file, searches for dependencies passed
   /// via [DepsUnusedResults] and overrides file content without them.
-  ///
-  /// Throws a [PubspecNotFoundError] when no pubspec.yaml file was found.
-  static void fix(DepsUnusedResults results, String path) {
-    final file = PubspecYamlFinder.from(path);
-
+  static void fix(DepsUnusedResults results, File yamlFile) {
     final contents = StringBuffer();
 
     final dependenciesRegex =
@@ -32,7 +28,7 @@ abstract final class DepsUnusedFixer {
     var blankLineWritten = false;
     var somethingRemoved = false;
 
-    for (final line in file.readAsLinesSync()) {
+    for (final line in yamlFile.readAsLinesSync()) {
       if (line.startsWith('$_dependenciesNode:')) {
         dependenciesNodeFound = true;
         blankLineWritten = false;
@@ -82,7 +78,7 @@ abstract final class DepsUnusedFixer {
     }
 
     if (somethingRemoved) {
-      file.writeAsStringSync(contents.toString());
+      yamlFile.writeAsStringSync(contents.toString());
     }
   }
 }

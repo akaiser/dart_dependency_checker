@@ -4,8 +4,8 @@ import 'package:dart_dependency_checker/src/deps_used/deps_used_results.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
-import 'package:dart_dependency_checker/src/util/pubspec_yaml_loader.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
+import 'package:dart_dependency_checker/src/util/yaml_map_file_loader.dart';
 
 /// Checks used dependencies via imports only.
 class DepsUsedChecker extends Performer<DepsUsedParams, DepsUsedResults> {
@@ -13,8 +13,8 @@ class DepsUsedChecker extends Performer<DepsUsedParams, DepsUsedResults> {
 
   @override
   DepsUsedResults perform() {
-    final pubspecYaml = PubspecYamlLoader.from(params.path);
-    final ownReference = pubspecYaml.name;
+    final yamlMap = YamlMapFileLoader.from(params.path).yamlMap;
+    final ownReference = yamlMap.name;
 
     return DepsUsedResults(
       mainDependencies: _packages(

@@ -4,7 +4,7 @@ import 'package:dart_dependency_checker/src/deps_add/model/package.dart';
 import 'package:dart_dependency_checker/src/deps_add/model/source_type.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
-import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
+import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 
 final _rootNodeExp = RegExp(r'^\w+:');
 
@@ -25,7 +25,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
 
   @override
   bool perform() {
-    final file = PubspecYamlFinder.from(params.path);
+    final yamlFile = YamlFileFinder.from(params.path);
 
     final contents = StringBuffer();
 
@@ -34,7 +34,7 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
     var blankLineWritten = false;
     var somethingAdded = false;
 
-    final lines = file.readAsLinesSync();
+    final lines = yamlFile.readAsLinesSync();
 
     var mainDepsToAdd = params.main.toPackages;
     var devDepsToAdd = params.dev.toPackages;
@@ -126,9 +126,9 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
       // and we are still inside main or dev node
       if (insideDependenciesNode || insideDevDependenciesNode) {
         // ensuring no extra eof new lines are left
-        file.writeAsStringSync('$contents'.trimRight().newLine);
+        yamlFile.writeAsStringSync('$contents'.trimRight().newLine);
       } else {
-        file.writeAsStringSync('$contents');
+        yamlFile.writeAsStringSync('$contents');
       }
     }
     return somethingAdded;

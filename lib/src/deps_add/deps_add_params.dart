@@ -8,7 +8,10 @@ class DepsAddParams extends PathParam {
     this.dev = const {},
   });
 
+  /// Main dependencies to add.
   final Set<String> main;
+
+  /// Dev dependencies to add.
   final Set<String> dev;
 
   @override

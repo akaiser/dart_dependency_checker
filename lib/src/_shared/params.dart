@@ -1,14 +1,17 @@
 import 'package:equatable/equatable.dart';
 
+/// Base class for params with a path.
 abstract class PathParam extends Equatable {
   const PathParam({required this.path});
 
+  /// Path to the file.
   final String path;
 
   @override
   List<Object?> get props => [path];
 }
 
+/// Base class for params with a path and ignores.
 abstract class PathWithIgnoresParams extends PathParam {
   const PathWithIgnoresParams({
     required super.path,
@@ -16,7 +19,10 @@ abstract class PathWithIgnoresParams extends PathParam {
     this.devIgnores = const {},
   });
 
+  /// Main ignores.
   final Set<String> mainIgnores;
+
+  /// Dev ignores.
   final Set<String> devIgnores;
 
   @override

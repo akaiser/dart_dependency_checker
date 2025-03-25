@@ -1,5 +1,5 @@
 import 'package:dart_dependency_checker/src/performer_error.dart';
-import 'package:dart_dependency_checker/src/util/pubspec_yaml_finder.dart';
+import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
@@ -9,7 +9,7 @@ void main() {
       'throws a $PubspecNotFoundError with invalid path message '
       'when path without pubspec.yaml has been provided', () {
     expect(
-      () => PubspecYamlFinder.from(''),
+      () => YamlFileFinder.from(''),
       throwsA(
         isA<PubspecNotFoundError>().having(
           (e) => e.message,
@@ -21,21 +21,21 @@ void main() {
   });
 
   test('finds yaml file', () {
-    final file = PubspecYamlFinder.from(emptyYamlPath);
+    final file = YamlFileFinder.from(emptyYamlPath);
 
     expect(file.existsSync(), isTrue);
     expect(file.path, 'test/resources/samples/empty_yaml/pubspec.yaml');
   });
 
   test('finds yml file', () {
-    final file = PubspecYamlFinder.from(ymlFilePath);
+    final file = YamlFileFinder.from(ymlFilePath);
 
     expect(file.existsSync(), isTrue);
     expect(file.path, 'test/resources/samples/yml_file/pubspec.yml');
   });
 
   test('prefers yaml over yml file extension', () {
-    final file = PubspecYamlFinder.from(yamlAndYmlFilesPath);
+    final file = YamlFileFinder.from(yamlAndYmlFilesPath);
 
     expect(file.existsSync(), isTrue);
     expect(file.path, 'test/resources/samples/yaml_and_yml_files/pubspec.yaml');
