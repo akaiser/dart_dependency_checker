@@ -1,4 +1,4 @@
-## 0.4.4
+## 0.4.5
 
 - Performance improvements on file write Performer/Checker.
 
