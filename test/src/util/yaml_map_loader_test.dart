@@ -1,6 +1,7 @@
-import 'package:dart_dependency_checker/src/_shared/yaml_map_file.dart';
+import 'dart:io';
+
 import 'package:dart_dependency_checker/src/performer_error.dart';
-import 'package:dart_dependency_checker/src/util/yaml_map_file_loader.dart';
+import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
@@ -10,7 +11,7 @@ void main() {
       'throws a $PubspecNotFoundError with invalid path message '
       'when path without pubspec.yaml has been provided', () {
     expect(
-      () => YamlMapFileLoader.from(''),
+      () => YamlMapLoader.from(File('/pubspec.yaml')),
       throwsA(
         isA<PubspecNotFoundError>().having(
           (e) => e.message,
@@ -25,7 +26,7 @@ void main() {
       'throws a $PubspecNotValidError with invalid contents message '
       'when pubspec.yaml with empty contents has been provided', () {
     expect(
-      () => YamlMapFileLoader.from(emptyYamlPath),
+      () => YamlMapLoader.from(File('$emptyYamlPath/pubspec.yaml')),
       throwsA(
         isA<PubspecNotValidError>().having(
           (e) => e.message,
@@ -36,12 +37,11 @@ void main() {
     );
   });
 
-  test('maps to $YamlMapFile', () {
-    final yamlMapFile = YamlMapFileLoader.from(noSourcesDirsPath);
+  test('loads expected', () {
+    final yamlMap = YamlMapLoader.from(File('$noSourcesDirsPath/pubspec.yaml'));
 
-    expect(yamlMapFile.yamlFile.path, '$noSourcesDirsPath/pubspec.yaml');
     expect(
-      yamlMapFile.yamlMap,
+      yamlMap,
       const {
         'name': 'dart_dependency_checker_samples',
         'dependencies': {'meta': '^1.11.0'},

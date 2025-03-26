@@ -7,8 +7,9 @@ import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart
 import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
+import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
-import 'package:dart_dependency_checker/src/util/yaml_map_file_loader.dart';
+import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
 import 'package:yaml/yaml.dart';
 
 /// Checks via pubspec.yaml declared but unused dependencies.
@@ -17,23 +18,24 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
 
   @override
   DepsUnusedResults perform() {
-    final yamlMapFile = YamlMapFileLoader.from(params.path);
+    final yamlFile = YamlFileFinder.from(params.path);
+    final yamlMap = YamlMapLoader.from(yamlFile);
 
     final results = DepsUnusedResults(
       mainDependencies: _unusedPackages(
-        yamlMapFile.yamlMap,
+        yamlMap,
         DependencyType.mainDependencies,
         params.mainIgnores,
       ),
       devDependencies: _unusedPackages(
-        yamlMapFile.yamlMap,
+        yamlMap,
         DependencyType.devDependencies,
         params.devIgnores,
       ),
     );
 
     if (!results.isEmpty && params.fix) {
-      DepsCleaner.clean(results, yamlMapFile.yamlFile);
+      DepsCleaner.clean(results, yamlFile);
     }
 
     return results;

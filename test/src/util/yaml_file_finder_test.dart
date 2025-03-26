@@ -24,20 +24,20 @@ void main() {
     final file = YamlFileFinder.from(emptyYamlPath);
 
     expect(file.existsSync(), isTrue);
-    expect(file.path, 'test/resources/samples/empty_yaml/pubspec.yaml');
+    expect(file.path, '$emptyYamlPath/pubspec.yaml');
   });
 
   test('finds yml file', () {
     final file = YamlFileFinder.from(ymlFilePath);
 
     expect(file.existsSync(), isTrue);
-    expect(file.path, 'test/resources/samples/yml_file/pubspec.yml');
+    expect(file.path, '$ymlFilePath/pubspec.yml');
   });
 
   test('prefers yaml over yml file extension', () {
     final file = YamlFileFinder.from(yamlAndYmlFilesPath);
 
     expect(file.existsSync(), isTrue);
-    expect(file.path, 'test/resources/samples/yaml_and_yml_files/pubspec.yaml');
+    expect(file.path, '$yamlAndYmlFilesPath/pubspec.yaml');
   });
 }

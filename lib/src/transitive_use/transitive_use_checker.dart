@@ -4,8 +4,9 @@ import 'package:dart_dependency_checker/src/transitive_use/transitive_use_params
 import 'package:dart_dependency_checker/src/transitive_use/transitive_use_results.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
+import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
-import 'package:dart_dependency_checker/src/util/yaml_map_file_loader.dart';
+import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
 
 /// Checks direct use of pubspec.yaml undeclared aka. transitive dependencies.
 class TransitiveUseChecker
@@ -14,7 +15,8 @@ class TransitiveUseChecker
 
   @override
   TransitiveUseResults perform() {
-    final yamlMap = YamlMapFileLoader.from(params.path).yamlMap;
+    final yamlFile = YamlFileFinder.from(params.path);
+    final yamlMap = YamlMapLoader.from(yamlFile);
     final ownReference = yamlMap.name;
 
     final declaredMainDependencies = yamlMap.packages(

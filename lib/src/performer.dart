@@ -1,7 +1,8 @@
+import 'package:dart_dependency_checker/src/_shared/params.dart';
 import 'package:dart_dependency_checker/src/performer_error.dart';
 
 /// Base processor class.
-abstract class Performer<I, O> {
+abstract class Performer<I extends PathParam, O> {
   const Performer(this.params);
 
   /// Custom params required by any implementation of a [Performer].
