@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_dependency_checker/src/dependency_type.dart';
-import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
+import 'package:dart_dependency_checker/src/deps_unused/_deps_cleaner.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
@@ -33,7 +33,7 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
     );
 
     if (!results.isEmpty && params.fix) {
-      DepsUnusedFixer.fix(results, yamlMapFile.yamlFile);
+      DepsCleaner.clean(results, yamlMapFile.yamlFile);
     }
 
     return results;
