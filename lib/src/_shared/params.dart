@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 abstract class PathParam extends Equatable {
   const PathParam({required this.path});
 
-  /// Path to the file.
+  /// Path to a directory containing a pubspec.yaml file.
   final String path;
 
   @override

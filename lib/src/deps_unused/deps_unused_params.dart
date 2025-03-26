@@ -9,6 +9,7 @@ class DepsUnusedParams extends PathWithIgnoresParams {
     this.fix = false,
   });
 
+  /// Whether to remove the unused dependencies.
   final bool fix;
 
   @override
