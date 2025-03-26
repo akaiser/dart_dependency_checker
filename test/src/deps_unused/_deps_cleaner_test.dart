@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/deps_unused/deps_unused_fixer.dart';
+import 'package:dart_dependency_checker/src/deps_unused/_deps_cleaner.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:test/test.dart';
 
@@ -21,7 +21,7 @@ void main() {
         devDependencies: {'integration_test', 'lints', 'bla_test_bed'},
       );
 
-      DepsUnusedFixer.fix(results, sourceFile);
+      DepsCleaner.clean(results, sourceFile);
 
       expect(
         sourceFile.read,
@@ -48,7 +48,7 @@ void main() {
         },
       );
 
-      DepsUnusedFixer.fix(results, sourceFile);
+      DepsCleaner.clean(results, sourceFile);
 
       expect(
         sourceFile.read,
@@ -59,7 +59,7 @@ void main() {
     test('will modify file if something was removed', () async {
       final lastModifiedBefore = sourceFile.modified;
 
-      DepsUnusedFixer.fix(
+      DepsCleaner.clean(
         const DepsUnusedResults(
           mainDependencies: {'meta'},
           devDependencies: {},
@@ -73,7 +73,7 @@ void main() {
     test('will not modify file if nothing was removed', () async {
       final lastModifiedBefore = sourceFile.modified;
 
-      DepsUnusedFixer.fix(
+      DepsCleaner.clean(
         const DepsUnusedResults(
           mainDependencies: {'equatable'},
           devDependencies: {},
@@ -98,7 +98,7 @@ void main() {
         devDependencies: {},
       );
 
-      DepsUnusedFixer.fix(results, sourceFile);
+      DepsCleaner.clean(results, sourceFile);
 
       expect(
         sourceFile.read,

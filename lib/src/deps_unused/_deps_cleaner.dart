@@ -1,20 +1,14 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
-
-final _rootNodeExp = RegExp(r'^\w+:');
-final _leafNodeExp = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
+import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 
 /// A very dumb and dangerous utility to read and write into the same
 /// pubspec.yaml file.
-abstract final class DepsUnusedFixer {
-  static final _dependenciesNode = DependencyType.mainDependencies.yamlNode;
-  static final _devDependenciesNode = DependencyType.devDependencies.yamlNode;
-
-  /// Reads a pubspec.yaml file, searches for dependencies passed
-  /// via [DepsUnusedResults] and overrides file content without them.
-  static void fix(DepsUnusedResults results, File yamlFile) {
+abstract final class DepsCleaner {
+  /// Reads passed [yamlFile], removes dependencies passed via
+  /// [DepsUnusedResults] and overrides file content.
+  static void clean(DepsUnusedResults results, File yamlFile) {
     final contents = StringBuffer();
 
     final dependenciesRegex =
@@ -29,12 +23,12 @@ abstract final class DepsUnusedFixer {
     var somethingRemoved = false;
 
     for (final line in yamlFile.readAsLinesSync()) {
-      if (line.startsWith('$_dependenciesNode:')) {
+      if (line.startsWith('$mainDependenciesNode:')) {
         dependenciesNodeFound = true;
         blankLineWritten = false;
         contents.writeln(line);
         continue;
-      } else if (line.startsWith('$_devDependenciesNode:')) {
+      } else if (line.startsWith('$devDependenciesNode:')) {
         devDependenciesNodeFound = true;
         blankLineWritten = false;
         contents.writeln(line);
@@ -42,7 +36,7 @@ abstract final class DepsUnusedFixer {
       }
 
       if (dependenciesNodeFound || devDependenciesNodeFound) {
-        if (_rootNodeExp.hasMatch(line)) {
+        if (rootNodeExp.hasMatch(line)) {
           dependenciesNodeFound = false;
           devDependenciesNodeFound = false;
         } else {
@@ -56,7 +50,7 @@ abstract final class DepsUnusedFixer {
         }
 
         if (dependencyFound) {
-          if (_leafNodeExp.hasMatch(line)) {
+          if (leafNodeExp.hasMatch(line)) {
             continue;
           } else {
             dependencyFound = false;
