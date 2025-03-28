@@ -10,7 +10,6 @@ import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
-import 'package:yaml/yaml.dart';
 
 /// Checks via pubspec.yaml declared but unused dependencies.
 class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
@@ -21,17 +20,27 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
     final yamlFile = YamlFileFinder.from(params.path);
     final yamlMap = YamlMapLoader.from(yamlFile);
 
+    final declaredInMain = yamlMap
+        .packages(DependencyType.mainDependencies)
+        .difference(params.mainIgnores);
+
+    final declaredInDev = yamlMap
+        .packages(DependencyType.devDependencies)
+        .difference(params.devIgnores);
+
     final results = DepsUnusedResults(
       mainDependencies: _unusedPackages(
-        yamlMap,
         DependencyType.mainDependencies,
-        params.mainIgnores,
+        declaredInMain,
       ),
-      devDependencies: _unusedPackages(
-        yamlMap,
-        DependencyType.devDependencies,
-        params.devIgnores,
-      ),
+      devDependencies: {
+        ..._unusedPackages(
+          DependencyType.devDependencies,
+          declaredInDev,
+        ),
+        // if any declared dev dep exists in main, mark it for removal from dev.
+        ...declaredInMain.intersection(declaredInDev),
+      },
     );
 
     if (!results.isEmpty && params.fix) {
@@ -42,23 +51,20 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
   }
 
   Set<String> _unusedPackages(
-    YamlMap yamlMap,
     DependencyType dependencyType,
-    Set<String> ignores,
+    Set<String> declaredPackages,
   ) {
-    final packages = yamlMap.packages(dependencyType).difference(ignores);
-
-    if (packages.isEmpty) {
+    if (declaredPackages.isEmpty) {
       return const {};
     }
 
     final files = DartFiles.from(params.path, dependencyType);
 
     if (files.isEmpty) {
-      return packages;
+      return declaredPackages;
     }
 
-    return _packageUsageCount(packages, files)
+    return _packageUsageCount(declaredPackages, files)
         .entries
         .where((entry) => entry.value == 0)
         .map((entry) => entry.key)
