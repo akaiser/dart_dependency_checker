@@ -6,8 +6,8 @@ import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 /// A very dumb and dangerous utility to read and write into the same
 /// pubspec.yaml file.
 abstract final class DepsCleaner {
-  /// Reads passed [yamlFile], removes dependencies passed via
-  /// [DepsUnusedResults] and overrides file content.
+  /// Reads passed `yamlFile`, removes dependencies passed via
+  /// [DepsUnusedResults] and overrides file contents.
   static void clean(DepsUnusedResults results, File yamlFile) {
     final contents = StringBuffer();
 
@@ -22,7 +22,9 @@ abstract final class DepsCleaner {
     var blankLineWritten = false;
     var somethingRemoved = false;
 
-    for (final line in yamlFile.readAsLinesSync()) {
+    final lines = yamlFile.readAsLinesSync();
+
+    for (final line in lines) {
       if (line.startsWith('$mainDependenciesNode:')) {
         dependenciesNodeFound = true;
         blankLineWritten = false;
@@ -50,7 +52,7 @@ abstract final class DepsCleaner {
         }
 
         if (dependencyFound) {
-          if (leafNodeExp.hasMatch(line)) {
+          if (depLocationNodeExp.hasMatch(line)) {
             continue;
           } else {
             dependencyFound = false;

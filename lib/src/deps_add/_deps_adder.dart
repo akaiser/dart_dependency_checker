@@ -2,20 +2,22 @@ import 'dart:io';
 
 import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:dart_dependency_checker/src/deps_add/model/package.dart';
-import 'package:dart_dependency_checker/src/deps_add/model/source_type.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 
 /// Blindly adds main and dev dependencies to a pubspec.yaml file
 /// (without consulting dart pub add).
 ///
-/// In a perfect world, for simplicity:
+/// For simplicity:
 /// - Doesn't care if the dependency is already in the file.
+/// - Doesn't care about the order of source type placement.
+/// - Doesn't know anything about `dependency_overrides` node.
 /// - Won't add a dependency if the main/dev node is missing.
 /// - Supports sources with single level of nesting.
 abstract final class DepsAdder {
-  /// Reads passed [yamlFile], adds dependencies passed via [DepsAddParams]
-  /// and overrides file content.
+  /// Reads passed `yamlFile`, adds dependencies passed via [DepsAddParams]
+  /// and overrides file contents.
   ///
   /// Returns `true` if at least one dependency was added.
   static bool add(DepsAddParams params, File yamlFile) {
@@ -26,14 +28,12 @@ abstract final class DepsAdder {
     var blankLineWritten = false;
     var somethingAdded = false;
 
-    var mainDepsToAdd = params.main.toPackages;
-    var devDepsToAdd = params.dev.toPackages;
+    final mainPackagesToAdd = params.main.toPackages;
+    final devPackagesToAdd = params.dev.toPackages;
 
     final lines = yamlFile.readAsLinesSync();
 
-    for (int i = 0; i < lines.length; i++) {
-      final line = lines[i];
-
+    for (final line in lines) {
       final onMainDependencyNode = line.startsWith('$mainDependenciesNode:');
       final onDevDependencyNode = line.startsWith('$devDependenciesNode:');
 
@@ -41,7 +41,7 @@ abstract final class DepsAdder {
       if (onMainDependencyNode) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          somethingAdded |= _add(contents, devDepsToAdd);
+          somethingAdded |= _add(contents, devPackagesToAdd);
         }
 
         insideDependenciesNode = true;
@@ -52,7 +52,7 @@ abstract final class DepsAdder {
       else if (onDevDependencyNode) {
         // maybe we were inside main node previously
         if (insideDependenciesNode) {
-          somethingAdded |= _add(contents, mainDepsToAdd);
+          somethingAdded |= _add(contents, mainPackagesToAdd);
         }
 
         insideDependenciesNode = false;
@@ -63,11 +63,11 @@ abstract final class DepsAdder {
       else if (rootNodeExp.hasMatch(line)) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          somethingAdded |= _add(contents, devDepsToAdd);
+          somethingAdded |= _add(contents, devPackagesToAdd);
         }
         // maybe we were inside main node previously
         else if (insideDependenciesNode) {
-          somethingAdded |= _add(contents, mainDepsToAdd);
+          somethingAdded |= _add(contents, mainPackagesToAdd);
         }
 
         insideDependenciesNode = false;
@@ -75,8 +75,8 @@ abstract final class DepsAdder {
       }
 
       // clean extra new lines in affected nodes
-      if ((insideDependenciesNode && mainDepsToAdd.isNotEmpty) ||
-          (insideDevDependenciesNode && devDepsToAdd.isNotEmpty)) {
+      if ((insideDependenciesNode && mainPackagesToAdd.isNotEmpty) ||
+          (insideDevDependenciesNode && devPackagesToAdd.isNotEmpty)) {
         if (line.trim().isEmpty) {
           if (blankLineWritten) {
             continue;
@@ -89,28 +89,13 @@ abstract final class DepsAdder {
       }
 
       contents.writeln(line);
-
-      // places SDK deps on top
-      if (onMainDependencyNode) {
-        final sdkDeps = mainDepsToAdd.sdkDeps;
-        if (sdkDeps.isNotEmpty) {
-          somethingAdded |= _add(contents, sdkDeps, false);
-          mainDepsToAdd = mainDepsToAdd.difference(sdkDeps);
-        }
-      } else if (onDevDependencyNode) {
-        final sdkDeps = devDepsToAdd.sdkDeps;
-        if (sdkDeps.isNotEmpty) {
-          somethingAdded |= _add(contents, sdkDeps, false);
-          devDepsToAdd = devDepsToAdd.difference(sdkDeps);
-        }
-      }
     }
 
     // no other unrelated node was found, ensure to finish deps adding
     if (insideDevDependenciesNode) {
-      somethingAdded |= _add(contents, devDepsToAdd);
+      somethingAdded |= _add(contents, devPackagesToAdd);
     } else if (insideDependenciesNode) {
-      somethingAdded |= _add(contents, mainDepsToAdd);
+      somethingAdded |= _add(contents, mainPackagesToAdd);
     }
 
     // something was added
@@ -146,8 +131,4 @@ abstract final class DepsAdder {
 
 extension on Set<String> {
   Set<Package> get toPackages => map((dep) => dep.toPackage).unmodifiable;
-}
-
-extension on Set<Package> {
-  Set<Package> get sdkDeps => where((dep) => dep.type.isSdk).unmodifiable;
 }

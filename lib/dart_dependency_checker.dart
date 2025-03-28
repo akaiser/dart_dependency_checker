@@ -57,17 +57,20 @@
 ///       // Example usage
 ///       dev: {
 ///         // 'flutter_test: sdk=flutter',
-///         // 'test: ^1.16.0',
+///         // 'test: ^1.25.0',
 ///         // 'build_runner: 2.4.15',
 ///       },
 ///     ),
 ///   );
+///
+///   const depsSortPerformer = DepsSortPerformer(DepsSortParams(path: '.'));
 ///
 ///   try {
 ///     print(depsUsedChecker.perform());
 ///     print(depsUnusedChecker.perform());
 ///     print(transitiveUseChecker.perform());
 ///     print(depsAddPerformer.perform());
+///     print(depsSortPerformer.perform());
 ///   } on PerformerError catch (e) {
 ///     print(e.message);
 ///   }
@@ -77,6 +80,7 @@ library;
 
 export 'src/_exports.dart';
 export 'src/deps_add/_exports.dart';
+export 'src/deps_sort/_exports.dart';
 export 'src/deps_unused/_exports.dart';
 export 'src/deps_used/_exports.dart';
 export 'src/transitive_use/_exports.dart';

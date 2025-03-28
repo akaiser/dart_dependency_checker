@@ -6,8 +6,10 @@ import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 /// Blindly adds main and dev dependencies to a pubspec.yaml file
 /// (without consulting dart pub add).
 ///
-/// In a perfect world, for simplicity:
+/// For simplicity:
 /// - Doesn't care if the dependency is already in the file.
+/// - Doesn't care about the order of source type placement.
+/// - Doesn't know anything about `dependency_overrides` node.
 /// - Won't add a dependency if the main/dev node is missing.
 /// - Supports sources with single level of nesting.
 ///
