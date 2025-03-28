@@ -67,6 +67,7 @@ void main() {
     ),
   );
 
+  // Sorts main and dev dependencies in a pubspec.yaml file.
   const depsSortPerformer = DepsSortPerformer(DepsSortParams(path: '.'));
 
   try {
