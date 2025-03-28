@@ -243,7 +243,7 @@ void main() {
 
     tearDown(() => sourceFile.writeAsStringSync(sourceContent));
 
-    test('places SDK deps on top', () {
+    test('places sdk deps anywhere', () {
       final result = DepsAdder.add(
         const DepsAddParams(
           path: sourcePath,

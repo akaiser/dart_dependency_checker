@@ -1,10 +1,10 @@
+## 1.0.0
+
+- Added `DepsSortPerformer` implementation.
+
 ## 0.4.5
 
 - Performance improvements on file write Performer/Checker.
-
-## 0.4.3
-
-- `DepsAddPerformer` places SDK deps on top.
 
 ## 0.4.2
 

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dart_dependency_checker/src/deps_add/model/source_type.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:equatable/equatable.dart';
 
 class Package extends Equatable {
@@ -17,8 +16,6 @@ class Package extends Equatable {
 }
 
 extension StringExt on String {
-  String get newLine => this + Platform.lineTerminator;
-
   Package get toPackage {
     final parts = split(':');
 

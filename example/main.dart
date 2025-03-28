@@ -50,11 +50,14 @@ void main() {
     ),
   );
 
+  const depsSortPerformer = DepsSortPerformer(DepsSortParams(path: '.'));
+
   try {
     print(depsUsedChecker.perform());
     print(depsUnusedChecker.perform());
     print(transitiveUseChecker.perform());
     print(depsAddPerformer.perform());
+    print(depsSortPerformer.perform());
   } on PerformerError catch (e) {
     print(e.message);
   }
