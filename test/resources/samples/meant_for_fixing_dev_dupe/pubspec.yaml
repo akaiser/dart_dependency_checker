@@ -1,0 +1,13 @@
+name: feature_bla
+description: Bla Description
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  meta: ^1.16.0
+
+dev_dependencies:
+  meta: ^1.16.0

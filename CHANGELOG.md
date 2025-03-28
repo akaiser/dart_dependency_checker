@@ -1,3 +1,8 @@
+## 1.0.1
+
+- `DepsUnusedChecker` marks dev packages for removal when any declared/used dev package is already declared/used in
+  main.
+
 ## 1.0.0
 
 - Added `DepsSortPerformer` implementation.

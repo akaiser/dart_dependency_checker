@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_checker.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
@@ -5,6 +7,7 @@ import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
+import '../_util.dart';
 
 void main() {
   test(
@@ -112,6 +115,65 @@ void main() {
           devDependencies: {},
         ),
       );
+    });
+  });
+
+  group(
+      'providing $meantForFixingMissingDevDupe path '
+      'where a package is used and declared in main and dev', () {
+    const sourcePath = meantForFixingMissingDevDupe;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('will be removed from dev because it is already declared in main', () {
+      const params = DepsUnusedParams(path: sourcePath, fix: true);
+
+      expect(
+        const DepsUnusedChecker(params).perform(),
+        const DepsUnusedResults(
+          mainDependencies: {},
+          devDependencies: {'meta'},
+        ),
+      );
+      expect(sourceFile.read, '$sourcePath/expected.yaml'.read);
+    });
+
+    test('will not be removed from dev because it is ignored in main', () {
+      final lastModifiedBefore = sourceFile.modified;
+      const params = DepsUnusedParams(
+        path: sourcePath,
+        mainIgnores: {'meta'},
+        fix: true,
+      );
+
+      expect(
+        const DepsUnusedChecker(params).perform(),
+        const DepsUnusedResults(
+          mainDependencies: {},
+          devDependencies: {},
+        ),
+      );
+      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+    });
+
+    test('will not be removed from dev because it is ignored in dev', () {
+      final lastModifiedBefore = sourceFile.modified;
+      const params = DepsUnusedParams(
+        path: sourcePath,
+        devIgnores: {'meta'},
+        fix: true,
+      );
+
+      expect(
+        const DepsUnusedChecker(params).perform(),
+        const DepsUnusedResults(
+          mainDependencies: {},
+          devDependencies: {},
+        ),
+      );
+      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
     });
   });
 }
