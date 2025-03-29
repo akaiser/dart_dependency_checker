@@ -1,3 +1,9 @@
+## 1.0.2
+
+- `DepsSortPerformer` tweaks:
+    - Leaves new line in empty dependency node.
+    - Suppresses file write if no changes are detected.
+
 ## 1.0.1
 
 - `DepsUnusedChecker` marks dev packages for removal when any declared/used dev package is already declared/used in
