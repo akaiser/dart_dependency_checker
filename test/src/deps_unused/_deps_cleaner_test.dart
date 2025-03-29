@@ -52,7 +52,7 @@ void main() {
 
       expect(
         sourceFile.read,
-        '$sourcePath/expected_empty_dependencies.yaml'.read,
+        '$sourcePath/expected_empty_nodes.yaml'.read,
       );
     });
 

@@ -33,6 +33,32 @@ void main() {
     });
   });
 
+  group('providing $meantForSortingEmptyNodePath path', () {
+    const sourcePath = meantForSortingEmptyNodePath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
+    final sourceContent = sourceFile.read;
+
+    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+
+    test('leaves blank dependency section', () {
+      DepsSorter.sort(sourceFile);
+
+      expect(
+        sourceFile.read,
+        '$sourcePath/expected.yaml'.read,
+      );
+    });
+
+    test('will not modify anything', () async {
+      final lastModifiedBefore = sourceFile.modified;
+
+      final result = DepsSorter.sort(sourceFile);
+
+      expect(result, isFalse);
+      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+    });
+  });
+
   group('providing $meantForSortingFlippedNodesPath path', () {
     const sourcePath = meantForSortingFlippedNodesPath;
     final sourceFile = File('$sourcePath/pubspec.yaml');
@@ -78,7 +104,8 @@ void main() {
   });
 
   test('providing $noDependenciesPath path will not do anything', () {
-    final sourceFile = File('$noDependenciesPath/pubspec.yaml');
+    const sourcePath = noDependenciesPath;
+    final sourceFile = File('$sourcePath/pubspec.yaml');
     final lastModifiedBefore = sourceFile.modified;
 
     final result = DepsSorter.sort(sourceFile);

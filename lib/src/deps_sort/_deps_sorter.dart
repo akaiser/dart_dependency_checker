@@ -26,6 +26,7 @@ abstract final class DepsSorter {
     final devPackages = <_Package>{};
     final notHostedPackageTracker = _NotHostedPackageTracker();
 
+    final originalContent = yamlFile.readAsStringSync();
     final lines = yamlFile.readAsLinesSync();
 
     for (final line in lines) {
@@ -86,19 +87,19 @@ abstract final class DepsSorter {
       _add(contents, mainPackages, notHostedPackageTracker);
     }
 
-    final shouldHaveChanges = mainPackages.isNotEmpty || devPackages.isNotEmpty;
+    var newContent = contents.toString();
 
-    if (shouldHaveChanges) {
+    if (originalContent.trim() != newContent.trim()) {
       // and we are still inside main or dev node
       if (insideDependenciesNode || insideDevDependenciesNode) {
         // ensuring no extra eof new lines are left
-        yamlFile.writeAsStringSync('$contents'.trimRight().newLine);
-      } else {
-        yamlFile.writeAsStringSync('$contents');
+        newContent = newContent.trimRight().newLine;
       }
+      yamlFile.writeAsStringSync(newContent);
+      return true;
     }
 
-    return shouldHaveChanges;
+    return false;
   }
 
   static void _parseAndPopulate(
@@ -172,6 +173,9 @@ abstract final class DepsSorter {
       _addSection(contents, sdkPackages);
       _addSection(contents, hostedPackages);
       _addSection(contents, rest);
+    } else {
+      // leave new line in empty dependency node
+      contents.writeln();
     }
   }
 
