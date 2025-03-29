@@ -85,8 +85,8 @@ void main() {
     });
   });
 
-  group('providing $meantForFixingEmptyPath path', () {
-    const sourcePath = meantForFixingEmptyPath;
+  group('providing $meantForFixingNoNodesPath path', () {
+    const sourcePath = meantForFixingNoNodesPath;
     final sourceFile = File('$sourcePath/pubspec.yaml');
     final sourceContent = sourceFile.read;
 
