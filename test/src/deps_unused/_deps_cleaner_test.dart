@@ -1,19 +1,22 @@
-import 'dart:io';
-
 import 'package:dart_dependency_checker/src/deps_unused/_deps_cleaner.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:test/test.dart';
 
+import '../_file_arrange_builder.dart';
 import '../_paths.dart';
 import '../_util.dart';
 
 void main() {
+  late FileArrangeBuilder builder;
+
+  setUp(() => builder = FileArrangeBuilder());
+
+  tearDown(() => builder.reset());
+
   group('providing $meantForFixingPath path', () {
     const sourcePath = meantForFixingPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('cleanes source file', () {
       const results = DepsUnusedResults(
@@ -21,12 +24,9 @@ void main() {
         devDependencies: {'integration_test', 'lints', 'bla_test_bed'},
       );
 
-      DepsCleaner.clean(results, sourceFile);
+      DepsCleaner.clean(results, builder.file);
 
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('leaves blank dependency sections', () {
@@ -48,49 +48,49 @@ void main() {
         },
       );
 
-      DepsCleaner.clean(results, sourceFile);
+      DepsCleaner.clean(results, builder.file);
 
       expect(
-        sourceFile.read,
+        builder.readFile,
         '$sourcePath/expected_empty_nodes.yaml'.read,
       );
     });
 
     test('will modify file if something was removed', () async {
-      final lastModifiedBefore = sourceFile.modified;
-
       DepsCleaner.clean(
         const DepsUnusedResults(
           mainDependencies: {'meta'},
           devDependencies: {},
         ),
-        sourceFile,
+        builder.file,
       );
 
-      expect(lastModifiedBefore.isBefore(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
+        isTrue,
+      );
     });
 
     test('will not modify file if nothing was removed', () async {
-      final lastModifiedBefore = sourceFile.modified;
-
       DepsCleaner.clean(
         const DepsUnusedResults(
           mainDependencies: {'equatable'},
           devDependencies: {},
         ),
-        sourceFile,
+        builder.file,
       );
 
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileCreatedAt),
+        isTrue,
+      );
     });
   });
 
   group('providing $meantForFixingNoNodesPath path', () {
     const sourcePath = meantForFixingNoNodesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('passes with no changes', () {
       const results = DepsUnusedResults(
@@ -98,12 +98,9 @@ void main() {
         devDependencies: {},
       );
 
-      DepsCleaner.clean(results, sourceFile);
+      DepsCleaner.clean(results, builder.file);
 
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
   });
 }

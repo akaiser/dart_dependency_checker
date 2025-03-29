@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_checker.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
+import '../_file_arrange_builder.dart';
 import '../_paths.dart';
-import '../_util.dart';
 
 void main() {
   test(
@@ -122,10 +120,12 @@ void main() {
       'providing $meantForFixingMissingDevDupe path '
       'where a package is used and declared in main and dev', () {
     const sourcePath = meantForFixingMissingDevDupe;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    late FileArrangeBuilder builder;
+
+    setUp(() => builder = FileArrangeBuilder()..init(sourcePath));
+
+    tearDown(() => builder.reset());
 
     test('will be removed from dev because it is already declared in main', () {
       const params = DepsUnusedParams(path: sourcePath, fix: true);
@@ -137,11 +137,10 @@ void main() {
           devDependencies: {'meta'},
         ),
       );
-      expect(sourceFile.read, '$sourcePath/expected.yaml'.read);
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('will not be removed from dev because it is ignored in main', () {
-      final lastModifiedBefore = sourceFile.modified;
       const params = DepsUnusedParams(
         path: sourcePath,
         mainIgnores: {'meta'},
@@ -155,11 +154,13 @@ void main() {
           devDependencies: {},
         ),
       );
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+        isTrue,
+      );
     });
 
     test('will not be removed from dev because it is ignored in dev', () {
-      final lastModifiedBefore = sourceFile.modified;
       const params = DepsUnusedParams(
         path: sourcePath,
         devIgnores: {'meta'},
@@ -173,7 +174,10 @@ void main() {
           devDependencies: {},
         ),
       );
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+        isTrue,
+      );
     });
   });
 }
