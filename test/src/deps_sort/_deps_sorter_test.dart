@@ -1,116 +1,96 @@
-import 'dart:io';
-
 import 'package:dart_dependency_checker/src/deps_sort/_deps_sorter.dart';
 import 'package:test/test.dart';
 
+import '../_file_arrange_builder.dart';
 import '../_paths.dart';
-import '../_util.dart';
 
 void main() {
-  group('providing $meantForSortingPath path', () {
-    const sourcePath = meantForSortingPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
+  late FileArrangeBuilder builder;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+  setUp(() => builder = FileArrangeBuilder());
+
+  tearDown(() => builder.reset());
+
+  group('providing $meantForSortingPath path', () {
+    setUp(() => builder.init(meantForSortingPath));
 
     test('will sort all dependencies', () {
-      final result = DepsSorter.sort(sourceFile);
+      final result = DepsSorter.sort(builder.file);
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('will modify file', () async {
-      final lastModifiedBefore = sourceFile.modified;
+      DepsSorter.sort(builder.file);
 
-      DepsSorter.sort(sourceFile);
-
-      expect(lastModifiedBefore.isBefore(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
+        isTrue,
+      );
     });
   });
 
   group('providing $meantForSortingEmptyNodePath path', () {
-    const sourcePath = meantForSortingEmptyNodePath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
-
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(meantForSortingEmptyNodePath));
 
     test('leaves blank dependency section', () {
-      DepsSorter.sort(sourceFile);
+      DepsSorter.sort(builder.file);
 
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('will not modify anything', () async {
-      final lastModifiedBefore = sourceFile.modified;
-
-      final result = DepsSorter.sort(sourceFile);
+      final result = DepsSorter.sort(builder.file);
 
       expect(result, isFalse);
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+        isTrue,
+      );
     });
   });
 
   group('providing $meantForSortingFlippedNodesPath path', () {
-    const sourcePath = meantForSortingFlippedNodesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
-
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(meantForSortingFlippedNodesPath));
 
     test('will sort all dependencies', () {
-      final result = DepsSorter.sort(sourceFile);
+      final result = DepsSorter.sort(builder.file);
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
   });
 
   group('providing $meantForSortingNoNodesPath path', () {
-    const sourcePath = meantForSortingNoNodesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
-
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(meantForSortingNoNodesPath));
 
     test('will not sort anything', () {
-      final result = DepsSorter.sort(sourceFile);
+      final result = DepsSorter.sort(builder.file);
 
       expect(result, isFalse);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('will not modify file', () async {
-      final lastModifiedBefore = sourceFile.modified;
+      DepsSorter.sort(builder.file);
 
-      DepsSorter.sort(sourceFile);
-
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+        isTrue,
+      );
     });
   });
 
   test('providing $noDependenciesPath path will not do anything', () {
-    const sourcePath = noDependenciesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final lastModifiedBefore = sourceFile.modified;
+    builder.init(noDependenciesPath);
 
-    final result = DepsSorter.sort(sourceFile);
+    final result = DepsSorter.sort(builder.file);
 
     expect(result, isFalse);
-    expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+    expect(
+      builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+      isTrue,
+    );
   });
 }

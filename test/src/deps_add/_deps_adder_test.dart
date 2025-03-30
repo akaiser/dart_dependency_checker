@@ -1,19 +1,22 @@
-import 'dart:io';
-
 import 'package:dart_dependency_checker/src/deps_add/_deps_adder.dart';
 import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:test/test.dart';
 
+import '../_file_arrange_builder.dart';
 import '../_paths.dart';
 import '../_util.dart';
 
 void main() {
+  late FileArrangeBuilder builder;
+
+  setUp(() => builder = FileArrangeBuilder());
+
+  tearDown(() => builder.reset());
+
   group('providing $meantForAddingPath path', () {
     const sourcePath = meantForAddingPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('will add all dependencies', () {
       final result = DepsAdder.add(
@@ -30,19 +33,14 @@ void main() {
             'build_runner: 2.4.15',
           },
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('will modify file if something was removed', () async {
-      final lastModifiedBefore = sourceFile.modified;
-
       DepsAdder.add(
         const DepsAddParams(
           path: sourcePath,
@@ -57,34 +55,36 @@ void main() {
             'build_runner: 2.4.15',
           },
         ),
-        sourceFile,
+        builder.file,
       );
 
-      expect(lastModifiedBefore.isBefore(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
+        isTrue,
+      );
     });
 
     test('will not modify file if nothing was added', () async {
-      final lastModifiedBefore = sourceFile.modified;
-
       DepsAdder.add(
         const DepsAddParams(
           path: sourcePath,
           main: {},
           dev: {},
         ),
-        sourceFile,
+        builder.file,
       );
 
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+        isTrue,
+      );
     });
   });
 
   group('providing $meantForAddingFlippedNodesPath path', () {
     const sourcePath = meantForAddingFlippedNodesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('will add all dependencies', () {
       final result = DepsAdder.add(
@@ -101,23 +101,18 @@ void main() {
             'build_runner: 2.4.15',
           },
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
   });
 
   group('providing $meantForAddingNewLinesPath path', () {
     const sourcePath = meantForAddingNewLinesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('adds and cleanes too many new lines', () {
       final result = DepsAdder.add(
@@ -126,14 +121,11 @@ void main() {
           main: {'equatable:^2.0.7'},
           dev: {'test: ^1.16.0'},
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('no change when nothing added', () {
@@ -143,12 +135,12 @@ void main() {
           main: {},
           dev: {},
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isFalse);
       expect(
-        sourceFile.read,
+        builder.readFile,
         '$sourcePath/expected_no_change.yaml'.read,
       );
     });
@@ -156,10 +148,8 @@ void main() {
 
   group('providing $meantForAddingNewLinesEofPath path', () {
     const sourcePath = meantForAddingNewLinesEofPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('adds and cleanes too many eof new lines', () {
       final result = DepsAdder.add(
@@ -168,14 +158,11 @@ void main() {
           main: {'equatable:^2.0.7'},
           dev: {'test: ^1.16.0'},
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('no change when nothing added', () {
@@ -185,12 +172,12 @@ void main() {
           main: {},
           dev: {},
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isFalse);
       expect(
-        sourceFile.read,
+        builder.readFile,
         '$sourcePath/expected_no_change.yaml'.read,
       );
     });
@@ -198,10 +185,8 @@ void main() {
 
   group('providing $meantForAddingNoNodesPath path', () {
     const sourcePath = meantForAddingNoNodesPath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('will not add anything', () {
       final result = DepsAdder.add(
@@ -210,38 +195,34 @@ void main() {
           main: {'equatable:^2.0.7'},
           dev: {'test: ^1.16.0'},
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isFalse);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
 
     test('will not modify file', () async {
-      final lastModifiedBefore = sourceFile.modified;
-
       DepsAdder.add(
         const DepsAddParams(
           path: sourcePath,
           main: {'equatable:^2.0.7'},
           dev: {'test: ^1.16.0'},
         ),
-        sourceFile,
+        builder.file,
       );
 
-      expect(lastModifiedBefore.isAtSameMomentAs(sourceFile.modified), isTrue);
+      expect(
+        builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
+        isTrue,
+      );
     });
   });
 
   group('providing $meantForAddingSdkSourcePath path', () {
     const sourcePath = meantForAddingSdkSourcePath;
-    final sourceFile = File('$sourcePath/pubspec.yaml');
-    final sourceContent = sourceFile.read;
 
-    tearDown(() => sourceFile.writeAsStringSync(sourceContent));
+    setUp(() => builder.init(sourcePath));
 
     test('places sdk deps anywhere', () {
       final result = DepsAdder.add(
@@ -260,14 +241,11 @@ void main() {
             'integration_test: sdk=flutter',
           },
         ),
-        sourceFile,
+        builder.file,
       );
 
       expect(result, isTrue);
-      expect(
-        sourceFile.read,
-        '$sourcePath/expected.yaml'.read,
-      );
+      expect(builder.readFile, builder.readExpectedFile);
     });
   });
 }
