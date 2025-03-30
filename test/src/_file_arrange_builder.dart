@@ -25,3 +25,7 @@ class FileArrangeBuilder {
 
   void reset() => file.writeAsStringSync(_initContent);
 }
+
+extension on File {
+  DateTime get modified => statSync().modified;
+}
