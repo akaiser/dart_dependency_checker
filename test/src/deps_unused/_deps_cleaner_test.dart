@@ -87,10 +87,8 @@ void main() {
     });
   });
 
-  group('providing $meantForFixingNoNodesPath path', () {
-    const sourcePath = meantForFixingNoNodesPath;
-
-    setUp(() => builder.init(sourcePath));
+  group('providing $noNodesPath path', () {
+    setUp(() => builder.init(noNodesPath));
 
     test('passes with no changes', () {
       const results = DepsUnusedResults(

@@ -62,8 +62,8 @@ void main() {
     });
   });
 
-  group('providing $meantForSortingNoNodesPath path', () {
-    setUp(() => builder.init(meantForSortingNoNodesPath));
+  group('providing $noNodesPath path', () {
+    setUp(() => builder.init(noNodesPath));
 
     test('will not sort anything', () {
       final result = DepsSorter.sort(builder.file);
