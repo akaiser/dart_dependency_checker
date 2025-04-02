@@ -22,7 +22,7 @@ void main() {
     });
   });
 
-  group('description', () {
+  group('$PathWithIgnoresParams', () {
     test('has props', () {
       const tested = _PathWithIgnoresParams(
         path: 'any',

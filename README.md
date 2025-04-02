@@ -6,13 +6,13 @@ depending on this package or through a command-line
 
 ## Usage
 
-Install:
+### Installation
 
 ```bash
 dart pub add dart_dependency_checker
 ```
 
-Use:
+### Example:
 
 ```dart
 import 'package:dart_dependency_checker/dart_dependency_checker.dart';
