@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
+import 'package:path/path.dart';
 
 const _dartFileExt = '.dart';
 const _importPackagePattern = 'import \'package:';
@@ -27,7 +28,7 @@ abstract final class DartFiles {
       return directory
           .listSync(recursive: true, followLinks: false)
           .whereType<File>()
-          .where((file) => file.path.endsWith(_dartFileExt))
+          .where((file) => extension(file.path) == _dartFileExt)
           .unmodifiable;
     }
     return const {};
