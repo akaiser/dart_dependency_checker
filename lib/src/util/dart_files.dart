@@ -26,8 +26,8 @@ abstract final class DartFiles {
     if (directory.existsSync()) {
       return directory
           .listSync(recursive: true, followLinks: false)
-          .where((file) => file is File && file.path.endsWith(_dartFileExt))
-          .map((file) => file as File)
+          .whereType<File>()
+          .where((file) => file.path.endsWith(_dartFileExt))
           .unmodifiable;
     }
     return const {};
