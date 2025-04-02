@@ -5,6 +5,8 @@ import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 import 'package:equatable/equatable.dart';
 
+// TODO(Albert): Migrate to pubspec_parse already...
+
 /// Sorts main and dev dependencies in a pubspec.yaml file.
 ///
 /// For simplicity:
@@ -139,7 +141,11 @@ abstract final class DepsSorter {
             ..reset()
             ..packageNameUnderProcess = name;
         } else {
-          notHostedPackageTracker.packageLocation += line.newLine;
+          if (childNodeExp.hasMatch(line)) {
+            packages.add(_Package(name: name, version: version));
+          } else {
+            notHostedPackageTracker.packageLocation += line.newLine;
+          }
         }
       }
     }
@@ -226,7 +232,4 @@ class _NotHostedPackageTracker {
 
   bool get isValid =>
       packageNameUnderProcess.isNotEmpty && packageLocation.isNotEmpty;
-
-  @override
-  String toString() => '{$packageNameUnderProcess, $packageLocation}';
 }

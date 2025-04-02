@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Fixed a bug in `DepsSortPerformer` where certain hosted packages were swallowed.
+
 ## 1.0.2
 
 - `DepsSortPerformer` tweaks:
