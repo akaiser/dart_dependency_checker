@@ -1,8 +1,8 @@
 # dart_dependency_checker
 
-A utility package for checking dependencies within Dart/Flutter packages. This utilities can be used directly by
-depending on this package or through a command-line
-[dart_dependency_checker_cli](https://pub.dev/packages/dart_dependency_checker_cli) wrapper.
+A utility package for checking and fixing dependencies within Dart/Flutter packages. This utilities can be used directly
+by depending on this package or through the
+command-line [dart_dependency_checker_cli](https://pub.dev/packages/dart_dependency_checker_cli) wrapper.
 
 ## Usage
 
