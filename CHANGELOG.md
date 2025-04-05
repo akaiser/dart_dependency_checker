@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Made `DepsSortPerformer` implementation more robust.
+
 ## 1.0.3
 
 - Fixed a bug in `DepsSortPerformer` where certain hosted packages were swallowed.

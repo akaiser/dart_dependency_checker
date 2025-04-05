@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:dart_dependency_checker/src/dependency_type.dart';
+import 'package:dart_dependency_checker/src/deps_sort/_deps_parser.dart';
+import 'package:dart_dependency_checker/src/deps_sort/model/package.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
-import 'package:equatable/equatable.dart';
-
-// TODO(Albert): Migrate to pubspec_parse already...
+import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
+import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
 
 /// Sorts main and dev dependencies in a pubspec.yaml file.
 ///
@@ -19,14 +21,26 @@ abstract final class DepsSorter {
   ///
   /// Returns `true` on any change.
   static bool sort(File yamlFile) {
+    final yamlMap = YamlMapLoader.from(yamlFile);
+
+    final mainYamlMap = yamlMap.node(DependencyType.mainDependencies);
+    final devYamlMap = yamlMap.node(DependencyType.devDependencies);
+
+    final mainPackages = mainYamlMap != null //
+        ? DepsParser.parse(mainYamlMap)
+        : <Package>{};
+    final devPackages = devYamlMap != null //
+        ? DepsParser.parse(devYamlMap)
+        : <Package>{};
+
+    if (mainPackages.isEmpty && devPackages.isEmpty) {
+      return false;
+    }
+
     final contents = StringBuffer();
 
     var insideDependenciesNode = false;
     var insideDevDependenciesNode = false;
-
-    final mainPackages = <_Package>{};
-    final devPackages = <_Package>{};
-    final notHostedPackageTracker = _NotHostedPackageTracker();
 
     final originalContent = yamlFile.readAsStringSync();
     final lines = yamlFile.readAsLinesSync();
@@ -39,7 +53,7 @@ abstract final class DepsSorter {
       if (onMainDependencyNode) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          _add(contents, devPackages, notHostedPackageTracker);
+          _add(contents, devPackages);
         }
 
         insideDependenciesNode = true;
@@ -51,7 +65,7 @@ abstract final class DepsSorter {
       else if (onDevDependencyNode) {
         // maybe we were inside main node previously
         if (insideDependenciesNode) {
-          _add(contents, mainPackages, notHostedPackageTracker);
+          _add(contents, mainPackages);
         }
 
         insideDependenciesNode = false;
@@ -63,19 +77,17 @@ abstract final class DepsSorter {
       else if (rootNodeExp.hasMatch(line)) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          _add(contents, devPackages, notHostedPackageTracker);
+          _add(contents, devPackages);
         } else if (insideDependenciesNode) {
-          _add(contents, mainPackages, notHostedPackageTracker);
+          _add(contents, mainPackages);
         }
 
         insideDependenciesNode = false;
         insideDevDependenciesNode = false;
       }
 
-      // time to parse dependencies
+      // skip original deps contents
       if (insideDependenciesNode || insideDevDependenciesNode) {
-        final target = insideDependenciesNode ? mainPackages : devPackages;
-        _parseAndPopulate(line, target, notHostedPackageTracker);
         continue;
       }
 
@@ -84,9 +96,9 @@ abstract final class DepsSorter {
 
     // no other unrelated node was found, ensure to finish deps adding
     if (insideDevDependenciesNode) {
-      _add(contents, devPackages, notHostedPackageTracker);
+      _add(contents, devPackages);
     } else if (insideDependenciesNode) {
-      _add(contents, mainPackages, notHostedPackageTracker);
+      _add(contents, mainPackages);
     }
 
     var newContent = contents.toString();
@@ -104,77 +116,15 @@ abstract final class DepsSorter {
     return false;
   }
 
-  static void _parseAndPopulate(
-    String line,
-    Set<_Package> packages,
-    _NotHostedPackageTracker notHostedPackageTracker,
-  ) {
-    if (leafNodeExp.hasMatch(line)) {
-      final split = line.trim().split(':');
-      final name = split[0].trim();
-      final version = split[1].trim();
-
-      if (version.isNotEmpty && !depLocationNodeExp.hasMatch(line)) {
-        if (notHostedPackageTracker.isValid) {
-          packages.add(
-            _Package(
-              name: notHostedPackageTracker.packageNameUnderProcess,
-              location: notHostedPackageTracker.packageLocation,
-            ),
-          );
-        }
-        notHostedPackageTracker.reset();
-
-        packages.add(_Package(name: name, version: version));
-      } else {
-        if (version.isEmpty && !depLocationNodeExp.hasMatch(line)) {
-          if (notHostedPackageTracker.isValid) {
-            packages.add(
-              _Package(
-                name: notHostedPackageTracker.packageNameUnderProcess,
-                location: notHostedPackageTracker.packageLocation,
-              ),
-            );
-          }
-
-          notHostedPackageTracker
-            ..reset()
-            ..packageNameUnderProcess = name;
-        } else {
-          if (childNodeExp.hasMatch(line)) {
-            packages.add(_Package(name: name, version: version));
-          } else {
-            notHostedPackageTracker.packageLocation += line.newLine;
-          }
-        }
-      }
-    }
-  }
-
-  static void _add(
-    StringBuffer contents,
-    Set<_Package> packages,
-    _NotHostedPackageTracker notHostedPackageTracker,
-  ) {
-    // ensure remaining not hosted package is added
-    if (notHostedPackageTracker.isValid) {
-      packages.add(
-        _Package(
-          name: notHostedPackageTracker.packageNameUnderProcess,
-          location: notHostedPackageTracker.packageLocation,
-        ),
-      );
-
-      // not really needed, but just in case
-      notHostedPackageTracker.reset();
-    }
-
+  static void _add(StringBuffer contents, Set<Package> packages) {
     if (packages.isNotEmpty) {
       final sortedPackages = packages.sort().unmodifiable;
 
-      final sdkPackages = sortedPackages.where((p) => p.hasSdkSource);
-      final hostedPackages = sortedPackages.where((p) => p.isHosted);
-      final rest = sortedPackages.where((p) => !p.isHosted && !p.hasSdkSource);
+      final sdkPackages = sortedPackages.whereType<SdkPackage>();
+      final hostedPackages = sortedPackages.whereType<HostedPackage>();
+      final rest = sortedPackages.where(
+        (p) => p is! SdkPackage && p is! HostedPackage,
+      );
 
       _addSection(contents, sdkPackages);
       _addSection(contents, hostedPackages);
@@ -185,51 +135,12 @@ abstract final class DepsSorter {
     }
   }
 
-  static void _addSection(StringBuffer contents, Iterable<_Package> packages) {
+  static void _addSection(StringBuffer contents, Iterable<Package> packages) {
     if (packages.isNotEmpty) {
       for (final package in packages) {
-        contents.write(package.pubspecEntry);
+        contents.writeln(package.pubspecEntry);
       }
       contents.writeln();
     }
   }
-}
-
-class _Package extends Equatable implements Comparable<_Package> {
-  _Package({
-    required this.name,
-    this.version,
-    this.location,
-  })  : isHosted = version != null,
-        hasSdkSource = location?.contains('sdk:') == true;
-
-  final String name;
-  final String? version;
-  final String? location;
-
-  // helper fields
-  final bool isHosted;
-  final bool hasSdkSource;
-
-  String get pubspecEntry =>
-      isHosted ? '  $name: $version'.newLine : '${'  $name:'.newLine}$location';
-
-  @override
-  int compareTo(_Package other) => name.compareTo(other.name);
-
-  @override
-  List<Object?> get props => [name, version, location];
-}
-
-class _NotHostedPackageTracker {
-  var packageNameUnderProcess = '';
-  var packageLocation = '';
-
-  void reset() {
-    packageNameUnderProcess = '';
-    packageLocation = '';
-  }
-
-  bool get isValid =>
-      packageNameUnderProcess.isNotEmpty && packageLocation.isNotEmpty;
 }
