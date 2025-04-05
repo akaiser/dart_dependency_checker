@@ -5,8 +5,9 @@ import 'package:yaml/yaml.dart';
 extension YamlMapExt on YamlMap {
   String? get name => this['name'] as String?;
 
-  Set<String> packages(DependencyType dependencyType) {
-    final nodeValue = nodes[dependencyType.yamlNode]?.value as YamlMap?;
-    return nodeValue?.keys.map((e) => e as String).unmodifiable ?? const {};
-  }
+  Set<String> packages(DependencyType dependencyType) =>
+      node(dependencyType)?.keys.cast<String>().unmodifiable ?? const {};
+
+  YamlMap? node(DependencyType dependencyType) =>
+      nodes[dependencyType.yamlNode]?.value as YamlMap?;
 }
