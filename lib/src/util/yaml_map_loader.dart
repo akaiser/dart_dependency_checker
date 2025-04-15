@@ -15,12 +15,14 @@ abstract final class YamlMapLoader {
     }
 
     final contents = yamlFile.readAsStringSync();
-    final yamlMap = loadYaml(contents) as YamlMap?;
-
-    if (yamlMap == null) {
+    try {
+      final yamlMap = loadYaml(contents) as YamlMap?;
+      if (yamlMap == null) {
+        throw PubspecNotValidError(yamlFile.path);
+      }
+      return yamlMap;
+    } on Error {
       throw PubspecNotValidError(yamlFile.path);
     }
-
-    return yamlMap;
   }
 }
