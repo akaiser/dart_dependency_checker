@@ -37,6 +37,21 @@ void main() {
     );
   });
 
+  test(
+      'throws a $PubspecNotValidError with invalid contents message '
+      'when pubspec.yaml with non yaml contents has been provided', () {
+    expect(
+      () => YamlMapLoader.from(File('$notYamlPath/pubspec.yaml')),
+      throwsA(
+        isA<PubspecNotValidError>().having(
+          (e) => e.message,
+          'message',
+          'Invalid pubspec.yaml file contents in: $notYamlPath/pubspec.yaml',
+        ),
+      ),
+    );
+  });
+
   test('loads expected', () {
     final yamlMap = YamlMapLoader.from(File('$noSourcesDirsPath/pubspec.yaml'));
 

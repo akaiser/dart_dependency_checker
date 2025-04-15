@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Handle exception exposing when non yaml contents were provided.
+
 ## 1.0.4
 
 - Made `DepsSortPerformer` implementation more robust.

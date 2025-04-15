@@ -17,6 +17,7 @@ const _base = 'test/resources/samples',
     noDependenciesPath = '$_base/no_dependencies',
     noNodesPath = '$_base/no_nodes',
     noSourcesDirsPath = '$_base/no_sources_dirs',
+    notYamlPath = '$_base/not_yaml',
     ownReferencePath = '$_base/own_reference',
     yamlAndYmlFilesPath = '$_base/yaml_and_yml_files',
     ymlFilePath = '$_base/yml_file';
