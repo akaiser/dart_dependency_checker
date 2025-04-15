@@ -116,7 +116,7 @@ abstract final class DepsSorter {
     return false;
   }
 
-  static void _add(StringBuffer contents, Set<Package> packages) {
+  static void _add(StringBuffer contents, Iterable<Package> packages) {
     if (packages.isNotEmpty) {
       final sortedPackages = packages.sort().unmodifiable;
 
