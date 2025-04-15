@@ -27,16 +27,16 @@ void main() {
   });
 
   group('sort', () {
-    test('sorts integers', () {
-      const tested = {3, 1, 2};
+    test('sorts set', () {
+      const Set<int> tested = {3, 1, 2};
 
       expect(tested.sort(), const {1, 2, 3});
     });
 
-    test('sorts strings', () {
-      const tested = {'banana', 'apple', 'cherry'};
+    test('sorts iterable', () {
+      const Iterable<String> tested = ['banana', 'apple', 'cherry', 'apple'];
 
-      expect(tested.sort(), const ['apple', 'banana', 'cherry']);
+      expect(tested.sort(), const ['apple', 'apple', 'banana', 'cherry']);
     });
 
     test('sorts with custom comparator', () {
