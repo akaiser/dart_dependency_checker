@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 
 void main() {
   const hostedDep = 'some : ^2.0.7',
+      hostedUrlDep = 'some: hosted=https://any.url; version=^2.0.7',
       pathDep = 'some: path = ../some',
       sdkDep = 'some: sdk= flutter',
       gitDep = 'some: git= https://any.git',
@@ -14,6 +15,7 @@ void main() {
 
   test('toPackage', () {
     expect(hostedDep.toPackage, isA<HostedPackage>());
+    expect(hostedUrlDep.toPackage, isA<HostedPackage>());
     expect(pathDep.toPackage, isA<PathPackage>());
     expect(sdkDep.toPackage, isA<SdkPackage>());
     expect(gitDep.toPackage, isA<GitPackage>());
@@ -25,6 +27,15 @@ void main() {
   group('pubspecEntry', () {
     test('hosted', () {
       expect(hostedDep.toPackage.pubspecEntry, '  some: ^2.0.7');
+    });
+
+    test('hosted url', () {
+      expect(
+        hostedUrlDep.toPackage.pubspecEntry,
+        '${'  some:'.newLine}'
+        '${'    hosted: https://any.url'.newLine}'
+        '${'    version: ^2.0.7'}',
+      );
     });
 
     test('path', () {

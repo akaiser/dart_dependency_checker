@@ -10,7 +10,7 @@ void main() {
     const sourcePath = meantForAddingPath;
 
     group('throws $InvalidParamsError for', () {
-      group('version', () {
+      group('hosted', () {
         test('case 1', () {
           const params = DepsAddParams(path: sourcePath, main: {'any'});
 
@@ -51,6 +51,90 @@ void main() {
                 (e) => e.message,
                 'message',
                 'Invalid params near: "any: "',
+              ),
+            ),
+          );
+        });
+
+        test('case 4', () {
+          const params = DepsAddParams(path: sourcePath, dev: {'any: hosted'});
+
+          expect(
+            params.validate,
+            throwsA(
+              isA<InvalidParamsError>().having(
+                (e) => e.message,
+                'message',
+                'Invalid params near: "any: hosted"',
+              ),
+            ),
+          );
+        });
+
+        test('case 5', () {
+          const params = DepsAddParams(path: sourcePath, dev: {'any: hosted='});
+
+          expect(
+            params.validate,
+            throwsA(
+              isA<InvalidParamsError>().having(
+                (e) => e.message,
+                'message',
+                'Invalid params near: "any: hosted="',
+              ),
+            ),
+          );
+        });
+
+        test('case 6', () {
+          const params = DepsAddParams(
+            path: sourcePath,
+            dev: {'any: hosted=any'},
+          );
+
+          expect(
+            params.validate,
+            throwsA(
+              isA<InvalidParamsError>().having(
+                (e) => e.message,
+                'message',
+                'Invalid params near: "any: hosted=any"',
+              ),
+            ),
+          );
+        });
+
+        test('case 7', () {
+          const params = DepsAddParams(
+            path: sourcePath,
+            dev: {'any: hosted=any; version'},
+          );
+
+          expect(
+            params.validate,
+            throwsA(
+              isA<InvalidParamsError>().having(
+                (e) => e.message,
+                'message',
+                'Invalid params near: "any: hosted=any; version"',
+              ),
+            ),
+          );
+        });
+
+        test('case 8', () {
+          const params = DepsAddParams(
+            path: sourcePath,
+            dev: {'any: hosted=any; version= '},
+          );
+
+          expect(
+            params.validate,
+            throwsA(
+              isA<InvalidParamsError>().having(
+                (e) => e.message,
+                'message',
+                'Invalid params near: "any: hosted=any; version= "',
               ),
             ),
           );
@@ -326,7 +410,7 @@ void main() {
     });
 
     group('passes', () {
-      group('version', () {
+      group('hosted', () {
         test('case 1', () {
           const params = DepsAddParams(path: sourcePath, main: {'any:any'});
 
@@ -335,6 +419,15 @@ void main() {
 
         test('case 2', () {
           const params = DepsAddParams(path: sourcePath, main: {' any : any '});
+
+          params.validate();
+        });
+
+        test('case 3', () {
+          const params = DepsAddParams(
+            path: sourcePath,
+            dev: {'any: hosted =any ; version= any '},
+          );
 
           params.validate();
         });

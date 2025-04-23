@@ -15,15 +15,21 @@ abstract final class DepsParser {
         } else if (value.containsKey('git')) {
           final git = value['git'];
           if (git is String) {
-            yield GitPackage(name, git.trim());
+            yield GitPackage(name, url: git.trim());
           } else if (git is YamlMap) {
             yield GitPackage(
               name,
-              _s(git['url']),
-              path: _ns(git['path']),
+              url: _s(git['url']),
               ref: _ns(git['ref']),
+              path: _ns(git['path']),
             );
           }
+        } else if (value.containsKey('hosted')) {
+          yield HostedPackage(
+            name,
+            _s(value['version']),
+            url: _ns(value['hosted']),
+          );
         }
       } else if (value is String) {
         yield HostedPackage(name, value);
