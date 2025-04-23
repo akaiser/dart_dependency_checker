@@ -22,3 +22,9 @@ final class PubspecNotValidError extends PerformerError {
   const PubspecNotValidError(String path)
       : super('Invalid pubspec.yaml file contents in: $path');
 }
+
+/// Thrown on invalid params.
+final class InvalidParamsError extends PerformerError {
+  const InvalidParamsError(String details)
+      : super('Invalid params near: "$details"');
+}
