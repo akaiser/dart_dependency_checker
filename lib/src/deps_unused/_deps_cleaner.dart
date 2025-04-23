@@ -11,9 +11,9 @@ abstract final class DepsCleaner {
   static void clean(DepsUnusedResults results, File yamlFile) {
     final contents = StringBuffer();
 
-    final dependenciesRegex =
+    final dependenciesExp = //
         RegExp('(${results.mainDependencies.join('|')}):');
-    final devDependenciesRegex =
+    final devDependenciesExp =
         RegExp('(${results.devDependencies.join('|')}):');
 
     var dependenciesNodeFound = false;
@@ -43,8 +43,8 @@ abstract final class DepsCleaner {
           devDependenciesNodeFound = false;
         } else {
           final lt = line.trim();
-          if (dependenciesNodeFound && lt.startsWith(dependenciesRegex) ||
-              devDependenciesNodeFound && lt.startsWith(devDependenciesRegex)) {
+          if (dependenciesNodeFound && lt.startsWith(dependenciesExp) ||
+              devDependenciesNodeFound && lt.startsWith(devDependenciesExp)) {
             dependencyFound = true;
             somethingRemoved = true;
             continue;

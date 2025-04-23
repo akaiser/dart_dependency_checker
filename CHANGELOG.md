@@ -1,6 +1,7 @@
 ## 1.0.5
 
 - Handle exception exposing when non yaml contents were provided.
+- `DepsAddPerformer` throws `InvalidParamsError` on unexpected params format.
 
 ## 1.0.4
 
