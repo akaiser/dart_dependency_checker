@@ -55,6 +55,7 @@ void main() {
         // 'flutter: sdk=flutter',
         // 'equatable: ^2.0.7',
         // 'yaml: 3.1.3',
+        // 'any_where: hosted=any.where.com; version=1.1.1',
         // 'some_path_source: path=../some_path_dependency',
         // 'yaansi: git=https://github.com/akaiser/yaansi.git',
         // 'some: git=https://anywhere.com/some.git; ref=some_ref; path=some/path',
