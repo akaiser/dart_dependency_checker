@@ -1,5 +1,6 @@
 import 'package:dart_dependency_checker/src/_shared/package.dart';
 import 'package:dart_dependency_checker/src/_shared/package_ext.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -29,55 +30,55 @@ void main() {
     test('path', () {
       expect(
         pathDep.toPackage.pubspecEntry,
-        '  some:\n'
-        '    path: ../some',
+        '${'  some:'.newLine}'
+        '${'    path: ../some'}',
       );
     });
 
     test('sdk', () {
       expect(
         sdkDep.toPackage.pubspecEntry,
-        '  some:\n'
-        '    sdk: flutter',
+        '${'  some:'.newLine}'
+        '${'    sdk: flutter'}',
       );
     });
 
     test('git', () {
       expect(
         gitDep.toPackage.pubspecEntry,
-        '  some:\n'
-        '    git: https://any.git',
+        '${'  some:'.newLine}'
+        '${'    git: https://any.git'}',
       );
     });
 
     test('git with ref', () {
       expect(
         gitRefDep.toPackage.pubspecEntry,
-        '  some:\n'
-        '    git:\n'
-        '      url: https://any.git\n'
-        '      ref: main',
+        '${'  some:'.newLine}'
+        '${'    git:'.newLine}'
+        '${'      url: https://any.git'.newLine}'
+        '${'      ref: main'}',
       );
     });
 
     test('git with path', () {
       expect(
         gitPathDep.toPackage.pubspecEntry,
-        '  some:\n'
-        '    git:\n'
-        '      url: https://any.git\n'
-        '      path: any/dir',
+        '${'  some:'.newLine}'
+        '${'    git:'.newLine}'
+        '${'      url: https://any.git'.newLine}'
+        '${'      path: any/dir'}',
       );
     });
 
     test('git with ref and path', () {
       expect(
         gitRefPathDep.toPackage.pubspecEntry,
-        '  some:\n'
-        '    git:\n'
-        '      url: https://any.git\n'
-        '      ref: main\n'
-        '      path: any/dir',
+        '${'  some:'.newLine}'
+        '${'    git:'.newLine}'
+        '${'      url: https://any.git'.newLine}'
+        '${'      ref: main'.newLine}'
+        '${'      path: any/dir'}',
       );
     });
   });
