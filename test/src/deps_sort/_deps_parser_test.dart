@@ -20,17 +20,22 @@ void main() {
     expect(result, {
       const HostedPackage('meta', '^1.11.0'),
       const HostedPackage('args', '2.4.2'),
+      const HostedPackage(
+        'some_hosted_source',
+        '^1.4.0',
+        url: 'https://some-package-server.com',
+      ),
       const SdkPackage('flutter', 'flutter'),
       const PathPackage('some_path_source', '../some_path_dependency'),
       const PathPackage('some_path_source2', '../some_path_dependency2'),
       const HostedPackage('equatable', '^2.0.7'),
       const GitPackage(
         'window_size',
-        'git@github.com:google/flutter-desktop-embedding.git',
-        path: 'plugins/window_size',
+        url: 'git@github.com:google/flutter-desktop-embedding.git',
         ref: 'e48abe7c3e9ebfe0b81622167c5201d4e783bb81',
+        path: 'plugins/window_size',
       ),
-      const GitPackage('yaansi', 'https://github.com/akaiser/yaansi.git'),
+      const GitPackage('yaansi', url: 'https://github.com/akaiser/yaansi.git'),
       const HostedPackage('path', '^1.9.1'),
       const HostedPackage('yaml', '3.1.3'),
     });

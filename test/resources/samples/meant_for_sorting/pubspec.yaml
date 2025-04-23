@@ -12,6 +12,9 @@ dependencies:
 #  some_hosted_source:
 #    hosted: https://some-package-server.com
 #    version: ^1.2.0
+  some_hosted_source:
+    hosted:   https://some-package-server.com
+    version: ^1.4.0
   flutter:
     sdk: flutter
   some_path_source:

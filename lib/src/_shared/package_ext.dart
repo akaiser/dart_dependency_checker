@@ -34,7 +34,21 @@ extension StringExt on String {
         }
       }
 
-      return GitPackage(name, parts.first, ref: ref, path: path);
+      return GitPackage(name, url: parts.first, ref: ref, path: path);
+    }
+
+    if (sourcePart.startsWith('hosted=')) {
+      final rest = sourcePart.substring(7);
+      final parts = rest.split(';').map((p) => p).unmodifiable;
+      String? version;
+
+      for (final part in parts) {
+        if (part.startsWith('version=')) {
+          version = part.substring(8);
+        }
+      }
+
+      return HostedPackage(name, version ?? '', url: parts.first);
     }
 
     return HostedPackage(name, sourcePart);
@@ -44,8 +58,17 @@ extension StringExt on String {
 extension PubspecEntry on Package {
   String get pubspecEntry {
     switch (this) {
-      case HostedPackage(:final name, :final version):
-        return '  $name: $version';
+      case HostedPackage(:final name, :final version, :final url):
+        if (url == null) {
+          return '  $name: $version';
+        }
+
+        final buffer = StringBuffer()
+          ..writeln('  $name:')
+          ..writeln('    hosted: $url')
+          ..write('    version: $version');
+
+        return buffer.toString();
 
       case PathPackage(:final name, :final path):
         return '  $name${':'.newLine}    path: $path';

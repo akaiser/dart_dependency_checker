@@ -10,12 +10,13 @@ sealed class Package extends Equatable implements Comparable<Package> {
 }
 
 class HostedPackage extends Package {
-  const HostedPackage(super.name, this.version);
+  const HostedPackage(super.name, this.version, {this.url});
 
   final String version;
+  final String? url;
 
   @override
-  List<Object?> get props => [name, version];
+  List<Object?> get props => [name, version, url];
 }
 
 class PathPackage extends Package {
@@ -37,7 +38,7 @@ class SdkPackage extends Package {
 }
 
 class GitPackage extends Package {
-  const GitPackage(super.name, this.url, {this.ref, this.path});
+  const GitPackage(super.name, {required this.url, this.ref, this.path});
 
   final String url;
   final String? ref;

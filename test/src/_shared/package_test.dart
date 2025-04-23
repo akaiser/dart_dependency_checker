@@ -3,9 +3,9 @@ import 'package:test/test.dart';
 
 void main() {
   test('$HostedPackage has known props count', () {
-    const tested = HostedPackage('package_name', '1.0.0');
+    const tested = HostedPackage('package_name', '1.0.0', url: 'url');
 
-    expect(tested.props, hasLength(2));
+    expect(tested.props, hasLength(3));
   });
 
   test('$PathPackage has known props count', () {
@@ -23,7 +23,7 @@ void main() {
   test('$GitPackage has known props count', () {
     const tested = GitPackage(
       'package_name',
-      'url',
+      url: 'url',
       ref: 'ref',
       path: 'path',
     );
