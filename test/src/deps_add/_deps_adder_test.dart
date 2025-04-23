@@ -24,12 +24,13 @@ void main() {
           path: sourcePath,
           main: {
             'equatable:^2.0.7',
-            'yaml: 3.1.3',
-            'some_path_source :path= ../some_path_dependency',
-            'yaansi: git=https://github.com/akaiser/yaansi.git',
+            'yaml : 3.1.3',
+            'some_path_source : path= ../some_path_dependency',
+            'yaansi: git = https://github.com/akaiser/yaansi.git',
+            'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
           },
           dev: {
-            'test: ^1.16.0',
+            'test :^1.16.0',
             'build_runner: 2.4.15',
           },
         ),
@@ -40,7 +41,7 @@ void main() {
       expect(builder.readFile, builder.readExpectedFile);
     });
 
-    test('will modify file if something was removed', () async {
+    test('will modify file if something was added', () async {
       DepsAdder.add(
         const DepsAddParams(
           path: sourcePath,
@@ -49,6 +50,7 @@ void main() {
             'yaml: 3.1.3',
             'some_path_source :path= ../some_path_dependency',
             'yaansi: git=https://github.com/akaiser/yaansi.git',
+            'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
           },
           dev: {
             'test: ^1.16.0',
@@ -237,7 +239,7 @@ void main() {
           dev: {
             'test: ^1.25.0',
             'mocktail: ^1.0.0',
-            'flutter_test: sdk=flutter',
+            'flutter_test: sdk =flutter',
             'integration_test: sdk=flutter',
           },
         ),

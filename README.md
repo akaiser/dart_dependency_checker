@@ -57,6 +57,7 @@ void main() {
         // 'yaml: 3.1.3',
         // 'some_path_source: path=../some_path_dependency',
         // 'yaansi: git=https://github.com/akaiser/yaansi.git',
+        // 'some: git=https://anywhere.com/some.git; ref=some_ref; path=some/path',
       },
       // Example usage
       dev: {

@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:dart_dependency_checker/src/_shared/package.dart';
+import 'package:dart_dependency_checker/src/_shared/package_ext.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_sort/_deps_parser.dart';
-import 'package:dart_dependency_checker/src/deps_sort/model/package.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';

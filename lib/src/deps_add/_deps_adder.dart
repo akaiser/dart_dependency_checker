@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:dart_dependency_checker/src/_shared/package.dart';
+import 'package:dart_dependency_checker/src/_shared/package_ext.dart';
 import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
-import 'package:dart_dependency_checker/src/deps_add/model/package.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
@@ -14,7 +15,6 @@ import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 /// - Doesn't care about the order of source type placement.
 /// - Doesn't know anything about `dependency_overrides` node.
 /// - Won't add a dependency if the main/dev node is missing.
-/// - Supports sources with single level of nesting.
 abstract final class DepsAdder {
   /// Reads passed `yamlFile`, adds dependencies passed via [DepsAddParams]
   /// and overrides file contents.
@@ -111,18 +111,12 @@ abstract final class DepsAdder {
     return somethingAdded;
   }
 
-  static bool _add(
-    StringBuffer contents,
-    Set<Package> packages, [
-    bool writeNewLine = true,
-  ]) {
+  static bool _add(StringBuffer contents, Set<Package> packages) {
     if (packages.isNotEmpty) {
       for (final package in packages) {
-        contents.write(package.pubspecEntry);
+        contents.writeln(package.pubspecEntry);
       }
-      if (writeNewLine) {
-        contents.writeln();
-      }
+      contents.writeln();
       return true;
     }
     return false;

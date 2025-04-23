@@ -1,7 +1,9 @@
 ## 1.0.5
 
 - Handle exception exposing when non yaml contents were provided.
-- `DepsAddPerformer` throws `InvalidParamsError` on unexpected params format.
+- `DepsAddPerformer`:
+    - throws `InvalidParamsError` on unexpected params format.
+    - accepts full git source pattern like: `package_name: git=https://a.b/c.git; ref=some_ref; path=some/path`
 
 ## 1.0.4
 

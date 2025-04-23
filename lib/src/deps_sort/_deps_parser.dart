@@ -1,4 +1,4 @@
-import 'package:dart_dependency_checker/src/deps_sort/model/package.dart';
+import 'package:dart_dependency_checker/src/_shared/package.dart';
 import 'package:yaml/yaml.dart';
 
 abstract final class DepsParser {
@@ -9,27 +9,21 @@ abstract final class DepsParser {
 
       if (value is YamlMap) {
         if (value.containsKey('sdk')) {
-          yield SdkPackage(name, sdk: _s(value['sdk']));
+          yield SdkPackage(name, _s(value['sdk']));
         } else if (value.containsKey('path')) {
-          yield PathPackage(name, path: _s(value['path']));
+          yield PathPackage(name, _s(value['path']));
         } else if (value.containsKey('git')) {
           final git = value['git'];
           if (git is String) {
-            yield GitPackage(name, url: git.trim());
+            yield GitPackage(name, git.trim());
           } else if (git is YamlMap) {
             yield GitPackage(
               name,
-              url: _s(git['url']),
+              _s(git['url']),
               path: _ns(git['path']),
               ref: _ns(git['ref']),
             );
           }
-        } else if (value.containsKey('hosted')) {
-          yield HostedPackage(
-            name,
-            _s(value['version']),
-            hostedUrl: _ns(value['hosted']),
-          );
         }
       } else if (value is String) {
         yield HostedPackage(name, value);
