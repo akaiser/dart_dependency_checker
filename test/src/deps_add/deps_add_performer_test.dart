@@ -214,8 +214,10 @@ void main() {
         });
 
         test('case 4', () {
-          const params =
-              DepsAddParams(path: sourcePath, dev: {'any: git=any; ref'});
+          const params = DepsAddParams(
+            path: sourcePath,
+            dev: {'any: git=any; ref'},
+          );
 
           expect(
             const DepsAddPerformer(params).perform,
@@ -362,8 +364,10 @@ void main() {
 
       group('path', () {
         test('case 1', () {
-          const params =
-              DepsAddParams(path: sourcePath, main: {'any:path=any'});
+          const params = DepsAddParams(
+            path: sourcePath,
+            main: {'any:path=any'},
+          );
 
           const DepsAddPerformer(params).perform();
         });
