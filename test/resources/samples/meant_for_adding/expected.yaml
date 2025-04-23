@@ -13,6 +13,11 @@ dependencies:
     path: ../some_path_dependency
   yaansi:
     git: https://github.com/akaiser/yaansi.git
+  some:
+    git:
+      url: https://anywhere.com/some.git
+      ref: some_ref
+      path: some/path
 
 dev_dependencies:
   integration_test:
