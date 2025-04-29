@@ -1,4 +1,4 @@
-const _base = 'misc/samples',
+const _base = 'test/resources/samples',
     allSourcesDirsPath = '$_base/all_sources_dirs',
     allSourcesDirsMultiPath = '$_base/all_sources_dirs_multi',
     emptyYamlPath = '$_base/empty_yaml',

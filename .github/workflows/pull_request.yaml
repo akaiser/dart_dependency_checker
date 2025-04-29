@@ -14,5 +14,5 @@ jobs:
       - uses: ./.github/actions/setup-dart
       - run: dart pub get
       - run: dart format -o none --set-exit-if-changed .
-      - run: dart analyze lib test example
+      - run: dart analyze
       - run: dart test
