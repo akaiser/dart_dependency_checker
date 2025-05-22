@@ -10,7 +10,8 @@ import '../_paths.dart';
 void main() {
   group('name', () {
     test('resolves to null on missing "name" node', () {
-      final tempFile = File('${Directory.systemTemp.path}/pubspec.yaml')
+      final tempDir = Directory.systemTemp.createTempSync();
+      final tempFile = File('${tempDir.path}/pubspec.yaml')
         ..writeAsStringSync('dependencies:\n  meta: ^1.11.0\n');
 
       final yamlMap = YamlMapLoader.from(tempFile);

@@ -40,8 +40,8 @@ void main() {
   test(
       'throws a $PubspecNotValidError with invalid contents message '
       'when pubspec.yaml with non yaml contents has been provided', () {
-    final tempPath = Directory.systemTemp.path;
-    final tempFile = File('$tempPath/pubspec.yaml');
+    final tempDir = Directory.systemTemp.createTempSync();
+    final tempFile = File('${tempDir.path}/pubspec.yaml');
 
     expect(
       () async => YamlMapLoader.from(await tempFile.create()),
@@ -49,7 +49,7 @@ void main() {
         isA<PubspecNotValidError>().having(
           (e) => e.message,
           'message',
-          'Invalid pubspec.yaml file contents in: $tempPath/pubspec.yaml',
+          'Invalid pubspec.yaml file contents in: ${tempFile.path}',
         ),
       ),
     );
