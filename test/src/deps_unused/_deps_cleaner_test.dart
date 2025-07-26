@@ -24,9 +24,16 @@ void main() {
         devDependencies: {'integration_test', 'lints', 'bla_test_bed'},
       );
 
-      DepsCleaner.clean(results, builder.file);
+      final removedDependencies = DepsCleaner.clean(results, builder.file);
 
       expect(builder.readFile, builder.readExpectedFile);
+      expect(removedDependencies, const {
+        'meta',
+        'bla_analytics',
+        'integration_test',
+        'lints',
+        'bla_test_bed',
+      });
     });
 
     test('leaves blank dependency sections', () {
@@ -48,16 +55,26 @@ void main() {
         },
       );
 
-      DepsCleaner.clean(results, builder.file);
+      final removedDependencies = DepsCleaner.clean(results, builder.file);
 
-      expect(
-        builder.readFile,
-        '$sourcePath/expected_empty_nodes.yaml'.read,
-      );
+      expect(builder.readFile, '$sourcePath/expected_empty_nodes.yaml'.read);
+      expect(removedDependencies, const {
+        'args',
+        'meta',
+        'bla_analytics',
+        'bla_support',
+        'flutter_test',
+        'integration_test',
+        'bla_dart_lints',
+        'lints',
+        'test',
+        'bla_test_bed',
+        'bla_other_bed',
+      });
     });
 
     test('will modify file if something was removed', () async {
-      DepsCleaner.clean(
+      final removedDependencies = DepsCleaner.clean(
         const DepsUnusedResults(
           mainDependencies: {'meta'},
           devDependencies: {},
@@ -65,14 +82,12 @@ void main() {
         builder.file,
       );
 
-      expect(
-        builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
-        isTrue,
-      );
+      expect(builder.fileCreatedAt.isBefore(builder.fileModifiedAt), isTrue);
+      expect(removedDependencies, const {'meta'});
     });
 
     test('will not modify file if nothing was removed', () async {
-      DepsCleaner.clean(
+      final removedDependencies = DepsCleaner.clean(
         const DepsUnusedResults(
           mainDependencies: {'equatable'},
           devDependencies: {},
@@ -84,6 +99,7 @@ void main() {
         builder.fileCreatedAt.isAtSameMomentAs(builder.fileCreatedAt),
         isTrue,
       );
+      expect(removedDependencies, const <String>{});
     });
   });
 
@@ -96,9 +112,10 @@ void main() {
         devDependencies: {},
       );
 
-      DepsCleaner.clean(results, builder.file);
+      final removedDependencies = DepsCleaner.clean(results, builder.file);
 
       expect(builder.readFile, builder.readExpectedFile);
+      expect(removedDependencies, isEmpty);
     });
   });
 }

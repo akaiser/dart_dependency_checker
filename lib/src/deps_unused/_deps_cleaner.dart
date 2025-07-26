@@ -8,7 +8,7 @@ import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 abstract final class DepsCleaner {
   /// Reads passed `yamlFile`, removes dependencies passed via
   /// [DepsUnusedResults] and overrides file contents.
-  static void clean(DepsUnusedResults results, File yamlFile) {
+  static Set<String> clean(DepsUnusedResults results, File yamlFile) {
     final contents = StringBuffer();
 
     final dependenciesExp = //
@@ -20,7 +20,8 @@ abstract final class DepsCleaner {
     var devDependenciesNodeFound = false;
     var dependencyFound = false;
     var blankLineWritten = false;
-    var somethingRemoved = false;
+
+    final removedDependencies = <String>{};
 
     final lines = yamlFile.readAsLinesSync();
 
@@ -46,7 +47,7 @@ abstract final class DepsCleaner {
           if (dependenciesNodeFound && lt.startsWith(dependenciesExp) ||
               devDependenciesNodeFound && lt.startsWith(devDependenciesExp)) {
             dependencyFound = true;
-            somethingRemoved = true;
+            removedDependencies.add(lt.split(':')[0]);
             continue;
           }
         }
@@ -73,8 +74,10 @@ abstract final class DepsCleaner {
       contents.writeln(line);
     }
 
-    if (somethingRemoved) {
+    if (removedDependencies.isNotEmpty) {
       yamlFile.writeAsStringSync(contents.toString());
     }
+
+    return removedDependencies;
   }
 }
