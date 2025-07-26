@@ -1,8 +1,8 @@
-import 'package:dart_dependency_checker/src/deps_add/_deps_add_params_ext.dart';
 import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:dart_dependency_checker/src/util/deps_adder.dart';
+import 'package:dart_dependency_checker/src/util/deps_validation_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 
 /// Blindly adds main and dev dependencies to a pubspec.yaml file
@@ -21,13 +21,9 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
   const DepsAddPerformer(super.params);
 
   @override
-  bool perform() {
-    final validatedParams = params..validate();
-
-    return DepsAdder.add(
-      YamlFileFinder.from(params.path),
-      mainDependencies: validatedParams.main,
-      devDependencies: validatedParams.dev,
-    );
-  }
+  bool perform() => DepsAdder.add(
+        YamlFileFinder.from(params.path),
+        mainDependencies: params.main..validate(),
+        devDependencies: params.dev..validate(),
+      );
 }
