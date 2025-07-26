@@ -1,5 +1,4 @@
-import 'package:dart_dependency_checker/src/deps_add/_deps_adder.dart';
-import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
+import 'package:dart_dependency_checker/src/util/deps_adder.dart';
 import 'package:test/test.dart';
 
 import '../_file_arrange_builder.dart';
@@ -20,21 +19,18 @@ void main() {
 
     test('will add all dependencies', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {
-            'equatable:^2.0.7',
-            'yaml : 3.1.3',
-            'some_path_source : path= ../some_path_dependency',
-            'yaansi: git = https://github.com/akaiser/yaansi.git',
-            'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
-          },
-          dev: {
-            'test :^1.16.0',
-            'build_runner: 2.4.15',
-          },
-        ),
         builder.file,
+        mainDependencies: const {
+          'equatable:^2.0.7',
+          'yaml : 3.1.3',
+          'some_path_source : path= ../some_path_dependency',
+          'yaansi: git = https://github.com/akaiser/yaansi.git',
+          'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
+        },
+        devDependencies: const {
+          'test :^1.16.0',
+          'build_runner: 2.4.15',
+        },
       );
 
       expect(result, isTrue);
@@ -42,24 +38,22 @@ void main() {
     });
 
     test('will modify file if something was added', () async {
-      DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {
-            'equatable:^2.0.7',
-            'yaml: 3.1.3',
-            'some_path_source :path= ../some_path_dependency',
-            'yaansi: git=https://github.com/akaiser/yaansi.git',
-            'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
-          },
-          dev: {
-            'test: ^1.16.0',
-            'build_runner: 2.4.15',
-          },
-        ),
+      final result = DepsAdder.add(
         builder.file,
+        mainDependencies: const {
+          'equatable:^2.0.7',
+          'yaml: 3.1.3',
+          'some_path_source :path= ../some_path_dependency',
+          'yaansi: git=https://github.com/akaiser/yaansi.git',
+          'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
+        },
+        devDependencies: const {
+          'test: ^1.16.0',
+          'build_runner: 2.4.15',
+        },
       );
 
+      expect(result, isTrue);
       expect(
         builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
         isTrue,
@@ -67,15 +61,13 @@ void main() {
     });
 
     test('will not modify file if nothing was added', () async {
-      DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {},
-          dev: {},
-        ),
+      final result = DepsAdder.add(
         builder.file,
+        mainDependencies: const {},
+        devDependencies: const {},
       );
 
+      expect(result, isFalse);
       expect(
         builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
         isTrue,
@@ -90,20 +82,17 @@ void main() {
 
     test('will add all dependencies', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {
-            'equatable:^2.0.7',
-            'yaml: 3.1.3',
-            'some_path_source :path= ../some_path_dependency',
-            'yaansi: git=https://github.com/akaiser/yaansi.git',
-          },
-          dev: {
-            'test: ^1.16.0',
-            'build_runner: 2.4.15',
-          },
-        ),
         builder.file,
+        mainDependencies: const {
+          'equatable:^2.0.7',
+          'yaml: 3.1.3',
+          'some_path_source :path= ../some_path_dependency',
+          'yaansi: git=https://github.com/akaiser/yaansi.git',
+        },
+        devDependencies: const {
+          'test: ^1.16.0',
+          'build_runner: 2.4.15',
+        },
       );
 
       expect(result, isTrue);
@@ -118,12 +107,9 @@ void main() {
 
     test('adds and cleanes too many new lines', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {'equatable:^2.0.7'},
-          dev: {'test: ^1.16.0'},
-        ),
         builder.file,
+        mainDependencies: const {'equatable:^2.0.7'},
+        devDependencies: const {'test: ^1.16.0'},
       );
 
       expect(result, isTrue);
@@ -132,12 +118,9 @@ void main() {
 
     test('no change when nothing added', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {},
-          dev: {},
-        ),
         builder.file,
+        mainDependencies: const {},
+        devDependencies: const {},
       );
 
       expect(result, isFalse);
@@ -155,12 +138,9 @@ void main() {
 
     test('adds and cleanes too many eof new lines', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {'equatable:^2.0.7'},
-          dev: {'test: ^1.16.0'},
-        ),
         builder.file,
+        mainDependencies: const {'equatable:^2.0.7'},
+        devDependencies: const {'test: ^1.16.0'},
       );
 
       expect(result, isTrue);
@@ -169,12 +149,9 @@ void main() {
 
     test('no change when nothing added', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {},
-          dev: {},
-        ),
         builder.file,
+        mainDependencies: const {},
+        devDependencies: const {},
       );
 
       expect(result, isFalse);
@@ -192,12 +169,9 @@ void main() {
 
     test('will not add anything', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {'equatable:^2.0.7'},
-          dev: {'test: ^1.16.0'},
-        ),
         builder.file,
+        mainDependencies: const {'equatable:^2.0.7'},
+        devDependencies: const {'test: ^1.16.0'},
       );
 
       expect(result, isFalse);
@@ -206,12 +180,9 @@ void main() {
 
     test('will not modify file', () async {
       DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {'equatable:^2.0.7'},
-          dev: {'test: ^1.16.0'},
-        ),
         builder.file,
+        mainDependencies: const {'equatable:^2.0.7'},
+        devDependencies: const {'test: ^1.16.0'},
       );
 
       expect(
@@ -228,22 +199,19 @@ void main() {
 
     test('places sdk deps anywhere', () {
       final result = DepsAdder.add(
-        const DepsAddParams(
-          path: sourcePath,
-          main: {
-            'meta: ^1.11.0',
-            'equatable: ^2.0.7',
-            'flutter: sdk=flutter',
-            'flutter_localizations: sdk=flutter',
-          },
-          dev: {
-            'test: ^1.25.0',
-            'mocktail: ^1.0.0',
-            'flutter_test: sdk =flutter',
-            'integration_test: sdk=flutter',
-          },
-        ),
         builder.file,
+        mainDependencies: const {
+          'meta: ^1.11.0',
+          'equatable: ^2.0.7',
+          'flutter: sdk=flutter',
+          'flutter_localizations: sdk=flutter',
+        },
+        devDependencies: const {
+          'test: ^1.25.0',
+          'mocktail: ^1.0.0',
+          'flutter_test: sdk =flutter',
+          'integration_test: sdk=flutter',
+        },
       );
 
       expect(result, isTrue);

@@ -6,6 +6,8 @@ import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 /// pubspec.yaml file.
 abstract final class DepsCleaner {
   /// Reads `yamlFile`, removes dependencies and overrides file contents.
+  ///
+  /// Returns a set of actually removed dependencies.
   static Set<String> clean(
     File yamlFile, {
     required Set<String> mainDependencies,

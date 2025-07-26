@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dart_dependency_checker/src/_shared/package.dart';
 import 'package:dart_dependency_checker/src/_shared/package_ext.dart';
-import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
@@ -16,11 +15,14 @@ import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 /// - Doesn't know anything about `dependency_overrides` node.
 /// - Won't add a dependency if the main/dev node is missing.
 abstract final class DepsAdder {
-  /// Reads passed `yamlFile`, adds dependencies passed via [DepsAddParams]
-  /// and overrides file contents.
+  /// Reads passed `yamlFile`, adds dependencies and overrides file contents.
   ///
   /// Returns `true` if at least one dependency was added.
-  static bool add(DepsAddParams params, File yamlFile) {
+  static bool add(
+    File yamlFile, {
+    required Set<String> mainDependencies,
+    required Set<String> devDependencies,
+  }) {
     final contents = StringBuffer();
 
     var insideDependenciesNode = false;
@@ -28,8 +30,8 @@ abstract final class DepsAdder {
     var blankLineWritten = false;
     var somethingAdded = false;
 
-    final mainPackagesToAdd = params.main.toPackages;
-    final devPackagesToAdd = params.dev.toPackages;
+    final mainPackagesToAdd = mainDependencies.toPackages;
+    final devPackagesToAdd = devDependencies.toPackages;
 
     final lines = yamlFile.readAsLinesSync();
 
