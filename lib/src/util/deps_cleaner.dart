@@ -1,26 +1,27 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 
 /// A very dumb and dangerous utility to read and write into the same
 /// pubspec.yaml file.
 abstract final class DepsCleaner {
-  /// Reads passed `yamlFile`, removes dependencies passed via
-  /// [DepsUnusedResults] and overrides file contents.
-  static void clean(DepsUnusedResults results, File yamlFile) {
+  /// Reads `yamlFile`, removes dependencies and overrides file contents.
+  static Set<String> clean(
+    File yamlFile, {
+    required Set<String> mainDependencies,
+    required Set<String> devDependencies,
+  }) {
     final contents = StringBuffer();
 
-    final dependenciesExp = //
-        RegExp('(${results.mainDependencies.join('|')}):');
-    final devDependenciesExp =
-        RegExp('(${results.devDependencies.join('|')}):');
+    final dependenciesExp = RegExp('(${mainDependencies.join('|')}):');
+    final devDependenciesExp = RegExp('(${devDependencies.join('|')}):');
 
     var dependenciesNodeFound = false;
     var devDependenciesNodeFound = false;
     var dependencyFound = false;
     var blankLineWritten = false;
-    var somethingRemoved = false;
+
+    final removedDependencies = <String>{};
 
     final lines = yamlFile.readAsLinesSync();
 
@@ -46,7 +47,7 @@ abstract final class DepsCleaner {
           if (dependenciesNodeFound && lt.startsWith(dependenciesExp) ||
               devDependenciesNodeFound && lt.startsWith(devDependenciesExp)) {
             dependencyFound = true;
-            somethingRemoved = true;
+            removedDependencies.add(lt.split(':')[0]);
             continue;
           }
         }
@@ -73,8 +74,10 @@ abstract final class DepsCleaner {
       contents.writeln(line);
     }
 
-    if (somethingRemoved) {
+    if (removedDependencies.isNotEmpty) {
       yamlFile.writeAsStringSync(contents.toString());
     }
+
+    return removedDependencies;
   }
 }
