@@ -1,5 +1,4 @@
-import 'package:dart_dependency_checker/src/deps_unused/_deps_cleaner.dart';
-import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
+import 'package:dart_dependency_checker/src/util/deps_cleaner.dart';
 import 'package:test/test.dart';
 
 import '../_file_arrange_builder.dart';
@@ -19,12 +18,11 @@ void main() {
     setUp(() => builder.init(sourcePath));
 
     test('cleanes source file', () {
-      const results = DepsUnusedResults(
-        mainDependencies: {'meta', 'bla_analytics'},
-        devDependencies: {'integration_test', 'lints', 'bla_test_bed'},
+      final removedDependencies = DepsCleaner.clean(
+        builder.file,
+        mainDependencies: const {'meta', 'bla_analytics'},
+        devDependencies: const {'integration_test', 'lints', 'bla_test_bed'},
       );
-
-      final removedDependencies = DepsCleaner.clean(results, builder.file);
 
       expect(builder.readFile, builder.readExpectedFile);
       expect(removedDependencies, const {
@@ -37,14 +35,15 @@ void main() {
     });
 
     test('leaves blank dependency sections', () {
-      const results = DepsUnusedResults(
-        mainDependencies: {
+      final removedDependencies = DepsCleaner.clean(
+        builder.file,
+        mainDependencies: const {
           'args',
           'meta',
           'bla_analytics',
           'bla_support',
         },
-        devDependencies: {
+        devDependencies: const {
           'flutter_test',
           'integration_test',
           'bla_dart_lints',
@@ -54,8 +53,6 @@ void main() {
           'bla_other_bed',
         },
       );
-
-      final removedDependencies = DepsCleaner.clean(results, builder.file);
 
       expect(builder.readFile, '$sourcePath/expected_empty_nodes.yaml'.read);
       expect(removedDependencies, const {
@@ -75,11 +72,9 @@ void main() {
 
     test('will modify file if something was removed', () async {
       final removedDependencies = DepsCleaner.clean(
-        const DepsUnusedResults(
-          mainDependencies: {'meta'},
-          devDependencies: {},
-        ),
         builder.file,
+        mainDependencies: const {'meta'},
+        devDependencies: const {},
       );
 
       expect(builder.fileCreatedAt.isBefore(builder.fileModifiedAt), isTrue);
@@ -88,11 +83,9 @@ void main() {
 
     test('will not modify file if nothing was removed', () async {
       final removedDependencies = DepsCleaner.clean(
-        const DepsUnusedResults(
-          mainDependencies: {'equatable'},
-          devDependencies: {},
-        ),
         builder.file,
+        mainDependencies: const {'equatable'},
+        devDependencies: const {},
       );
 
       expect(
@@ -107,12 +100,11 @@ void main() {
     setUp(() => builder.init(noNodesPath));
 
     test('passes with no changes', () {
-      const results = DepsUnusedResults(
-        mainDependencies: {},
-        devDependencies: {},
+      final removedDependencies = DepsCleaner.clean(
+        builder.file,
+        mainDependencies: const {},
+        devDependencies: const {},
       );
-
-      final removedDependencies = DepsCleaner.clean(results, builder.file);
 
       expect(builder.readFile, builder.readExpectedFile);
       expect(removedDependencies, isEmpty);

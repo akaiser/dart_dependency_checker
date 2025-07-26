@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:dart_dependency_checker/src/dependency_type.dart';
-import 'package:dart_dependency_checker/src/deps_unused/_deps_cleaner.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_params.dart';
 import 'package:dart_dependency_checker/src/deps_unused/deps_unused_results.dart';
 import 'package:dart_dependency_checker/src/performer.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
+import 'package:dart_dependency_checker/src/util/deps_cleaner.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
@@ -44,7 +44,11 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
     );
 
     if (!results.isEmpty && params.fix) {
-      DepsCleaner.clean(results, yamlFile);
+      DepsCleaner.clean(
+        yamlFile,
+        mainDependencies: results.mainDependencies,
+        devDependencies: results.devDependencies,
+      );
     }
 
     return results;
