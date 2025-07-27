@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_dependency_checker/src/_shared/package.dart';
-import 'package:dart_dependency_checker/src/_shared/package_ext.dart';
-import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
+import 'package:dart_dependency_checker/src/util/package_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_file_utils.dart';
 
@@ -123,8 +122,4 @@ abstract final class DepsAdder {
     }
     return false;
   }
-}
-
-extension on Set<String> {
-  Set<Package> get toPackages => map((dep) => dep.toPackage).unmodifiable;
 }

@@ -2,6 +2,10 @@ import 'package:dart_dependency_checker/src/_shared/package.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 
+extension SetExt on Set<String> {
+  Set<Package> get toPackages => map((dep) => dep.toPackage).unmodifiable;
+}
+
 extension StringExt on String {
   Package get toPackage {
     final normalized = replaceAll(' ', '');

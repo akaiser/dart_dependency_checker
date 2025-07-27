@@ -1,5 +1,5 @@
 import 'package:dart_dependency_checker/src/_shared/package.dart';
-import 'package:dart_dependency_checker/src/_shared/package_ext.dart';
+import 'package:dart_dependency_checker/src/util/package_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:test/test.dart';
 
@@ -12,6 +12,21 @@ void main() {
       gitRefDep = 'some : git=https://any.git; ref=main',
       gitPathDep = 'some: git =https://any.git ; path =any/dir',
       gitRefPathDep = 'some : git= https://any.git; ref = main; path =any/dir';
+
+  test('toPackages', () {
+    const rawSet = {
+      hostedDep,
+      hostedUrlDep,
+      pathDep,
+      sdkDep,
+      gitDep,
+      gitRefDep,
+      gitPathDep,
+      gitRefPathDep,
+    };
+
+    expect(rawSet.toPackages, hasLength(8));
+  });
 
   test('toPackage', () {
     expect(hostedDep.toPackage, isA<HostedPackage>());
