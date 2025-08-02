@@ -94,7 +94,7 @@ void main() {
       });
 
       test('will not modify file', () async {
-        const DepsUpdatePerformer(
+        final result = const DepsUpdatePerformer(
           DepsUpdateParams(
             path: sourcePath,
             main: {'equatable:^2.0.7'},
@@ -102,6 +102,7 @@ void main() {
           ),
         ).perform();
 
+        expect(result, isFalse);
         expect(
           builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
           isTrue,
@@ -128,7 +129,7 @@ void main() {
       });
 
       test('will not modify file', () async {
-        const DepsUpdatePerformer(
+        final result = const DepsUpdatePerformer(
           DepsUpdateParams(
             path: sourcePath,
             main: {'equatable:^2.0.7'},
@@ -136,6 +137,7 @@ void main() {
           ),
         ).perform();
 
+        expect(result, isFalse);
         expect(
           builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
           isTrue,
@@ -149,13 +151,14 @@ void main() {
       setUp(() => builder.init(sourcePath));
 
       test('will not modify file on not matching deps', () async {
-        const DepsUpdatePerformer(
+        final result = const DepsUpdatePerformer(
           DepsUpdateParams(
             path: sourcePath,
             main: {'equatable:^2.0.7'},
           ),
         ).perform();
 
+        expect(result, isFalse);
         expect(
           builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
           isTrue,
@@ -163,7 +166,7 @@ void main() {
       });
 
       test('will update all matching dependencies', () async {
-        const DepsUpdatePerformer(
+        final result = const DepsUpdatePerformer(
           DepsUpdateParams(
             path: sourcePath,
             main: {
@@ -176,6 +179,7 @@ void main() {
           ),
         ).perform();
 
+        expect(result, isTrue);
         expect(builder.readFile, builder.readExpectedFile);
       });
     });
