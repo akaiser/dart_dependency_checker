@@ -2,7 +2,11 @@ import 'package:dart_dependency_checker/src/deps_add/deps_add_params.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const tested = DepsAddParams(path: 'any', main: {'a', 'b'}, dev: {'c', 'd'});
+  const tested = DepsAddParams(
+    path: 'any',
+    main: {'a', 'b'},
+    dev: {'c', 'd'},
+  );
 
   test('has props', () {
     expect(tested.props, const [

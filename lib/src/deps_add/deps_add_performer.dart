@@ -22,9 +22,18 @@ class DepsAddPerformer extends Performer<DepsAddParams, bool> {
   const DepsAddPerformer(super.params);
 
   @override
-  bool perform() => DepsAdder.add(
+  bool perform() {
+    final mainPackages = (params.main..validate()).toPackages;
+    final devPackages = (params.dev..validate()).toPackages;
+
+    if (mainPackages.isNotEmpty || devPackages.isNotEmpty) {
+      return DepsAdder.add(
         YamlFileFinder.from(params.path),
-        mainPackages: (params.main..validate()).toPackages,
-        devPackages: (params.dev..validate()).toPackages,
+        mainPackages: mainPackages,
+        devPackages: devPackages,
       );
+    }
+
+    return false;
+  }
 }
