@@ -1,3 +1,7 @@
+## 1.0.6
+
+- Added `DepsUpdatePerformer` implementation.
+
 ## 1.0.5
 
 - Handle exception exposing when non yaml contents were provided.

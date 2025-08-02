@@ -67,6 +67,29 @@
 ///     ),
 ///   );
 ///
+///   // Updates provided but only existing main and dev dependencies in a pubspec.yaml file.
+///   const depsUpdatePerformer = DepsUpdatePerformer(
+///     DepsUpdateParams(
+///       path: '.',
+///       // Example usage
+///       main: {
+///         // 'flutter: sdk=flutter',
+///         // 'equatable: ^2.0.7',
+///         // 'yaml: 3.1.3',
+///         // 'any_where: hosted=any.where.com; version=1.1.1',
+///         // 'some_path_source: path=../some_path_dependency',
+///         // 'yaansi: git=https://github.com/akaiser/yaansi.git',
+///         // 'some: git=https://anywhere.com/some.git; ref=some_ref; path=some/path',
+///       },
+///       // Example usage
+///       dev: {
+///         // 'flutter_test: sdk=flutter',
+///         // 'test: ^1.25.0',
+///         // 'build_runner: 2.4.15',
+///       },
+///     ),
+///   );
+///
 ///   // Sorts main and dev dependencies in a pubspec.yaml file.
 ///   const depsSortPerformer = DepsSortPerformer(DepsSortParams(path: '.'));
 ///
@@ -75,6 +98,7 @@
 ///     print(depsUnusedChecker.perform());
 ///     print(transitiveUseChecker.perform());
 ///     print(depsAddPerformer.perform());
+///     print(depsUpdatePerformer.perform());
 ///     print(depsSortPerformer.perform());
 ///   } on PerformerError catch (e) {
 ///     print(e.message);
@@ -87,5 +111,6 @@ export 'src/_exports.dart';
 export 'src/deps_add/_exports.dart';
 export 'src/deps_sort/_exports.dart';
 export 'src/deps_unused/_exports.dart';
+export 'src/deps_update/_exports.dart';
 export 'src/deps_used/_exports.dart';
 export 'src/transitive_use/_exports.dart';

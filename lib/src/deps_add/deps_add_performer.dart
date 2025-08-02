@@ -17,6 +17,8 @@ import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 ///
 /// Throws [InvalidParamsError] if any dependency in provided `params`
 /// does not comply with the expected format.
+/// Throws [PerformerError] if the pubspec.yaml file path is invalid.
+///
 /// Returns `true` if at least one dependency was added.
 class DepsAddPerformer extends Performer<DepsAddParams, bool> {
   const DepsAddPerformer(super.params);
