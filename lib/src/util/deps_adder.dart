@@ -19,8 +19,8 @@ abstract final class DepsAdder {
   /// Returns `true` if at least one dependency was added.
   static bool add(
     File yamlFile, {
-    required Set<String> mainDependencies,
-    required Set<String> devDependencies,
+    required Set<Package> mainPackages,
+    required Set<Package> devPackages,
   }) {
     final contents = StringBuffer();
 
@@ -28,9 +28,6 @@ abstract final class DepsAdder {
     var insideDevDependenciesNode = false;
     var blankLineWritten = false;
     var somethingAdded = false;
-
-    final mainPackagesToAdd = mainDependencies.toPackages;
-    final devPackagesToAdd = devDependencies.toPackages;
 
     final lines = yamlFile.readAsLinesSync();
 
@@ -42,7 +39,7 @@ abstract final class DepsAdder {
       if (onMainDependencyNode) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          somethingAdded |= _add(contents, devPackagesToAdd);
+          somethingAdded |= _add(contents, devPackages);
         }
 
         insideDependenciesNode = true;
@@ -53,7 +50,7 @@ abstract final class DepsAdder {
       else if (onDevDependencyNode) {
         // maybe we were inside main node previously
         if (insideDependenciesNode) {
-          somethingAdded |= _add(contents, mainPackagesToAdd);
+          somethingAdded |= _add(contents, mainPackages);
         }
 
         insideDependenciesNode = false;
@@ -64,11 +61,11 @@ abstract final class DepsAdder {
       else if (rootNodeExp.hasMatch(line)) {
         // maybe we were inside dev node previously
         if (insideDevDependenciesNode) {
-          somethingAdded |= _add(contents, devPackagesToAdd);
+          somethingAdded |= _add(contents, devPackages);
         }
         // maybe we were inside main node previously
         else if (insideDependenciesNode) {
-          somethingAdded |= _add(contents, mainPackagesToAdd);
+          somethingAdded |= _add(contents, mainPackages);
         }
 
         insideDependenciesNode = false;
@@ -76,8 +73,8 @@ abstract final class DepsAdder {
       }
 
       // clean extra new lines in affected nodes
-      if ((insideDependenciesNode && mainPackagesToAdd.isNotEmpty) ||
-          (insideDevDependenciesNode && devPackagesToAdd.isNotEmpty)) {
+      if ((insideDependenciesNode && mainPackages.isNotEmpty) ||
+          (insideDevDependenciesNode && devPackages.isNotEmpty)) {
         if (line.trim().isEmpty) {
           if (blankLineWritten) {
             continue;
@@ -94,9 +91,9 @@ abstract final class DepsAdder {
 
     // no other unrelated node was found, ensure to finish deps adding
     if (insideDevDependenciesNode) {
-      somethingAdded |= _add(contents, devPackagesToAdd);
+      somethingAdded |= _add(contents, devPackages);
     } else if (insideDependenciesNode) {
-      somethingAdded |= _add(contents, mainPackagesToAdd);
+      somethingAdded |= _add(contents, mainPackages);
     }
 
     // something was added
