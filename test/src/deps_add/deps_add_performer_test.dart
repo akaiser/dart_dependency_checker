@@ -10,7 +10,10 @@ void main() {
       'throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
-      const DepsAddPerformer(DepsAddParams(path: 'unknown')).perform,
+      const DepsAddPerformer(DepsAddParams(
+        path: 'unknown',
+        main: {'test: 1.0.0'},
+      )).perform,
       throwsA(
         isA<PerformerError>().having(
           (e) => e.message,
