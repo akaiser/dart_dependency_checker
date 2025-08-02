@@ -1,4 +1,3 @@
-// TODO(Albert): Extend for DepsUpdatePerformer
 /// A utility package for checking dependencies within Dart/Flutter packages.
 /// This utilities can be used directly by depending on this package or through
 /// a command-line [dart_dependency_checker_cli](https://pub.dev/packages/dart_dependency_checker_cli) wrapper.
