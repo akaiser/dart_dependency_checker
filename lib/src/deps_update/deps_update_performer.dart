@@ -15,7 +15,7 @@ import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 /// For simplicity:
 /// - Doesn't care if a dependency is already up-to-date.
 /// - First removes all valid dependencies provided in the params.
-/// - Adds back only affected dependencies back to the file.
+/// - Adds only affected dependencies back to the file.
 /// - For sure reshuffles the order of dependencies in the file.
 /// - It is recommended to run the [DepsSortPerformer] afterwards.
 ///

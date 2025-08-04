@@ -73,12 +73,12 @@ void main() {
     late FileArrangeBuilder builder;
 
     setUp(() => builder = FileArrangeBuilder());
-    tearDown(() => builder.reset());
 
     group('providing $noNodesPath path', () {
       const sourcePath = noNodesPath;
 
       setUp(() => builder.init(sourcePath));
+      tearDown(() => builder.reset());
 
       test('will not update anything', () {
         final result = const DepsUpdatePerformer(
@@ -114,6 +114,7 @@ void main() {
       const sourcePath = noDependenciesPath;
 
       setUp(() => builder.init(sourcePath));
+      tearDown(() => builder.reset());
 
       test('will not update anything', () {
         final result = const DepsUpdatePerformer(
@@ -149,6 +150,7 @@ void main() {
       const sourcePath = meantForUpdatingPath;
 
       setUp(() => builder.init(sourcePath));
+      tearDown(() => builder.reset());
 
       test('will not modify file on not matching deps', () async {
         final result = const DepsUpdatePerformer(
