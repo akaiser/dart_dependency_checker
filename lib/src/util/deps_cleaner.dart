@@ -15,8 +15,12 @@ abstract final class DepsCleaner {
   }) {
     final contents = StringBuffer();
 
-    final dependenciesExp = RegExp('(${mainDependencies.join('|')}):');
-    final devDependenciesExp = RegExp('(${devDependencies.join('|')}):');
+    final dependenciesExp = RegExp(
+      r'^(\s{2})(' + mainDependencies.join('|') + r'):',
+    );
+    final devDependenciesExp = RegExp(
+      r'^(\s{2})(' + devDependencies.join('|') + r'):',
+    );
 
     var dependenciesNodeFound = false;
     var devDependenciesNodeFound = false;
@@ -45,17 +49,17 @@ abstract final class DepsCleaner {
           dependenciesNodeFound = false;
           devDependenciesNodeFound = false;
         } else {
-          final lt = line.trim();
-          if (dependenciesNodeFound && lt.startsWith(dependenciesExp) ||
-              devDependenciesNodeFound && lt.startsWith(devDependenciesExp)) {
+          if (dependenciesNodeFound && line.startsWith(dependenciesExp) ||
+              devDependenciesNodeFound && line.startsWith(devDependenciesExp)) {
             dependencyFound = true;
-            removedDependencies.add(lt.split(':')[0]);
+            removedDependencies.add(line.trim().split(':')[0]);
             continue;
           }
         }
 
         if (dependencyFound) {
-          if (depLocationNodeExp.hasMatch(line)) {
+          if (depLocationNodesExp.hasMatch(line) ||
+              depLocationGitNodesExp.hasMatch(line)) {
             continue;
           } else {
             dependencyFound = false;

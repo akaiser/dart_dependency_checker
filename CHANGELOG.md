@@ -1,3 +1,9 @@
+## 1.0.7
+
+- Fixing bugs on `DepsUpdatePerformer` where the implementation:
+    - Would swallow `path` or `git` etc. sources.
+    - Won't allow to update packages that do match certain keywords.
+
 ## 1.0.6
 
 - Added `DepsUpdatePerformer` implementation.
