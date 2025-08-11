@@ -156,7 +156,7 @@ void main() {
         final result = const DepsUpdatePerformer(
           DepsUpdateParams(
             path: sourcePath,
-            main: {'equatable:^2.0.7'},
+            main: {'share_plus:^7.2.2'},
           ),
         ).perform();
 
@@ -173,11 +173,18 @@ void main() {
             path: sourcePath,
             main: {
               'args:^2.7.0',
+              'path:^1.9.0',
+              'collection:^1.19.0',
               'equatable:^2.0.7',
+              'share_plus:^7.2.2', // not part of yaml file
+              'archive:^3.6.1',
               'some_path_source : path= ../some_path_dependency/new',
               'some: git= https://any.git; ref=main',
             },
-            dev: {'test: ^1.26.3'},
+            dev: {
+              'test: ^1.26.3',
+              'mocktail:^1.0.4',
+            },
           ),
         ).perform();
 

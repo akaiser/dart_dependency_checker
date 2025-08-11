@@ -20,8 +20,18 @@ void main() {
     test('cleanes source file', () {
       final removedDependencies = DepsCleaner.clean(
         builder.file,
-        mainDependencies: const {'meta', 'bla_analytics'},
-        devDependencies: const {'integration_test', 'lints', 'bla_test_bed'},
+        mainDependencies: const {
+          'meta',
+          'path', // not inside yaml file
+          'bla_analytics',
+        },
+        devDependencies: const {
+          'integration_test',
+          'lints',
+          'bla_test_bed',
+          'git', // not inside yaml file
+          'url' // not inside yaml file
+        },
       );
 
       expect(builder.readFile, builder.readExpectedFile);
@@ -41,6 +51,7 @@ void main() {
           'args',
           'meta',
           'bla_analytics',
+          'some_hosted_source',
           'bla_support',
         },
         devDependencies: const {
@@ -59,6 +70,7 @@ void main() {
         'args',
         'meta',
         'bla_analytics',
+        'some_hosted_source',
         'bla_support',
         'flutter_test',
         'integration_test',
@@ -70,7 +82,7 @@ void main() {
       });
     });
 
-    test('will modify file if something was removed', () async {
+    test('will modify file if something was removed', () {
       final removedDependencies = DepsCleaner.clean(
         builder.file,
         mainDependencies: const {'meta'},
@@ -81,7 +93,7 @@ void main() {
       expect(removedDependencies, const {'meta'});
     });
 
-    test('will not modify file if nothing was removed', () async {
+    test('will not modify file if nothing was removed', () {
       final removedDependencies = DepsCleaner.clean(
         builder.file,
         mainDependencies: const {'equatable'},

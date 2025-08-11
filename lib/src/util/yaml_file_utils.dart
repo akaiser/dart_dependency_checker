@@ -1,7 +1,8 @@
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 
 final rootNodeExp = RegExp(r'^\w+:');
-final depLocationNodeExp = RegExp(r'^(\s{2})+(path|sdk|git|url|ref):');
+final depLocationNodesExp = RegExp(r'^(\s{4})(git|hosted|path|sdk|version):');
+final depLocationGitNodesExp = RegExp(r'^(\s{6})(url|ref|path):');
 
 final mainDependenciesNode = DependencyType.mainDependencies.yamlNode;
 final devDependenciesNode = DependencyType.devDependencies.yamlNode;
