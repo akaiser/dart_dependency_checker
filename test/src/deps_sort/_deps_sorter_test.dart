@@ -24,10 +24,7 @@ void main() {
     test('will modify file', () async {
       DepsSorter.sort(builder.file);
 
-      expect(
-        builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
-        isTrue,
-      );
+      expect(builder.fileCreatedAt.isBefore(builder.fileModifiedAt), isTrue);
     });
   });
 

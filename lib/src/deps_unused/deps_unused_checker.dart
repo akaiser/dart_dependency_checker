@@ -34,10 +34,7 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
         declaredInMain,
       ),
       devDependencies: {
-        ..._unusedPackages(
-          DependencyType.devDependencies,
-          declaredInDev,
-        ),
+        ..._unusedPackages(DependencyType.devDependencies, declaredInDev),
         // if any declared dev dep exists in main, mark it for removal from dev.
         ...declaredInMain.intersection(declaredInDev),
       },
@@ -68,8 +65,7 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
       return declaredPackages;
     }
 
-    return _packageUsageCount(declaredPackages, files)
-        .entries
+    return _packageUsageCount(declaredPackages, files).entries
         .where((entry) => entry.value == 0)
         .map((entry) => entry.key)
         .unmodifiable;

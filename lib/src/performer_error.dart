@@ -14,17 +14,17 @@ sealed class PerformerError extends Equatable implements Exception {
 /// Thrown when the pubspec.yaml was not found.
 final class PubspecNotFoundError extends PerformerError {
   const PubspecNotFoundError(String path)
-      : super('Invalid pubspec.yaml file path: $path');
+    : super('Invalid pubspec.yaml file path: $path');
 }
 
 /// Thrown when the pubspec.yaml contents were invalid.
 final class PubspecNotValidError extends PerformerError {
   const PubspecNotValidError(String path)
-      : super('Invalid pubspec.yaml file contents in: $path');
+    : super('Invalid pubspec.yaml file contents in: $path');
 }
 
 /// Thrown on invalid params.
 final class InvalidParamsError extends PerformerError {
   const InvalidParamsError(String details)
-      : super('Invalid params near: "$details"');
+    : super('Invalid params near: "$details"');
 }

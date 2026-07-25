@@ -11,10 +11,12 @@ extension StringExt on String {
     final normalized = replaceAll(' ', '');
     final colonIndex = normalized.indexOf(':');
 
-    final name =
-        colonIndex != -1 ? normalized.substring(0, colonIndex) : normalized;
-    final sourcePart =
-        colonIndex != -1 ? normalized.substring(colonIndex + 1) : '';
+    final name = colonIndex != -1
+        ? normalized.substring(0, colonIndex)
+        : normalized;
+    final sourcePart = colonIndex != -1
+        ? normalized.substring(colonIndex + 1)
+        : '';
 
     if (sourcePart.startsWith('path=')) {
       return PathPackage(name, sourcePart.substring(5));

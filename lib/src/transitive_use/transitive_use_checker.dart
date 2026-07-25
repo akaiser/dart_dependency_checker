@@ -24,21 +24,13 @@ class TransitiveUseChecker
     );
 
     return TransitiveUseResults(
-      mainDependencies: _find(
-        DependencyType.mainDependencies,
-        {
-          ...params.mainIgnores,
-          if (ownReference != null) ownReference,
-        },
-        (_) => declaredMainDependencies,
-      ),
+      mainDependencies: _find(DependencyType.mainDependencies, {
+        ...params.mainIgnores,
+        ?ownReference,
+      }, (_) => declaredMainDependencies),
       devDependencies: _find(
         DependencyType.devDependencies,
-        {
-          ...params.devIgnores,
-          ...declaredMainDependencies,
-          if (ownReference != null) ownReference,
-        },
+        {...params.devIgnores, ...declaredMainDependencies, ?ownReference},
         (dependencyType) => yamlMap.packages(dependencyType),
       ),
     );
@@ -48,11 +40,10 @@ class TransitiveUseChecker
     DependencyType dependencyType,
     Set<String> ignores,
     Set<String> Function(DependencyType) declaredDependencies,
-  ) =>
-      DartFiles.from(params.path, dependencyType)
-          .map((file) => DartFiles.packages(file))
-          .expand((packages) => packages)
-          .unmodifiable
-          .difference(declaredDependencies(dependencyType))
-          .difference(ignores..nonNulls);
+  ) => DartFiles.from(params.path, dependencyType)
+      .map((file) => DartFiles.packages(file))
+      .expand((packages) => packages)
+      .unmodifiable
+      .difference(declaredDependencies(dependencyType))
+      .difference(ignores..nonNulls);
 }

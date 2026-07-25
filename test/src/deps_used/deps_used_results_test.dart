@@ -3,10 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('has known props count', () {
-    const results = DepsUsedResults(
-      mainDependencies: {},
-      devDependencies: {},
-    );
+    const results = DepsUsedResults(mainDependencies: {}, devDependencies: {});
 
     expect(results.props, hasLength(2));
   });

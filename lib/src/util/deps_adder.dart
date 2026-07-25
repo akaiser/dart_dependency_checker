@@ -45,7 +45,6 @@ abstract final class DepsAdder {
         insideDependenciesNode = true;
         insideDevDependenciesNode = false;
       }
-
       // found dev node
       else if (onDevDependencyNode) {
         // maybe we were inside main node previously
@@ -56,7 +55,6 @@ abstract final class DepsAdder {
         insideDependenciesNode = false;
         insideDevDependenciesNode = true;
       }
-
       // found some other node
       else if (rootNodeExp.hasMatch(line)) {
         // maybe we were inside dev node previously

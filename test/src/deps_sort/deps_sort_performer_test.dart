@@ -4,8 +4,7 @@ import 'package:dart_dependency_checker/src/performer_error.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       const DepsSortPerformer(DepsSortParams(path: 'unknown')).perform,

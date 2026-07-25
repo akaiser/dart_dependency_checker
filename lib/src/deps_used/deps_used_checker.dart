@@ -18,20 +18,14 @@ class DepsUsedChecker extends Performer<DepsUsedParams, DepsUsedResults> {
     final ownReference = YamlMapLoader.from(yamlFile).name;
 
     return DepsUsedResults(
-      mainDependencies: _packages(
-        DependencyType.mainDependencies,
-        {
-          ...params.mainIgnores,
-          if (ownReference != null) ownReference,
-        },
-      ),
-      devDependencies: _packages(
-        DependencyType.devDependencies,
-        {
-          ...params.devIgnores,
-          if (ownReference != null) ownReference,
-        },
-      ),
+      mainDependencies: _packages(DependencyType.mainDependencies, {
+        ...params.mainIgnores,
+        ?ownReference,
+      }),
+      devDependencies: _packages(DependencyType.devDependencies, {
+        ...params.devIgnores,
+        ?ownReference,
+      }),
     );
   }
 

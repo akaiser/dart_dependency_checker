@@ -3,11 +3,7 @@ import 'package:dart_dependency_checker/dart_dependency_checker.dart';
 void main() {
   // Checks used dependencies via imports only.
   const depsUsedChecker = DepsUsedChecker(
-    DepsUsedParams(
-      path: '.',
-      mainIgnores: {'equatable'},
-      devIgnores: {'test'},
-    ),
+    DepsUsedParams(path: '.', mainIgnores: {'equatable'}, devIgnores: {'test'}),
   );
 
   // Checks via pubspec.yaml declared but unused dependencies.

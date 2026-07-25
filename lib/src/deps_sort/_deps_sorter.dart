@@ -27,10 +27,10 @@ abstract final class DepsSorter {
     final mainYamlMap = yamlMap.node(DependencyType.mainDependencies);
     final devYamlMap = yamlMap.node(DependencyType.devDependencies);
 
-    final mainPackages = mainYamlMap != null //
+    final mainPackages = mainYamlMap != null
         ? DepsParser.parse(mainYamlMap)
         : <Package>{};
-    final devPackages = devYamlMap != null //
+    final devPackages = devYamlMap != null
         ? DepsParser.parse(devYamlMap)
         : <Package>{};
 

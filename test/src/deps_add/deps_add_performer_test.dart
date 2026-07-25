@@ -6,15 +6,11 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       const DepsAddPerformer(
-        DepsAddParams(
-          path: 'unknown',
-          main: {'test: 1.0.0'},
-        ),
+        DepsAddParams(path: 'unknown', main: {'test: 1.0.0'}),
       ).perform,
       throwsA(
         isA<PerformerError>().having(
@@ -26,18 +22,14 @@ void main() {
     );
   });
 
-  group(
-      'throws a $InvalidParamsError with proper message '
+  group('throws a $InvalidParamsError with proper message '
       'when failing on validation', () {
     const path = noDependenciesPath;
 
     test('for main dependency', () {
       expect(
         const DepsAddPerformer(
-          DepsAddParams(
-            path: path,
-            main: {'any_main'},
-          ),
+          DepsAddParams(path: path, main: {'any_main'}),
         ).perform,
         throwsA(
           isA<PerformerError>().having(
@@ -52,10 +44,7 @@ void main() {
     test('for dev dependency', () {
       expect(
         const DepsAddPerformer(
-          DepsAddParams(
-            path: path,
-            dev: {'any_dev'},
-          ),
+          DepsAddParams(path: path, dev: {'any_dev'}),
         ).perform,
         throwsA(
           isA<PerformerError>().having(

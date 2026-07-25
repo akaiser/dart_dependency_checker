@@ -28,10 +28,7 @@ void main() {
           'yaansi: git = https://github.com/akaiser/yaansi.git',
           'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
         }.toPackages,
-        devPackages: const {
-          'test :^1.16.0',
-          'build_runner: 2.4.15',
-        }.toPackages,
+        devPackages: const {'test :^1.16.0', 'build_runner: 2.4.15'}.toPackages,
       );
 
       expect(result, isTrue);
@@ -48,17 +45,11 @@ void main() {
           'yaansi: git=https://github.com/akaiser/yaansi.git',
           'some: git =https://anywhere.com/some.git ; ref=some_ref; path=some/path',
         }.toPackages,
-        devPackages: const {
-          'test: ^1.16.0',
-          'build_runner: 2.4.15',
-        }.toPackages,
+        devPackages: const {'test: ^1.16.0', 'build_runner: 2.4.15'}.toPackages,
       );
 
       expect(result, isTrue);
-      expect(
-        builder.fileCreatedAt.isBefore(builder.fileModifiedAt),
-        isTrue,
-      );
+      expect(builder.fileCreatedAt.isBefore(builder.fileModifiedAt), isTrue);
     });
 
     test('will not modify file if nothing was added', () async {
@@ -90,10 +81,7 @@ void main() {
           'some_path_source :path= ../some_path_dependency',
           'yaansi: git=https://github.com/akaiser/yaansi.git',
         }.toPackages,
-        devPackages: const {
-          'test: ^1.16.0',
-          'build_runner: 2.4.15',
-        }.toPackages,
+        devPackages: const {'test: ^1.16.0', 'build_runner: 2.4.15'}.toPackages,
       );
 
       expect(result, isTrue);
@@ -125,10 +113,7 @@ void main() {
       );
 
       expect(result, isFalse);
-      expect(
-        builder.readFile,
-        '$sourcePath/expected_no_change.yaml'.read,
-      );
+      expect(builder.readFile, '$sourcePath/expected_no_change.yaml'.read);
     });
   });
 
@@ -156,10 +141,7 @@ void main() {
       );
 
       expect(result, isFalse);
-      expect(
-        builder.readFile,
-        '$sourcePath/expected_no_change.yaml'.read,
-      );
+      expect(builder.readFile, '$sourcePath/expected_no_change.yaml'.read);
     });
   });
 

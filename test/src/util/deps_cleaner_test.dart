@@ -30,7 +30,7 @@ void main() {
           'lints',
           'bla_test_bed',
           'git', // not inside yaml file
-          'url' // not inside yaml file
+          'url', // not inside yaml file
         },
       );
 
