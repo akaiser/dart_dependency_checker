@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_dependency_checker/src/performer_error.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
 import 'package:yaml/yaml.dart';
 
 /// Utility to load a pubspec yaml file.
@@ -14,9 +15,8 @@ abstract final class YamlMapLoader {
       throw PubspecNotFoundError(yamlFile.path);
     }
 
-    final contents = yamlFile.readAsStringSync();
     try {
-      final yamlMap = loadYaml(contents) as YamlMap?;
+      final yamlMap = loadYaml(yamlFile.read) as YamlMap?;
       if (yamlMap == null) {
         throw PubspecNotValidError(yamlFile.path);
       }

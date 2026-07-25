@@ -1,9 +1,10 @@
 import 'package:dart_dependency_checker/src/util/deps_cleaner.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:test/test.dart';
 
 import '../_file_arrange_builder.dart';
 import '../_paths.dart';
-import '../_util.dart';
 
 void main() {
   late FileArrangeBuilder builder;
@@ -34,7 +35,7 @@ void main() {
         },
       );
 
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
       expect(removedDependencies, const {
         'meta',
         'bla_analytics',
@@ -65,7 +66,7 @@ void main() {
         },
       );
 
-      expect(builder.readFile, '$sourcePath/expected_empty_nodes.yaml'.read);
+      expect(builder.file.read, '$sourcePath/expected_empty_nodes.yaml'.read);
       expect(removedDependencies, const {
         'args',
         'meta',
@@ -118,7 +119,7 @@ void main() {
         devDependencies: const {},
       );
 
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
       expect(removedDependencies, isEmpty);
     });
   });

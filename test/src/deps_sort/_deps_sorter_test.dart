@@ -1,4 +1,5 @@
 import 'package:dart_dependency_checker/src/deps_sort/_deps_sorter.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
 import 'package:test/test.dart';
 
 import '../_file_arrange_builder.dart';
@@ -18,7 +19,7 @@ void main() {
       final result = DepsSorter.sort(builder.file);
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('will modify file', () async {
@@ -34,7 +35,7 @@ void main() {
     test('leaves blank dependency section', () {
       DepsSorter.sort(builder.file);
 
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('will not modify anything', () async {
@@ -55,7 +56,7 @@ void main() {
       final result = DepsSorter.sort(builder.file);
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
   });
 
@@ -66,7 +67,7 @@ void main() {
       final result = DepsSorter.sort(builder.file);
 
       expect(result, isFalse);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('will not modify file', () async {

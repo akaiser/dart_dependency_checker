@@ -1,5 +1,6 @@
 ## 1.1.0
 
+- Allow `export` directive when identifying libraries.
 - Require Dart `^3.12.0`.
 
 ## 1.0.7
