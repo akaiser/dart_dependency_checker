@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Require Dart `^3.12.0`.
+
 ## 1.0.7
 
 - Fixing bugs on `DepsUpdatePerformer` where the implementation:
