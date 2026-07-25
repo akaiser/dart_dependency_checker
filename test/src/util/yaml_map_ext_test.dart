@@ -50,19 +50,18 @@ void main() {
       test('resolves main dependencies', () {
         final yamlMap = YamlMapLoader.from(sourceFile);
 
-        expect(
-          yamlMap.packages(DependencyType.mainDependencies),
-          const {'meta'},
-        );
+        expect(yamlMap.packages(DependencyType.mainDependencies), const {
+          'meta',
+        });
       });
 
       test('resolves main dependencies', () {
         final yamlMap = YamlMapLoader.from(sourceFile);
 
-        expect(
-          yamlMap.packages(DependencyType.devDependencies),
-          const {'lints', 'test'},
-        );
+        expect(yamlMap.packages(DependencyType.devDependencies), const {
+          'lints',
+          'test',
+        });
       });
     });
   });

@@ -5,8 +5,7 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PubspecNotFoundError with invalid path message '
+  test('throws a $PubspecNotFoundError with invalid path message '
       'when path without pubspec.yaml has been provided', () {
     expect(
       () => YamlFileFinder.from(''),

@@ -7,15 +7,11 @@ import '../_file_arrange_builder.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       const DepsUpdatePerformer(
-        DepsUpdateParams(
-          path: 'unknown',
-          main: {'test: 1.0.0'},
-        ),
+        DepsUpdateParams(path: 'unknown', main: {'test: 1.0.0'}),
       ).perform,
       throwsA(
         isA<PerformerError>().having(
@@ -27,18 +23,14 @@ void main() {
     );
   });
 
-  group(
-      'throws a $InvalidParamsError with proper message '
+  group('throws a $InvalidParamsError with proper message '
       'when failing on validation', () {
     const sourcePath = noDependenciesPath;
 
     test('for main dependency', () {
       expect(
         const DepsUpdatePerformer(
-          DepsUpdateParams(
-            path: sourcePath,
-            main: {'any_main'},
-          ),
+          DepsUpdateParams(path: sourcePath, main: {'any_main'}),
         ).perform,
         throwsA(
           isA<PerformerError>().having(
@@ -53,10 +45,7 @@ void main() {
     test('for dev dependency', () {
       expect(
         const DepsUpdatePerformer(
-          DepsUpdateParams(
-            path: sourcePath,
-            dev: {'any_dev'},
-          ),
+          DepsUpdateParams(path: sourcePath, dev: {'any_dev'}),
         ).perform,
         throwsA(
           isA<PerformerError>().having(
@@ -154,10 +143,7 @@ void main() {
 
       test('will not modify file on not matching deps', () async {
         final result = const DepsUpdatePerformer(
-          DepsUpdateParams(
-            path: sourcePath,
-            main: {'share_plus:^7.2.2'},
-          ),
+          DepsUpdateParams(path: sourcePath, main: {'share_plus:^7.2.2'}),
         ).perform();
 
         expect(result, isFalse);
@@ -181,10 +167,7 @@ void main() {
               'some_path_source : path= ../some_path_dependency/new',
               'some: git= https://any.git; ref=main',
             },
-            dev: {
-              'test: ^1.26.3',
-              'mocktail:^1.0.4',
-            },
+            dev: {'test: ^1.26.3', 'mocktail:^1.0.4'},
           ),
         ).perform();
 

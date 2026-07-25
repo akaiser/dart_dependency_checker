@@ -8,8 +8,7 @@ import '../_file_arrange_builder.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       const DepsUnusedChecker(DepsUnusedParams(path: 'unknown')).perform,
@@ -23,8 +22,7 @@ void main() {
     );
   });
 
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyYamlPath;
 
@@ -40,17 +38,13 @@ void main() {
     );
   });
 
-  test(
-      'providing $noDependenciesPath path '
+  test('providing $noDependenciesPath path '
       'returns no unused dependencies', () {
     const path = noDependenciesPath;
 
     expect(
       const DepsUnusedChecker(DepsUnusedParams(path: path)).perform(),
-      const DepsUnusedResults(
-        mainDependencies: {},
-        devDependencies: {},
-      ),
+      const DepsUnusedResults(mainDependencies: {}, devDependencies: {}),
     );
   });
 
@@ -97,8 +91,7 @@ void main() {
       );
     });
 
-    test(
-        'passed ignores will not be returned '
+    test('passed ignores will not be returned '
         'even if no sources were found', () {
       expect(
         const DepsUnusedChecker(
@@ -108,16 +101,12 @@ void main() {
             devIgnores: {'lints', 'test'},
           ),
         ).perform(),
-        const DepsUnusedResults(
-          mainDependencies: {},
-          devDependencies: {},
-        ),
+        const DepsUnusedResults(mainDependencies: {}, devDependencies: {}),
       );
     });
   });
 
-  group(
-      'providing $meantForFixingMissingDevDupe path '
+  group('providing $meantForFixingMissingDevDupe path '
       'where a package is used and declared in main and dev', () {
     const sourcePath = meantForFixingMissingDevDupe;
 
@@ -149,10 +138,7 @@ void main() {
 
       expect(
         const DepsUnusedChecker(params).perform(),
-        const DepsUnusedResults(
-          mainDependencies: {},
-          devDependencies: {},
-        ),
+        const DepsUnusedResults(mainDependencies: {}, devDependencies: {}),
       );
       expect(
         builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),
@@ -169,10 +155,7 @@ void main() {
 
       expect(
         const DepsUnusedChecker(params).perform(),
-        const DepsUnusedResults(
-          mainDependencies: {},
-          devDependencies: {},
-        ),
+        const DepsUnusedResults(mainDependencies: {}, devDependencies: {}),
       );
       expect(
         builder.fileCreatedAt.isAtSameMomentAs(builder.fileModifiedAt),

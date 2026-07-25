@@ -7,8 +7,7 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       const DepsUsedChecker(DepsUsedParams(path: 'unknown')).perform,
@@ -22,8 +21,7 @@ void main() {
     );
   });
 
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyYamlPath;
 
@@ -39,8 +37,7 @@ void main() {
     );
   });
 
-  test(
-      'providing $ownReferencePath path '
+  test('providing $ownReferencePath path '
       'ignores own package '
       'and returns just used dependencies', () {
     const path = ownReferencePath;
@@ -60,10 +57,7 @@ void main() {
     test('returns all used', () {
       expect(
         const DepsUsedChecker(DepsUsedParams(path: path)).perform(),
-        const DepsUsedResults(
-          mainDependencies: {},
-          devDependencies: {},
-        ),
+        const DepsUsedResults(mainDependencies: {}, devDependencies: {}),
       );
     });
 
@@ -76,10 +70,7 @@ void main() {
             devIgnores: {'async'},
           ),
         ).perform(),
-        const DepsUsedResults(
-          mainDependencies: {},
-          devDependencies: {},
-        ),
+        const DepsUsedResults(mainDependencies: {}, devDependencies: {}),
       );
     });
   });
@@ -106,10 +97,7 @@ void main() {
             devIgnores: {'async', 'convert'},
           ),
         ).perform(),
-        const DepsUsedResults(
-          mainDependencies: {},
-          devDependencies: {'test'},
-        ),
+        const DepsUsedResults(mainDependencies: {}, devDependencies: {'test'}),
       );
     });
   });

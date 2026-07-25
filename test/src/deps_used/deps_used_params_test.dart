@@ -3,9 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   test('has known props count', () {
-    expect(
-      const DepsUsedParams(path: 'any').props,
-      hasLength(3),
-    );
+    expect(const DepsUsedParams(path: 'any').props, hasLength(3));
   });
 }

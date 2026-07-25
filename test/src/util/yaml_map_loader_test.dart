@@ -7,8 +7,7 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PubspecNotFoundError with invalid path message '
+  test('throws a $PubspecNotFoundError with invalid path message '
       'when path without pubspec.yaml has been provided', () {
     expect(
       () => YamlMapLoader.from(File('/pubspec.yaml')),
@@ -22,8 +21,7 @@ void main() {
     );
   });
 
-  test(
-      'throws a $PubspecNotValidError with invalid contents message '
+  test('throws a $PubspecNotValidError with invalid contents message '
       'when pubspec.yaml with empty contents has been provided', () {
     expect(
       () => YamlMapLoader.from(File('$emptyYamlPath/pubspec.yaml')),
@@ -37,8 +35,7 @@ void main() {
     );
   });
 
-  test(
-      'throws a $PubspecNotValidError with invalid contents message '
+  test('throws a $PubspecNotValidError with invalid contents message '
       'when pubspec.yaml with non yaml contents has been provided', () {
     final tempDir = Directory.systemTemp.createTempSync();
     final tempFile = File('${tempDir.path}/pubspec.yaml');
@@ -58,13 +55,10 @@ void main() {
   test('loads expected', () {
     final yamlMap = YamlMapLoader.from(File('$noSourcesDirsPath/pubspec.yaml'));
 
-    expect(
-      yamlMap,
-      const {
-        'name': 'dart_dependency_checker_samples',
-        'dependencies': {'meta': '^1.11.0'},
-        'dev_dependencies': {'lints': '^3.0.0', 'test': '^1.25.0'},
-      },
-    );
+    expect(yamlMap, const {
+      'name': 'dart_dependency_checker_samples',
+      'dependencies': {'meta': '^1.11.0'},
+      'dev_dependencies': {'lints': '^3.0.0', 'test': '^1.25.0'},
+    });
   });
 }

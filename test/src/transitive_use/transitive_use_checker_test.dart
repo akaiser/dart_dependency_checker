@@ -7,8 +7,7 @@ import 'package:test/test.dart';
 import '../_paths.dart';
 
 void main() {
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml path', () {
     expect(
       const TransitiveUseChecker(TransitiveUseParams(path: 'unknown')).perform,
@@ -22,8 +21,7 @@ void main() {
     );
   });
 
-  test(
-      'throws a $PerformerError with proper message '
+  test('throws a $PerformerError with proper message '
       'on invalid pubspec.yaml content', () {
     const path = emptyYamlPath;
 
@@ -39,61 +37,45 @@ void main() {
     );
   });
 
-  test(
-      'providing $noDependenciesPath path '
+  test('providing $noDependenciesPath path '
       'returns no undeclared dependencies', () {
     const path = noDependenciesPath;
 
     expect(
       const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
-      const TransitiveUseResults(
-        mainDependencies: {},
-        devDependencies: {},
-      ),
+      const TransitiveUseResults(mainDependencies: {}, devDependencies: {}),
     );
   });
 
-  test(
-      'providing $ownReferencePath path '
+  test('providing $ownReferencePath path '
       'ignores own package '
       'and returns no undeclared dependencies', () {
     const path = ownReferencePath;
 
     expect(
       const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
-      const TransitiveUseResults(
-        mainDependencies: {},
-        devDependencies: {},
-      ),
+      const TransitiveUseResults(mainDependencies: {}, devDependencies: {}),
     );
   });
 
-  test(
-      'providing $inMainButMissingInDev path '
+  test('providing $inMainButMissingInDev path '
       'ignores declared main in dev packages'
       'and returns no undeclared dependencies', () {
     const path = inMainButMissingInDev;
 
     expect(
       const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
-      const TransitiveUseResults(
-        mainDependencies: {},
-        devDependencies: {},
-      ),
+      const TransitiveUseResults(mainDependencies: {}, devDependencies: {}),
     );
   });
 
-  test(
-      'providing $noSourcesDirsPath path '
+  test('providing $noSourcesDirsPath path '
       'returns all undeclared main and dev dependencies', () {
     const path = noSourcesDirsPath;
 
     expect(
       const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
-      const TransitiveUseResults(
-        mainDependencies: {},
-        devDependencies: {},
-      ),
+      const TransitiveUseResults(mainDependencies: {}, devDependencies: {}),
     );
   });
 

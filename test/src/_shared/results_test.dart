@@ -10,20 +10,14 @@ class _BaseResults extends BaseResults {
 
 void main() {
   test('has known props count', () {
-    const results = _BaseResults(
-      mainDependencies: {},
-      devDependencies: {},
-    );
+    const results = _BaseResults(mainDependencies: {}, devDependencies: {});
 
     expect(results.props, hasLength(2));
   });
 
   group('isEmpty', () {
     test('is true when all dependencies are empty', () {
-      const results = _BaseResults(
-        mainDependencies: {},
-        devDependencies: {},
-      );
+      const results = _BaseResults(mainDependencies: {}, devDependencies: {});
 
       expect(results.isEmpty, isTrue);
     });

@@ -30,13 +30,10 @@ void main() {
         DependencyType.mainDependencies,
       );
 
-      expect(
-        files.map((file) => file.path),
-        const {
-          '$allSourcesDirsMultiPath/lib/main.dart',
-          '$allSourcesDirsMultiPath/lib/another_main.dart',
-        },
-      );
+      expect(files.map((file) => file.path), const {
+        '$allSourcesDirsMultiPath/lib/main.dart',
+        '$allSourcesDirsMultiPath/lib/another_main.dart',
+      });
     });
 
     test('resolves test files', () {
@@ -45,15 +42,12 @@ void main() {
         DependencyType.devDependencies,
       );
 
-      expect(
-        files.map((file) => file.path),
-        const {
-          '$allSourcesDirsMultiPath/test/test.dart',
-          '$allSourcesDirsMultiPath/test/another_test.dart',
-          '$allSourcesDirsMultiPath/integration_test/test.dart',
-          '$allSourcesDirsMultiPath/integration_test/another_test.dart',
-        },
-      );
+      expect(files.map((file) => file.path), const {
+        '$allSourcesDirsMultiPath/test/test.dart',
+        '$allSourcesDirsMultiPath/test/another_test.dart',
+        '$allSourcesDirsMultiPath/integration_test/test.dart',
+        '$allSourcesDirsMultiPath/integration_test/another_test.dart',
+      });
     });
   });
 }
