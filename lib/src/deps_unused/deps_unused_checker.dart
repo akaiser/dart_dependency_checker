@@ -21,20 +21,17 @@ class DepsUnusedChecker extends Performer<DepsUnusedParams, DepsUnusedResults> {
     final yamlMap = YamlMapLoader.from(yamlFile);
 
     final declaredInMain = yamlMap
-        .packages(DependencyType.mainDependencies)
+        .packages(.mainDependencies)
         .difference(params.mainIgnores);
 
     final declaredInDev = yamlMap
-        .packages(DependencyType.devDependencies)
+        .packages(.devDependencies)
         .difference(params.devIgnores);
 
     final results = DepsUnusedResults(
-      mainDependencies: _unusedPackages(
-        DependencyType.mainDependencies,
-        declaredInMain,
-      ),
+      mainDependencies: _unusedPackages(.mainDependencies, declaredInMain),
       devDependencies: {
-        ..._unusedPackages(DependencyType.devDependencies, declaredInDev),
+        ..._unusedPackages(.devDependencies, declaredInDev),
         // if any declared dev dep exists in main, mark it for removal from dev.
         ...declaredInMain.intersection(declaredInDev),
       },

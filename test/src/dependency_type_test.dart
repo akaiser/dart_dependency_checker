@@ -7,8 +7,8 @@ void main() {
   });
 
   const <DependencyType, String>{
-    DependencyType.mainDependencies: 'dependencies',
-    DependencyType.devDependencies: 'dev_dependencies',
+    .mainDependencies: 'dependencies',
+    .devDependencies: 'dev_dependencies',
   }.forEach((dependencyType, yamlNode) {
     test(
       '$dependencyType maps to expected "$yamlNode" yamlNode',
@@ -17,8 +17,8 @@ void main() {
   });
 
   const <DependencyType, Set<String>>{
-    DependencyType.mainDependencies: {'lib'},
-    DependencyType.devDependencies: {'test', 'integration_test'},
+    .mainDependencies: {'lib'},
+    .devDependencies: {'test', 'integration_test'},
   }.forEach((dependencyType, sourceDirectories) {
     test(
       '$dependencyType maps to expected "$sourceDirectories" sourceDirectories',

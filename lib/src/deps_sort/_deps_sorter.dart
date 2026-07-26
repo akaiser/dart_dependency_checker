@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dart_dependency_checker/src/_shared/package.dart';
-import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_sort/_deps_parser.dart';
 import 'package:dart_dependency_checker/src/util/file_ext.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
@@ -25,8 +24,8 @@ abstract final class DepsSorter {
   static bool sort(File yamlFile) {
     final yamlMap = YamlMapLoader.from(yamlFile);
 
-    final mainYamlMap = yamlMap.node(DependencyType.mainDependencies);
-    final devYamlMap = yamlMap.node(DependencyType.devDependencies);
+    final mainYamlMap = yamlMap.node(.mainDependencies);
+    final devYamlMap = yamlMap.node(.devDependencies);
 
     final mainPackages = mainYamlMap != null
         ? DepsParser.parse(mainYamlMap)

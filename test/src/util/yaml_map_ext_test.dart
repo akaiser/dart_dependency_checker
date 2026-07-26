@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
 import 'package:test/test.dart';
@@ -34,13 +33,13 @@ void main() {
       test('resolves main dependencies', () {
         final yamlMap = YamlMapLoader.from(sourceFile);
 
-        expect(yamlMap.packages(DependencyType.mainDependencies), isEmpty);
+        expect(yamlMap.packages(.mainDependencies), isEmpty);
       });
 
       test('resolves dev dependencies', () {
         final yamlMap = YamlMapLoader.from(sourceFile);
 
-        expect(yamlMap.packages(DependencyType.devDependencies), isEmpty);
+        expect(yamlMap.packages(.devDependencies), isEmpty);
       });
     });
 
@@ -50,18 +49,13 @@ void main() {
       test('resolves main dependencies', () {
         final yamlMap = YamlMapLoader.from(sourceFile);
 
-        expect(yamlMap.packages(DependencyType.mainDependencies), const {
-          'meta',
-        });
+        expect(yamlMap.packages(.mainDependencies), const {'meta'});
       });
 
       test('resolves main dependencies', () {
         final yamlMap = YamlMapLoader.from(sourceFile);
 
-        expect(yamlMap.packages(DependencyType.devDependencies), const {
-          'lints',
-          'test',
-        });
+        expect(yamlMap.packages(.devDependencies), const {'lints', 'test'});
       });
     });
   });

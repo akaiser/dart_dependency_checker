@@ -1,4 +1,3 @@
-import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:test/test.dart';
@@ -9,17 +8,15 @@ void main() {
   group('from', () {
     group('for $noSourcesDirsPath', () {
       test('resolves lib files', () {
-        expect(
-          DartFiles.from(noSourcesDirsPath, DependencyType.mainDependencies),
-          isEmpty,
-        );
+        final files = DartFiles.from(noSourcesDirsPath, .mainDependencies);
+
+        expect(files, isEmpty);
       });
 
       test('resolves test files', () {
-        expect(
-          DartFiles.from(noSourcesDirsPath, DependencyType.devDependencies),
-          isEmpty,
-        );
+        final files = DartFiles.from(noSourcesDirsPath, .devDependencies);
+
+        expect(files, isEmpty);
       });
     });
   });
@@ -48,10 +45,7 @@ void main() {
 
   group('for $allSourcesDirsMultiPath', () {
     test('resolves lib files', () {
-      final files = DartFiles.from(
-        allSourcesDirsMultiPath,
-        DependencyType.mainDependencies,
-      );
+      final files = DartFiles.from(allSourcesDirsMultiPath, .mainDependencies);
 
       expect(files.map((file) => file.path), const {
         '$allSourcesDirsMultiPath/lib/main.dart',
@@ -60,10 +54,7 @@ void main() {
     });
 
     test('resolves test files', () {
-      final files = DartFiles.from(
-        allSourcesDirsMultiPath,
-        DependencyType.devDependencies,
-      );
+      final files = DartFiles.from(allSourcesDirsMultiPath, .devDependencies);
 
       expect(files.map((file) => file.path), const {
         '$allSourcesDirsMultiPath/test/test.dart',

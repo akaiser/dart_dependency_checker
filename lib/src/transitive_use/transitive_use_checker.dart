@@ -19,20 +19,18 @@ class TransitiveUseChecker
     final yamlMap = YamlMapLoader.from(yamlFile);
     final ownReference = yamlMap.name;
 
-    final declaredMainDependencies = yamlMap.packages(
-      DependencyType.mainDependencies,
-    );
+    final declaredMainDependencies = yamlMap.packages(.mainDependencies);
 
     return TransitiveUseResults(
-      mainDependencies: _find(DependencyType.mainDependencies, {
+      mainDependencies: _find(.mainDependencies, {
         ...params.mainIgnores,
         ?ownReference,
       }, (_) => declaredMainDependencies),
-      devDependencies: _find(
-        DependencyType.devDependencies,
-        {...params.devIgnores, ...declaredMainDependencies, ?ownReference},
-        (dependencyType) => yamlMap.packages(dependencyType),
-      ),
+      devDependencies: _find(.devDependencies, {
+        ...params.devIgnores,
+        ...declaredMainDependencies,
+        ?ownReference,
+      }, (dependencyType) => yamlMap.packages(dependencyType)),
     );
   }
 
