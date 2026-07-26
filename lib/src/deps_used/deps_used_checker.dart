@@ -8,7 +8,7 @@ import 'package:dart_dependency_checker/src/util/yaml_file_finder.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_ext.dart';
 import 'package:dart_dependency_checker/src/util/yaml_map_loader.dart';
 
-/// Checks used dependencies via imports only.
+/// Checks used dependencies via imports/exports only.
 class DepsUsedChecker extends Performer<DepsUsedParams, DepsUsedResults> {
   const DepsUsedChecker(super.params);
 

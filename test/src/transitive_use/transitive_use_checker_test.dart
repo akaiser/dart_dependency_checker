@@ -86,7 +86,7 @@ void main() {
       expect(
         const TransitiveUseChecker(TransitiveUseParams(path: path)).perform(),
         const TransitiveUseResults(
-          mainDependencies: {'equatable'},
+          mainDependencies: {'equatable', 'export_lib'},
           devDependencies: {'async', 'convert'},
         ),
       );
@@ -102,7 +102,7 @@ void main() {
           ),
         ).perform(),
         const TransitiveUseResults(
-          mainDependencies: {},
+          mainDependencies: {'export_lib'},
           devDependencies: {'async'},
         ),
       );
