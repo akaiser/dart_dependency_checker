@@ -5,8 +5,9 @@ import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:path/path.dart';
 
 const _dartFileExt = '.dart';
-const _importPackagePattern = 'import \'package:';
-final _importPackageExp = RegExp(r':(.*?)/');
+final _importExportPackagePattern = RegExp(
+  r"^(?:import|export) 'package:(.*?)/",
+);
 
 abstract final class DartFiles {
   static Set<File> from(String path, DependencyType dependencyType) =>
@@ -17,8 +18,7 @@ abstract final class DartFiles {
 
   static Set<String> packages(File file) => file
       .readAsLinesSync()
-      .where((line) => line.startsWith(_importPackagePattern))
-      .map((import) => _importPackageExp.firstMatch(import)?[1])
+      .map((line) => _importExportPackagePattern.firstMatch(line)?[1])
       .nonNulls
       .unmodifiable;
 

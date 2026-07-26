@@ -1,5 +1,6 @@
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/util/dart_files.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:test/test.dart';
 
 import '../_paths.dart';
@@ -20,6 +21,28 @@ void main() {
           isEmpty,
         );
       });
+    });
+  });
+
+  group('packages', () {
+    const path = exportImportPath;
+
+    test('import', () {
+      final packages = DartFiles.packages('$path/import.dart'.file);
+
+      expect(packages, const {'fritz', 'jens'});
+    });
+
+    test('export', () {
+      final packages = DartFiles.packages('$path/export.dart'.file);
+
+      expect(packages, const {'franz', 'hans'});
+    });
+
+    test('export import', () {
+      final packages = DartFiles.packages('$path/export_import.dart'.file);
+
+      expect(packages, const {'export', 'import'});
     });
   });
 

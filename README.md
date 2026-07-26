@@ -18,7 +18,7 @@ dart pub add dart_dependency_checker
 import 'package:dart_dependency_checker/dart_dependency_checker.dart';
 
 void main() {
-  // Checks used dependencies via imports only.
+  // Checks used dependencies via imports/exports only.
   const depsUsedChecker = DepsUsedChecker(
     DepsUsedParams(
       path: '.',

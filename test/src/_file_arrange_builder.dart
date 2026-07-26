@@ -1,27 +1,24 @@
 import 'dart:io';
 
-import '_util.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 
 class FileArrangeBuilder {
   late final File file;
   late final String _initContent;
   late final DateTime fileCreatedAt;
 
-  late final File _expectedFile;
+  late final File expectedFile;
 
   void init(String path) {
-    file = File('$path/pubspec.yaml');
+    file = '$path/pubspec.yaml'.file;
     _initContent = file.read;
     fileCreatedAt = file.modified;
 
-    _expectedFile = File('$path/expected.yaml');
+    expectedFile = '$path/expected.yaml'.file;
   }
 
   DateTime get fileModifiedAt => file.modified;
-
-  String get readFile => file.read;
-
-  String get readExpectedFile => _expectedFile.read;
 
   void reset() => file.writeAsStringSync(_initContent);
 }

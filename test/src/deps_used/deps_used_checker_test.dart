@@ -82,7 +82,7 @@ void main() {
       expect(
         const DepsUsedChecker(DepsUsedParams(path: path)).perform(),
         const DepsUsedResults(
-          mainDependencies: {'args', 'equatable'},
+          mainDependencies: {'args', 'equatable', 'export_lib'},
           devDependencies: {'async', 'convert', 'test'},
         ),
       );
@@ -97,7 +97,10 @@ void main() {
             devIgnores: {'async', 'convert'},
           ),
         ).perform(),
-        const DepsUsedResults(mainDependencies: {}, devDependencies: {'test'}),
+        const DepsUsedResults(
+          mainDependencies: {'export_lib'},
+          devDependencies: {'test'},
+        ),
       );
     });
   });

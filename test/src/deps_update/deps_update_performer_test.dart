@@ -1,6 +1,7 @@
 import 'package:dart_dependency_checker/src/deps_update/deps_update_params.dart';
 import 'package:dart_dependency_checker/src/deps_update/deps_update_performer.dart';
 import 'package:dart_dependency_checker/src/performer_error.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
 import 'package:test/test.dart';
 
 import '../_file_arrange_builder.dart';
@@ -79,7 +80,7 @@ void main() {
         ).perform();
 
         expect(result, isFalse);
-        expect(builder.readFile, builder.readExpectedFile);
+        expect(builder.file.read, builder.expectedFile.read);
       });
 
       test('will not modify file', () async {
@@ -115,7 +116,7 @@ void main() {
         ).perform();
 
         expect(result, isFalse);
-        expect(builder.readFile, builder.readExpectedFile);
+        expect(builder.file.read, builder.expectedFile.read);
       });
 
       test('will not modify file', () async {
@@ -172,7 +173,7 @@ void main() {
         ).perform();
 
         expect(result, isTrue);
-        expect(builder.readFile, builder.readExpectedFile);
+        expect(builder.file.read, builder.expectedFile.read);
       });
     });
   });

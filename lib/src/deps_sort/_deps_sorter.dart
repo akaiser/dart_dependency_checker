@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dart_dependency_checker/src/_shared/package.dart';
 import 'package:dart_dependency_checker/src/dependency_type.dart';
 import 'package:dart_dependency_checker/src/deps_sort/_deps_parser.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
 import 'package:dart_dependency_checker/src/util/iterable_ext.dart';
 import 'package:dart_dependency_checker/src/util/package_ext.dart';
 import 'package:dart_dependency_checker/src/util/string_ext.dart';
@@ -43,7 +44,7 @@ abstract final class DepsSorter {
     var insideDependenciesNode = false;
     var insideDevDependenciesNode = false;
 
-    final originalContent = yamlFile.readAsStringSync();
+    final originalContent = yamlFile.read;
     final lines = yamlFile.readAsLinesSync();
 
     for (final line in lines) {

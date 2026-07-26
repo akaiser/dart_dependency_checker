@@ -1,10 +1,11 @@
 import 'package:dart_dependency_checker/src/util/deps_adder.dart';
+import 'package:dart_dependency_checker/src/util/file_ext.dart';
 import 'package:dart_dependency_checker/src/util/package_ext.dart';
+import 'package:dart_dependency_checker/src/util/string_ext.dart';
 import 'package:test/test.dart';
 
 import '../_file_arrange_builder.dart';
 import '../_paths.dart';
-import '../_util.dart';
 
 void main() {
   late FileArrangeBuilder builder;
@@ -32,7 +33,7 @@ void main() {
       );
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('will modify file if something was added', () async {
@@ -85,7 +86,7 @@ void main() {
       );
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
   });
 
@@ -102,7 +103,7 @@ void main() {
       );
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('no change when nothing added', () {
@@ -113,7 +114,7 @@ void main() {
       );
 
       expect(result, isFalse);
-      expect(builder.readFile, '$sourcePath/expected_no_change.yaml'.read);
+      expect(builder.file.read, '$sourcePath/expected_no_change.yaml'.read);
     });
   });
 
@@ -130,7 +131,7 @@ void main() {
       );
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('no change when nothing added', () {
@@ -141,7 +142,7 @@ void main() {
       );
 
       expect(result, isFalse);
-      expect(builder.readFile, '$sourcePath/expected_no_change.yaml'.read);
+      expect(builder.file.read, '$sourcePath/expected_no_change.yaml'.read);
     });
   });
 
@@ -158,7 +159,7 @@ void main() {
       );
 
       expect(result, isFalse);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
 
     test('will not modify file', () async {
@@ -198,7 +199,7 @@ void main() {
       );
 
       expect(result, isTrue);
-      expect(builder.readFile, builder.readExpectedFile);
+      expect(builder.file.read, builder.expectedFile.read);
     });
   });
 }
